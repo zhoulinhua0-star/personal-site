@@ -78,7 +78,9 @@ export const links = [
   {
     kind: "email",
     label: "Email",
-    href: "mailto:zhoulinhua0@gmail.com",
+    // Subject is prefilled so replies land pre-labelled. `handle` stays the bare
+    // address for display.
+    href: "mailto:zhoulinhua0@gmail.com?subject=Hello%20from%20linhuazhou.com",
     handle: "zhoulinhua0@gmail.com",
   },
 ] as const;

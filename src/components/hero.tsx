@@ -1,6 +1,9 @@
-import { hero, identity } from "@/data/personal";
+import { hero, identity, links } from "@/data/personal";
 import { CommandDeck } from "./command-deck";
+import { ArrowUpRight } from "./icons";
 import { SocialRow } from "./social-row";
+
+const email = links.find((link) => link.kind === "email");
 
 export function Hero() {
   return (
@@ -37,10 +40,21 @@ export function Hero() {
 
         <div className="mt-[clamp(30px,4vw,52px)] max-w-[52ch]">
           <p className="lead">{hero.intro}</p>
-          <p className="mono-xs mt-6 flex items-center gap-2.5 text-ink-3">
-            <span className="pulse inline-block size-1.5 rounded-full bg-accent" />
-            {hero.status}
-          </p>
+          {email ? (
+            <a
+              href={email.href}
+              className="group mono-xs mt-6 inline-flex items-center gap-2.5 text-ink-3 transition-colors duration-300 hover:text-ink focus-visible:text-ink"
+            >
+              <span className="pulse inline-block size-1.5 rounded-full bg-accent" />
+              {hero.status}
+              <ArrowUpRight className="size-3.5 text-ink-4 transition-[transform,color] duration-300 group-hover:-translate-y-px group-hover:text-ink" />
+            </a>
+          ) : (
+            <p className="mono-xs mt-6 flex items-center gap-2.5 text-ink-3">
+              <span className="pulse inline-block size-1.5 rounded-full bg-accent" />
+              {hero.status}
+            </p>
+          )}
         </div>
 
         {/* Social links as quiet inline navigation, not a call-to-action. */}

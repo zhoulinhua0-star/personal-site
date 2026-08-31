@@ -3,7 +3,7 @@ import { HubGrid } from "@/components/hub-grid";
 import { Section } from "@/components/section";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { SocialRow } from "@/components/social-row";
+import { ContactBlock } from "@/components/contact-block";
 import { identity, site } from "@/data/personal";
 
 const personJsonLd = {
@@ -29,18 +29,21 @@ export default function HomePage() {
           label="Index"
           labelZh="目录"
           title="Where to go from here."
-          aside="Three parts to this site, plus a way to reach me. Pick one — everything is a click away, nothing needs scrolling for."
-          className="pt-[clamp(52px,8vw,92px)]"
+          aside="Three parts to this site. Everything is one click away — nothing needs scrolling for."
+          className="pt-[clamp(52px,8vw,92px)] pb-[clamp(48px,7vw,88px)]"
         >
           <HubGrid />
+        </Section>
 
-          {/* Contact lives here now — a quiet inline row, not a section of its own. */}
-          <div
-            id="contact"
-            className="mt-[clamp(40px,6vw,68px)] border-t border-line pt-[clamp(24px,3.5vw,36px)]"
-          >
-            <SocialRow />
-          </div>
+        <Section
+          id="contact"
+          label="Contact"
+          labelZh="联系"
+          title="Say hello."
+          aside="Best for anything worth building — a role, a collaboration, or a question about something here."
+          className="pt-0 pb-[clamp(72px,10vw,132px)]"
+        >
+          <ContactBlock />
         </Section>
       </main>
 
