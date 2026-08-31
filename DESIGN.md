@@ -8,14 +8,14 @@ project blocks—into an original blue-and-white system for Linhua Zhou.
 
 - **Primary:** cobalt `#0756FF`; **deep blue:** `#03133F`; **secondary:** sky
   `#66B9FF`; **background:** ice `#F5FAFF`; **surface:** white `#FFFFFF`.
-- Headings use a tight, heavy system sans at a fluid `53–160px` range. Body copy
+- Headings use a tight, heavy system sans at a fluid `50–132px` range. Body copy
   sits at `16–19px`; technical labels use a small monospace at `10–12px`.
 - Page sections use `88–168px` vertical spacing, with wider internal gaps around
   display type and tighter spacing inside related labels and controls.
-- The page uses a two-level centered container system: a `1480px` visual frame,
-  a `1184px` editorial content measure, and a wider `1344px` project/hero measure.
-  The frame remains fluid at `94vw`, preserving compact gutters on phones and
-  increasingly deliberate whitespace on large desktop displays.
+- The page uses a centered resume-style container system: a `1040px` visual
+  frame, an `800px` editorial content measure, and a wider `960–1000px`
+  project/hero measure. The frame remains fluid at `94vw` on smaller screens,
+  while large desktop displays gain deliberate, generous whitespace.
 - Buttons are 52px-high pills. Navigation uses a compact translucent pill.
   Project cards use 24–44px radii, thin blue/white borders, and almost no shadow.
 - The layout alternates a cinematic hero, editorial index rows, an asymmetric
