@@ -1,0 +1,752 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   FONTS — self-hosted (no third-party requests). See public/fonts/.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ==========================================================================
+   DESIGN TOKENS
+   Change a value here and it changes everywhere. Avoid one-off colours.
+   ========================================================================== */
+
+@theme {
+  /* — Ink ————————————————————————————————————————————————————— */
+  --color-ink: #06080f;
+  --color-ink-2: #454f63;
+  --color-ink-3: #7b8598;
+  --color-ink-4: #a8b0be;
+
+  /* — Surfaces ————————————————————————————————————————————————— */
+  --color-paper: #ffffff;
+  --color-paper-2: #f7f9fd;
+  --color-paper-3: #eff4fb;
+
+  /* — Lines ———————————————————————————————————————————————————— */
+  --color-line: #e6eaf2;
+  --color-line-2: #d3dae7;
+
+  /* — Accent ——————————————————————————————————————————————————— */
+  --color-accent: #0b5cff;
+  --color-accent-deep: #0a3ea8;
+  --color-accent-soft: #e8f0ff;
+
+  /* — Type ————————————————————————————————————————————————————— */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", "SFMono-Regular", Menlo,
+    Consolas, monospace;
+
+  /* — Radii ———————————————————————————————————————————————————— */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+
+  /* — Shadows (soft, never heavy) ——————————————————————————————— */
+  --shadow-card: 0 1px 2px rgb(6 8 15 / 0.04), 0 12px 32px -20px rgb(6 8 15 / 0.28);
+  --shadow-lift: 0 2px 4px rgb(6 8 15 / 0.05), 0 28px 56px -28px rgb(10 62 168 / 0.35);
+  --shadow-shot: 0 1px 1px rgb(6 8 15 / 0.06), 0 18px 40px -24px rgb(6 8 15 / 0.4);
+
+  /* — Motion ——————————————————————————————————————————————————— */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  /* Layout rhythm */
+  --shell: 1040px;
+  --gutter: clamp(22px, 6vw, 72px);
+  --section-space: clamp(84px, 11vw, 156px);
+  --measure: 62ch;
+
+  /* Intensity of the futuristic background. Creative mode raises it. */
+  --deck-opacity: 0.1;
+  /* Pointer parallax, written by the hero's pointer hook (creative mode only) */
+  --px: 0;
+  --py: 0;
+}
+
+/* Creative mode brings the command deck forward. Declared here, beside the
+   default, so both live at the same cascade level. */
+[data-mode="creative"] {
+  --deck-opacity: 0.34;
+}
+
+/* Base element styles live in Tailwind's `base` layer so utility classes
+   (text-accent, mt-6, …) always win over them. */
+@layer base {
+  /* ==========================================================================
+     BASE
+     ========================================================================== */
+
+  * {
+    min-width: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Everything below is a reusable component class. Living in the
+   `components` layer keeps utilities able to override it. */
+@layer components {
+  /* ==========================================================================
+     LAYOUT PRIMITIVES
+     ========================================================================== */
+
+  .shell {
+    width: 100%;
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    padding-block: var(--section-space);
+    position: relative;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--color-line);
+    border: 0;
+  }
+
+  /* ==========================================================================
+     TYPOGRAPHY
+     ========================================================================== */
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+  }
+
+  .label-accent {
+    color: var(--color-accent);
+  }
+
+  .display {
+    font-size: clamp(3rem, 9.5vw, 7rem);
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    font-weight: 500;
+  }
+
+  .statement {
+    font-size: clamp(1.5rem, 3.3vw, 2.55rem);
+    line-height: 1.14;
+    letter-spacing: -0.032em;
+    font-weight: 400;
+  }
+
+  .heading {
+    font-size: clamp(1.8rem, 3.3vw, 2.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+
+  .subheading {
+    font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+    line-height: 1.15;
+    letter-spacing: -0.028em;
+    font-weight: 500;
+  }
+
+  .lead {
+    font-size: clamp(1rem, 1.15vw, 1.15rem);
+    line-height: 1.62;
+    color: var(--color-ink-2);
+  }
+
+  .mono-xs {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ==========================================================================
+     COMPONENT PRIMITIVES
+     ========================================================================== */
+
+  /* — Chips ——————————————————————————————————————————————————————— */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding-inline: 9px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xs);
+    background: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-2);
+    white-space: nowrap;
+  }
+
+  .chip-accent {
+    border-color: color-mix(in srgb, var(--color-accent) 26%, transparent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+  }
+
+  .chip-ghost {
+    border-style: dashed;
+    color: var(--color-ink-3);
+  }
+
+  /* — Links ——————————————————————————————————————————————————————— */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.4s var(--ease-out-soft);
+  }
+
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* — Numbered section header ——————————————————————————————————————— */
+  .section-head {
+    display: grid;
+    gap: clamp(14px, 2vw, 22px);
+    grid-template-columns: 1fr;
+    align-items: end;
+    padding-bottom: clamp(28px, 4vw, 44px);
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: clamp(34px, 5vw, 58px);
+  }
+
+  @media (min-width: 820px) {
+    .section-head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+      gap: 48px;
+    }
+  }
+
+  /* ==========================================================================
+     THE COMMAND DECK — futuristic interface atmosphere
+     Sits behind content, masked into the paper. Never interactive.
+     ========================================================================== */
+
+  .deck {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    contain: layout paint;
+  }
+
+  .deck-inner {
+    position: absolute;
+    opacity: var(--deck-opacity);
+    transition: opacity 0.6s var(--ease-out-soft);
+    will-change: transform;
+  }
+
+  .deck svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Fades the artwork into the paper on every edge, so nothing ever meets a
+     hard viewport cut. Two masks intersect: a soft radial plus an edge falloff. */
+  .deck-mask {
+    --deck-fade: radial-gradient(
+        72% 66% at 62% 34%,
+        #000 0%,
+        #000 22%,
+        rgb(0 0 0 / 0.5) 54%,
+        transparent 80%
+      ),
+      linear-gradient(to right, transparent 0%, #000 18%, #000 74%, transparent 97%);
+    -webkit-mask-image: var(--deck-fade);
+    mask-image: var(--deck-fade);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* Depth: layers drift by different amounts with the pointer. */
+  .deck-layer-far {
+    transform: translate3d(calc(var(--px) * 8px), calc(var(--py) * 5px), 0);
+    transition: transform 0.9s var(--ease-out-soft);
+  }
+
+  .deck-layer-near {
+    transform: translate3d(calc(var(--px) * -18px), calc(var(--py) * -11px), 0);
+    transition: transform 0.7s var(--ease-out-soft);
+  }
+
+  /* The two artwork layers. Structure sits behind data. */
+  .deck-art {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+  }
+
+  .deck-structure {
+    background-image: url("/backgrounds/deck-structure.svg");
+  }
+
+  .deck-data {
+    background-image: url("/backgrounds/deck-data.svg");
+  }
+
+  /* Placement of the deck inside the hero. Deliberately bleeds off-canvas. */
+  .deck-hero .deck-inner {
+    top: -14%;
+    left: 4%;
+    width: 132%;
+    aspect-ratio: 16 / 9;
+  }
+
+  @media (min-width: 1024px) {
+    .deck-hero .deck-inner {
+      top: -18%;
+      left: 34%;
+      width: 98%;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .deck-hero .deck-inner {
+      left: 38%;
+      width: 84%;
+    }
+  }
+
+  /* A second, quieter appearance behind the contact section. */
+  .deck-contact .deck-inner {
+    bottom: -34%;
+    left: -18%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    opacity: calc(var(--deck-opacity) * 0.72);
+  }
+
+  /* ==========================================================================
+     MODE TOGGLE
+     Visual state is driven entirely by [data-mode] on <html>, so the control is
+     correct before hydration and never flashes.
+     ========================================================================== */
+
+  .mode-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-paper);
+  }
+
+  .mode-toggle::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc(50% - 3px);
+    border-radius: 999px;
+    background: var(--color-ink);
+    transition: transform 0.42s var(--ease-out-soft);
+  }
+
+  [data-mode="creative"] .mode-toggle::before {
+    transform: translateX(100%);
+    background: var(--color-accent);
+  }
+
+  .mode-option {
+    position: relative;
+    z-index: 1;
+    flex: 1 1 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-ink-3);
+    cursor: pointer;
+    transition: color 0.42s var(--ease-out-soft);
+    white-space: nowrap;
+  }
+
+  .mode-option[data-value="minimal"],
+  [data-mode="creative"] .mode-option[data-value="creative"] {
+    color: #fff;
+  }
+
+  [data-mode="creative"] .mode-option[data-value="minimal"] {
+    color: var(--color-ink-3);
+  }
+
+  /* ==========================================================================
+     PROJECT SCREENSHOT STACK
+     Layered images that separate slightly on hover / focus.
+     ========================================================================== */
+
+  /* Creative mode only: a blueprint plate that gives the stack a stage. */
+  .shot-plate {
+    position: absolute;
+    inset: -7% -5% -9% -5%;
+    z-index: 0;
+    border-radius: var(--radius-lg);
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-accent) 16%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--color-accent) 16%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(86% 82% at 50% 50%, #000 40%, transparent 92%);
+    mask-image: radial-gradient(86% 82% at 50% 50%, #000 40%, transparent 92%);
+  }
+
+  .shot-plate::before,
+  .shot-plate::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-accent);
+    opacity: 0.6;
+  }
+
+  .shot-plate::before {
+    top: 1%;
+    left: 1%;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .shot-plate::after {
+    right: 4%;
+    bottom: 6%;
+    border-top: 0;
+    border-left: 0;
+  }
+
+  .shot-stack {
+    position: relative;
+    /* Room for the layers that peek out above the front screenshot. */
+    margin-top: 9%;
+    aspect-ratio: 16 / 10.4;
+    perspective: 1400px;
+  }
+
+  .shot {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-paper);
+    box-shadow: var(--shadow-shot);
+    overflow: hidden;
+    transform-origin: 50% 100%;
+    transition:
+      transform 0.65s var(--ease-out-soft),
+      box-shadow 0.65s var(--ease-out-soft);
+  }
+
+  .shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+
+  /* Resting stack: each layer peeks out above the one in front. */
+  .shot-2 {
+    transform: translate3d(0, -5.5%, 0) scale(0.945);
+    filter: saturate(0.9);
+  }
+
+  .shot-3 {
+    transform: translate3d(0, -10.5%, 0) scale(0.89);
+    filter: saturate(0.8);
+  }
+
+  /* ==========================================================================
+     MODE: MINIMAL (default) vs CREATIVE
+     Both modes render identical markup. Only presentation changes.
+     ========================================================================== */
+
+  /* Decorative extras only exist in creative mode. */
+  .creative-only {
+    display: none;
+  }
+
+  [data-mode="creative"] .creative-only {
+    display: block;
+  }
+
+  /* Screenshot stack: fans out on hover in creative mode. */
+  [data-mode="creative"] .shot-stack:hover .shot-1,
+  [data-mode="creative"] .project:focus-within .shot-1 {
+    transform: translate3d(0, 1.5%, 0) rotate(0.5deg);
+    box-shadow: var(--shadow-lift);
+  }
+
+  [data-mode="creative"] .shot-stack:hover .shot-2,
+  [data-mode="creative"] .project:focus-within .shot-2 {
+    transform: translate3d(-4%, -8.5%, 0) scale(0.95) rotate(-1.4deg);
+  }
+
+  [data-mode="creative"] .shot-stack:hover .shot-3,
+  [data-mode="creative"] .project:focus-within .shot-3 {
+    transform: translate3d(3.5%, -15%, 0) scale(0.9) rotate(1.6deg);
+  }
+
+  /* Minimal mode keeps a smaller, calmer lift. */
+  .shot-stack:hover .shot-1,
+  .project:focus-within .shot-1 {
+    box-shadow: var(--shadow-lift);
+  }
+
+  /* Category cards */
+  .cat-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    min-height: 180px;
+    padding: 22px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper);
+    overflow: hidden;
+    transition:
+      border-color 0.4s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft),
+      box-shadow 0.5s var(--ease-out-soft);
+  }
+
+  .cat-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.55s var(--ease-out-soft);
+  }
+
+  .cat-card:hover,
+  .cat-card:focus-visible {
+    border-color: var(--color-line-2);
+  }
+
+  .cat-card:hover::after,
+  .cat-card:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  [data-mode="creative"] .cat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Lab rows */
+  .lab-row {
+    position: relative;
+    display: grid;
+    gap: 6px 24px;
+    padding-block: clamp(18px, 2.4vw, 26px);
+    border-top: 1px solid var(--color-line);
+    transition: background-color 0.35s var(--ease-out-soft);
+  }
+
+  .lab-row:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 760px) {
+    .lab-row {
+      grid-template-columns: 3.5rem minmax(0, 15rem) minmax(0, 1fr) auto;
+      align-items: baseline;
+    }
+  }
+
+  [data-mode="creative"] .lab-row:hover {
+    background: linear-gradient(
+      to right,
+      var(--color-paper-2),
+      transparent 70%
+    );
+  }
+
+  /* ==========================================================================
+     MOTION — scroll reveals (CSS only, creative mode only)
+     Uses scroll-driven animations where supported; otherwise content is simply
+     visible. No JavaScript, no observers.
+     ========================================================================== */
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-mode="creative"] .reveal {
+        animation: reveal-in linear both;
+        animation-timeline: view();
+        animation-range: entry 8% entry 55%;
+      }
+    }
+  }
+
+  @keyframes reveal-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* A slow, barely-there drift on the deck. */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mode="creative"] .deck-drift {
+      animation: deck-drift 34s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes deck-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-1.4%, -0.9%, 0);
+    }
+  }
+
+  /* Blinking status dot. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse {
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.28;
+    }
+  }
+
+  /* Honour the user's system preference above everything else. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ==========================================================================
+     UTILITIES
+     ========================================================================== */
+
+  .skip-link {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: 100;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--color-ink);
+    color: #fff;
+    font-size: 13px;
+    transform: translateY(-160%);
+    transition: transform 0.25s var(--ease-out-soft);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+}
