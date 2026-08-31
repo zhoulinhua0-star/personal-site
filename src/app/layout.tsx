@@ -27,19 +27,9 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-/**
- * Runs before first paint so the stored presentation mode is applied without a
- * flash and without hydration mismatch (the default in the markup is minimal).
- */
-const modeScript = `(function(){try{if(localStorage.getItem("lz-mode")==="creative"){document.documentElement.dataset.mode="creative"}}catch(e){}})();`;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    /* No `data-mode` is rendered on the server: Minimal is the CSS default, and
-       the inline script below adds the attribute only when the visitor has
-       chosen Creative. That keeps the markup and the DOM in agreement, so React
-       has no mismatch to "fix" during hydration. */
-    <html lang={site.locale} suppressHydrationWarning>
+    <html lang={site.locale}>
       <head>
         <link
           rel="preload"
@@ -48,7 +38,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <script dangerouslySetInnerHTML={{ __html: modeScript }} />
       </head>
       <body>
         <a className="skip-link" href="#main">

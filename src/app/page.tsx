@@ -1,14 +1,10 @@
-import { AboutSection } from "@/components/about-section";
-import { CategoryGrid } from "@/components/category-grid";
-import { ContactSection } from "@/components/contact-section";
 import { Hero } from "@/components/hero";
-import { LabList } from "@/components/lab-list";
-import { ProjectCard } from "@/components/project-card";
+import { HubGrid } from "@/components/hub-grid";
 import { Section } from "@/components/section";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SocialRow } from "@/components/social-row";
 import { identity, site } from "@/data/personal";
-import { projects } from "@/data/projects";
 
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -23,47 +19,29 @@ const personJsonLd = {
 export default function HomePage() {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader current="/" />
 
       <main id="main">
         <Hero />
 
         <Section
-          id="categories"
-          number="02"
+          id="index"
           label="Index"
-          title="What I spend my time building."
-          aside="Five threads that keep showing up in my work — from agent systems and developer tooling to the smaller experiments that never make it past a weekend."
+          labelZh="目录"
+          title="Where to go from here."
+          aside="Three parts to this site, plus a way to reach me. Pick one — everything is a click away, nothing needs scrolling for."
+          className="pt-[clamp(52px,8vw,92px)]"
         >
-          <CategoryGrid />
-        </Section>
+          <HubGrid />
 
-        <Section
-          id="work"
-          number="03"
-          label="Selected work"
-          title="Projects worth walking you through."
-          aside="A short list on purpose. Each one has a problem behind it, a constraint that made it interesting, and a decision I would defend."
-        >
-          <div className="space-y-[clamp(64px,9vw,132px)]">
-            {projects.map((project, index) => (
-              <ProjectCard key={project.slug} project={project} index={index} />
-            ))}
+          {/* Contact lives here now — a quiet inline row, not a section of its own. */}
+          <div
+            id="contact"
+            className="mt-[clamp(40px,6vw,68px)] border-t border-line pt-[clamp(24px,3.5vw,36px)]"
+          >
+            <SocialRow />
           </div>
         </Section>
-
-        <Section
-          id="lab"
-          number="04"
-          label="Lab"
-          title="Open source and experiments."
-          aside="Smaller things: libraries, prototypes, and studies that answered a question I had."
-        >
-          <LabList />
-        </Section>
-
-        <AboutSection />
-        <ContactSection />
       </main>
 
       <SiteFooter />

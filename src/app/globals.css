@@ -26,25 +26,33 @@
    ========================================================================== */
 
 @theme {
-  /* — Ink ————————————————————————————————————————————————————— */
-  --color-ink: #06080f;
-  --color-ink-2: #454f63;
-  --color-ink-3: #7b8598;
-  --color-ink-4: #a8b0be;
+  /* — Ink (warm near-black) ———————————————————————————————————— */
+  --color-ink: #1a1a17;
+  --color-ink-2: #4b4a43;
+  --color-ink-3: #85837a;
+  --color-ink-4: #b4b1a5;
 
   /* — Surfaces ————————————————————————————————————————————————— */
-  --color-paper: #ffffff;
-  --color-paper-2: #f7f9fd;
-  --color-paper-3: #eff4fb;
+  /* `paper` is the page ground (warm cream); `paper-2` is a raised
+     surface (cards, screenshots) that sits brighter than the ground. */
+  --color-paper: #fbf8f0;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #f2eee1;
 
-  /* — Lines ———————————————————————————————————————————————————— */
-  --color-line: #e6eaf2;
-  --color-line-2: #d3dae7;
+  /* — Lines (warm) ————————————————————————————————————————————— */
+  --color-line: #e7e2d2;
+  --color-line-2: #d7d1bd;
 
-  /* — Accent ——————————————————————————————————————————————————— */
-  --color-accent: #0b5cff;
-  --color-accent-deep: #0a3ea8;
-  --color-accent-soft: #e8f0ff;
+  /* — Accent (deepened blue — links, focus, small marks only) ——— */
+  --color-accent: #1f57d6;
+  --color-accent-deep: #163f9e;
+  --color-accent-soft: #e7eeff;
+
+  /* — Marker (highlighter yellow — background swipe only, never text) */
+  --color-marker: #ffd64a;
+
+  /* — Grid (engineering graph-paper ruling) ———————————————————— */
+  --color-grid: rgb(26 22 10 / 0.045);
 
   /* — Type ————————————————————————————————————————————————————— */
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
@@ -59,13 +67,15 @@
   --radius-lg: 22px;
   --radius-xl: 30px;
 
-  /* — Shadows (soft, never heavy) ——————————————————————————————— */
-  --shadow-card: 0 1px 2px rgb(6 8 15 / 0.04), 0 12px 32px -20px rgb(6 8 15 / 0.28);
-  --shadow-lift: 0 2px 4px rgb(6 8 15 / 0.05), 0 28px 56px -28px rgb(10 62 168 / 0.35);
-  --shadow-shot: 0 1px 1px rgb(6 8 15 / 0.06), 0 18px 40px -24px rgb(6 8 15 / 0.4);
+  /* — Shadows (soft, never heavy — warm-toned) —————————————————— */
+  --shadow-card: 0 1px 2px rgb(40 34 20 / 0.05), 0 14px 34px -22px rgb(40 34 20 / 0.3);
+  --shadow-lift: 0 2px 4px rgb(40 34 20 / 0.06), 0 30px 58px -28px rgb(40 34 20 / 0.36);
+  --shadow-shot: 0 1px 1px rgb(40 34 20 / 0.07), 0 18px 40px -24px rgb(40 34 20 / 0.42);
 
   /* — Motion ——————————————————————————————————————————————————— */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Gentle overshoot — the oil-style spring, done in pure CSS. */
+  --ease-spring: cubic-bezier(0.34, 1.42, 0.64, 1);
 }
 
 :root {
@@ -75,17 +85,11 @@
   --section-space: clamp(84px, 11vw, 156px);
   --measure: 62ch;
 
-  /* Intensity of the futuristic background. Creative mode raises it. */
-  --deck-opacity: 0.1;
-  /* Pointer parallax, written by the hero's pointer hook (creative mode only) */
+  /* Intensity of the futuristic command deck behind the hero. */
+  --deck-opacity: 0.34;
+  /* Pointer parallax, written by the hero's pointer hook. */
   --px: 0;
   --py: 0;
-}
-
-/* Creative mode brings the command deck forward. Declared here, beside the
-   default, so both live at the same cascade level. */
-[data-mode="creative"] {
-  --deck-opacity: 0.34;
 }
 
 /* Base element styles live in Tailwind's `base` layer so utility classes
@@ -106,7 +110,13 @@
   }
 
   body {
-    background: var(--color-paper);
+    background-color: var(--color-paper);
+    /* Faint engineering graph-paper ruling across the whole page. */
+    background-image:
+      linear-gradient(var(--color-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 33px 33px;
+    background-position: center -1px;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 16px;
@@ -118,8 +128,8 @@
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: #fff;
+    background: var(--color-marker);
+    color: var(--color-ink);
   }
 
   :focus-visible {
@@ -178,21 +188,24 @@
   }
 
   .label-accent {
-    color: var(--color-accent);
+    color: var(--color-ink);
+    font-weight: 600;
   }
 
   .display {
-    font-size: clamp(3rem, 9.5vw, 7rem);
-    line-height: 0.88;
-    letter-spacing: -0.045em;
-    font-weight: 500;
+    font-size: clamp(2.9rem, 9vw, 6.4rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    font-weight: 600;
   }
 
+  /* The hero line — set big, tight and lowercase, oil-style. */
   .statement {
-    font-size: clamp(1.5rem, 3.3vw, 2.55rem);
-    line-height: 1.14;
-    letter-spacing: -0.032em;
-    font-weight: 400;
+    font-size: clamp(1.7rem, 3.9vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.038em;
+    font-weight: 480;
+    text-transform: lowercase;
   }
 
   .heading {
@@ -283,6 +296,71 @@
       grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
       gap: 48px;
     }
+  }
+
+  /* — Bilingual index label: rule · number · 中文 / ENGLISH ——————————— */
+  .index-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .index-label .index-rule {
+    height: 1px;
+    width: 22px;
+    background: var(--color-line-2);
+  }
+
+  /* — Ghost watermark numerals — outline-only, sit behind content ——— */
+  .ghost-num {
+    position: absolute;
+    z-index: 0;
+    font-weight: 600;
+    line-height: 0.78;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.2px var(--color-line-2);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .ghost-num-section {
+    top: clamp(0px, 1.5vw, 20px);
+    right: clamp(0px, 3vw, 44px);
+    font-size: clamp(4.5rem, 15vw, 11.5rem);
+  }
+
+  .ghost-num-card {
+    right: 12px;
+    bottom: -0.14em;
+    font-size: clamp(3.5rem, 12vw, 5.5rem);
+    -webkit-text-stroke-width: 1px;
+    opacity: 0.75;
+  }
+
+  /* — Highlighter underline on the active nav item —————————————————— */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    padding-block: 3px;
+  }
+
+  .nav-link[aria-current="page"] {
+    color: var(--color-ink);
+  }
+
+  .nav-link[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0.06em;
+    height: 0.6em;
+    z-index: -1;
+    background: var(--color-marker);
+    border-radius: 3px 8px 4px 7px;
+    transform: rotate(-1.5deg);
+    mix-blend-mode: multiply;
   }
 
   /* ==========================================================================
@@ -380,73 +458,6 @@
     }
   }
 
-  /* A second, quieter appearance behind the contact section. */
-  .deck-contact .deck-inner {
-    bottom: -34%;
-    left: -18%;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    opacity: calc(var(--deck-opacity) * 0.72);
-  }
-
-  /* ==========================================================================
-     MODE TOGGLE
-     Visual state is driven entirely by [data-mode] on <html>, so the control is
-     correct before hydration and never flashes.
-     ========================================================================== */
-
-  .mode-toggle {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding: 3px;
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    background: var(--color-paper);
-  }
-
-  .mode-toggle::before {
-    content: "";
-    position: absolute;
-    top: 3px;
-    bottom: 3px;
-    left: 3px;
-    width: calc(50% - 3px);
-    border-radius: 999px;
-    background: var(--color-ink);
-    transition: transform 0.42s var(--ease-out-soft);
-  }
-
-  [data-mode="creative"] .mode-toggle::before {
-    transform: translateX(100%);
-    background: var(--color-accent);
-  }
-
-  .mode-option {
-    position: relative;
-    z-index: 1;
-    flex: 1 1 0;
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--color-ink-3);
-    cursor: pointer;
-    transition: color 0.42s var(--ease-out-soft);
-    white-space: nowrap;
-  }
-
-  .mode-option[data-value="minimal"],
-  [data-mode="creative"] .mode-option[data-value="creative"] {
-    color: #fff;
-  }
-
-  [data-mode="creative"] .mode-option[data-value="minimal"] {
-    color: var(--color-ink-3);
-  }
-
   /* ==========================================================================
      PROJECT SCREENSHOT STACK
      Layered images that separate slightly on hover / focus.
@@ -539,41 +550,21 @@
     filter: saturate(0.8);
   }
 
-  /* ==========================================================================
-     MODE: MINIMAL (default) vs CREATIVE
-     Both modes render identical markup. Only presentation changes.
-     ========================================================================== */
-
-  /* Decorative extras only exist in creative mode. */
-  .creative-only {
-    display: none;
-  }
-
-  [data-mode="creative"] .creative-only {
-    display: block;
-  }
-
-  /* Screenshot stack: fans out on hover in creative mode. */
-  [data-mode="creative"] .shot-stack:hover .shot-1,
-  [data-mode="creative"] .project:focus-within .shot-1 {
+  /* Screenshot stack: fans out on hover / focus. */
+  .shot-stack:hover .shot-1,
+  .project:focus-within .shot-1 {
     transform: translate3d(0, 1.5%, 0) rotate(0.5deg);
     box-shadow: var(--shadow-lift);
   }
 
-  [data-mode="creative"] .shot-stack:hover .shot-2,
-  [data-mode="creative"] .project:focus-within .shot-2 {
+  .shot-stack:hover .shot-2,
+  .project:focus-within .shot-2 {
     transform: translate3d(-4%, -8.5%, 0) scale(0.95) rotate(-1.4deg);
   }
 
-  [data-mode="creative"] .shot-stack:hover .shot-3,
-  [data-mode="creative"] .project:focus-within .shot-3 {
+  .shot-stack:hover .shot-3,
+  .project:focus-within .shot-3 {
     transform: translate3d(3.5%, -15%, 0) scale(0.9) rotate(1.6deg);
-  }
-
-  /* Minimal mode keeps a smaller, calmer lift. */
-  .shot-stack:hover .shot-1,
-  .project:focus-within .shot-1 {
-    box-shadow: var(--shadow-lift);
   }
 
   /* Category cards */
@@ -582,17 +573,17 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 28px;
-    min-height: 180px;
-    padding: 22px;
+    gap: 20px;
+    min-height: 168px;
+    padding: 24px;
     border: 1px solid var(--color-line);
     border-radius: var(--radius-lg);
-    background: var(--color-paper);
+    background: var(--color-paper-2);
     overflow: hidden;
     transition:
       border-color 0.4s var(--ease-out-soft),
-      transform 0.5s var(--ease-out-soft),
-      box-shadow 0.5s var(--ease-out-soft);
+      transform 0.45s var(--ease-spring),
+      box-shadow 0.45s var(--ease-out-soft);
   }
 
   .cat-card::after {
@@ -601,8 +592,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 2px;
-    background: var(--color-accent);
+    height: 3px;
+    background: var(--color-marker);
     transform: scaleX(0);
     transform-origin: 0 50%;
     transition: transform 0.55s var(--ease-out-soft);
@@ -611,16 +602,13 @@
   .cat-card:hover,
   .cat-card:focus-visible {
     border-color: var(--color-line-2);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
   }
 
   .cat-card:hover::after,
   .cat-card:focus-visible::after {
     transform: scaleX(1);
-  }
-
-  [data-mode="creative"] .cat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card);
   }
 
   /* Lab rows */
@@ -644,26 +632,26 @@
     }
   }
 
-  [data-mode="creative"] .lab-row:hover {
+  .lab-row:hover {
     background: linear-gradient(
       to right,
-      var(--color-paper-2),
+      var(--color-paper-3),
       transparent 70%
     );
   }
 
   /* ==========================================================================
-     MOTION — scroll reveals (CSS only, creative mode only)
+     MOTION — scroll reveals (CSS only, both modes)
      Uses scroll-driven animations where supported; otherwise content is simply
      visible. No JavaScript, no observers.
      ========================================================================== */
 
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      [data-mode="creative"] .reveal {
+      .reveal {
         animation: reveal-in linear both;
         animation-timeline: view();
-        animation-range: entry 8% entry 55%;
+        animation-range: entry 6% entry 50%;
       }
     }
   }
@@ -671,7 +659,7 @@
   @keyframes reveal-in {
     from {
       opacity: 0;
-      transform: translateY(18px);
+      transform: translateY(15px);
     }
     to {
       opacity: 1;
@@ -681,7 +669,7 @@
 
   /* A slow, barely-there drift on the deck. */
   @media (prefers-reduced-motion: no-preference) {
-    [data-mode="creative"] .deck-drift {
+    .deck-drift {
       animation: deck-drift 34s ease-in-out infinite alternate;
     }
   }

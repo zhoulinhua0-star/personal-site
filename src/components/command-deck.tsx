@@ -9,15 +9,13 @@ import { useEffect, useRef } from "react";
  *
  * Two layers (structure + data) drift by different amounts with the pointer,
  * which is the only pointer listener on the site: passive, rAF-throttled,
- * fine-pointer only, and skipped entirely in Minimal mode or when the visitor
- * prefers reduced motion.
+ * fine-pointer only, and skipped entirely when the visitor prefers reduced
+ * motion.
  */
-export function CommandDeck({ variant = "hero" }: { variant?: "hero" | "contact" }) {
+export function CommandDeck() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (variant !== "hero") return;
-
     const element = ref.current;
     if (!element) return;
 
@@ -33,11 +31,6 @@ export function CommandDeck({ variant = "hero" }: { variant?: "hero" | "contact"
         frame = 0;
         const host = ref.current;
         if (!host) return;
-        if (document.documentElement.dataset.mode !== "creative") {
-          host.style.removeProperty("--px");
-          host.style.removeProperty("--py");
-          return;
-        }
         const x = event.clientX / window.innerWidth - 0.5;
         const y = event.clientY / window.innerHeight - 0.5;
         host.style.setProperty("--px", x.toFixed(3));
@@ -50,10 +43,10 @@ export function CommandDeck({ variant = "hero" }: { variant?: "hero" | "contact"
       window.removeEventListener("pointermove", onMove);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [variant]);
+  }, []);
 
   return (
-    <div ref={ref} className={`deck deck-mask deck-${variant}`} aria-hidden="true">
+    <div ref={ref} className="deck deck-mask deck-hero" aria-hidden="true">
       <div className="deck-inner deck-drift">
         <div className="deck-art deck-structure deck-layer-far" />
         <div className="deck-art deck-data deck-layer-near" />

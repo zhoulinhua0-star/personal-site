@@ -10,7 +10,7 @@ export function SiteFooter() {
           {identity.nameAlt ? <span className="ml-2 text-ink-4">{identity.nameAlt}</span> : null}
         </p>
         <p className="mono-xs max-w-[46ch] text-ink-4">{footer.note}</p>
-        <a href="#top" className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent">
+        <a href="#main" className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent">
           Back to top
           <ArrowUpRight className="size-3.5 transition-transform duration-500 group-hover:-translate-y-0.5" />
         </a>

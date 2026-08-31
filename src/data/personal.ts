@@ -78,8 +78,8 @@ export const links = [
   {
     kind: "email",
     label: "Email",
-    href: "mailto:zhoulinhua.dev@gmail.com",
-    handle: "zhoulinhua.dev@gmail.com",
+    href: "mailto:zhoulinhua0@gmail.com",
+    handle: "zhoulinhua0@gmail.com",
   },
 ] as const;
 
@@ -104,13 +104,6 @@ export const about = {
     { label: "Based in", value: "Add your city" },
     { label: "Currently", value: "Add what you are working on" },
   ],
-} as const;
-
-export const contact = {
-  /** Large closing line. Keep it short. */
-  headline: ["Have something", "worth building?"],
-  blurb:
-    "Always up for a conversation about AI tooling, developer experience, or a project you cannot stop thinking about.",
 } as const;
 
 export const footer = {

@@ -103,7 +103,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
         {shots.length ? (
           <div className={flipped ? "lg:col-start-1 lg:row-start-1" : ""}>
             <div className="shot-stack">
-              <span className="creative-only shot-plate" aria-hidden="true" />
+              <span className="shot-plate" aria-hidden="true" />
               {/* Rendered back-to-front so the first image sits on top. */}
               {shots
                 .map((shot, order) => ({ shot, order }))
