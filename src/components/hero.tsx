@@ -1,7 +1,7 @@
 import { hero, identity, links } from "@/data/personal";
 import { CommandDeck } from "./command-deck";
 import { ArrowUpRight } from "./icons";
-import { SocialRow } from "./social-row";
+import { LinkStrip } from "./link-strip";
 
 const email = links.find((link) => link.kind === "email");
 
@@ -11,11 +11,13 @@ export function Hero() {
       <CommandDeck />
 
       <div className="shell relative z-[1] pt-[clamp(40px,6vw,72px)] pb-[clamp(36px,5vw,60px)]">
-        {/* Meta line: role on the left, year on the right, hairline between. */}
+        {/* Meta line: the role, then a hairline running out to the edge. The
+            year used to terminate this rule; the header's clock says what year
+            it is now, live, so repeating it here would only be a second answer
+            to a question already answered. */}
         <div className="flex items-center gap-5">
           <p className="label whitespace-nowrap">{identity.role}</p>
           <span className="h-px flex-1 bg-line" />
-          <p className="label whitespace-nowrap">{identity.year}</p>
         </div>
 
         <h1 className="display mt-[clamp(28px,5vw,56px)] flex flex-wrap items-baseline gap-x-[0.28em] gap-y-2">
@@ -57,8 +59,7 @@ export function Hero() {
           )}
         </div>
 
-        {/* Social links as quiet inline navigation, not a call-to-action. */}
-        <SocialRow className="mt-[clamp(26px,4vw,40px)]" />
+        <LinkStrip className="mt-[clamp(26px,4vw,40px)]" />
       </div>
     </section>
   );

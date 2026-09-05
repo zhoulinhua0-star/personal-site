@@ -103,10 +103,23 @@ function CardBody({ entry }: { entry: Entry }) {
 }
 
 export function HubGrid() {
+  /**
+   * Two columns divided into an odd number of cards leaves a hole in the last
+   * row, which in a grid this strict reads as missing content rather than as
+   * breathing room. The final card widens to close it. An even count (a fourth
+   * destination one day) lays out 2x2 on its own — nothing here needs editing.
+   */
+  const lastFillsRow = entries.length % 2 === 1;
+
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
-      {entries.map((entry) => (
-        <li key={entry.href} className="reveal">
+      {entries.map((entry, index) => (
+        <li
+          key={entry.href}
+          className={`reveal${
+            lastFillsRow && index === entries.length - 1 ? " sm:col-span-2" : ""
+          }`}
+        >
           <Link href={entry.href} className="cat-card group h-full">
             <CardBody entry={entry} />
           </Link>

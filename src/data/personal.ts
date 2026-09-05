@@ -28,13 +28,66 @@ export const identity = {
   name: "Linhua Zhou",
   /** Secondary script shown beneath the wordmark. Set to "" to hide it. */
   nameAlt: "周琳桦",
-  /** Two-letter monogram in the header. */
-  monogram: "LZ",
   /** Small label above the name in the hero. */
   role: "Developer · Builder",
   /** Right-hand marker in the hero. */
   year: "2026",
 } as const;
+
+/**
+ * ============================================================================
+ *  WHERE I AM — drives the live clock in the header.
+ * ============================================================================
+ *
+ *  Nothing here detects anything. When you physically move, you change
+ *  `currentPlace` below by hand and push; the deploy does the rest.
+ *
+ *  `zone` is the IANA identifier and does the arithmetic — including daylight
+ *  saving, which it handles on its own, so the clock shifts correctly in March
+ *  and November without you touching it. `label` is only what a reader sees,
+ *  which is why D.C. can say "Washington, D.C." while running on the zone whose
+ *  identifier happens to be named after New York.
+ *
+ *  To add a city: one entry here, then point `currentPlace` at its key.
+ *  Zone identifiers: en.wikipedia.org/wiki/List_of_tz_database_time_zones
+ * ----------------------------------------------------------------------------
+ */
+export const places = {
+  dc: { zone: "America/New_York", label: "Washington, D.C." },
+  nyc: { zone: "America/New_York", label: "New York" },
+  boston: { zone: "America/New_York", label: "Boston" },
+  sf: { zone: "America/Los_Angeles", label: "San Francisco" },
+  london: { zone: "Europe/London", label: "London" },
+  beijing: { zone: "Asia/Shanghai", label: "Beijing" },
+  shanghai: { zone: "Asia/Shanghai", label: "Shanghai" },
+} as const;
+
+export type PlaceKey = keyof typeof places;
+
+/**
+ * THE ONE LINE YOU CHANGE WHEN YOU MOVE.
+ * A key that is not in `places` fails `npm run typecheck`, which CI runs before
+ * it deploys — so a misspelling never reaches the site.
+ */
+export const currentPlace: PlaceKey = "dc";
+
+export const place = places[currentPlace];
+
+/**
+ * A zone identifier inside the table is still free text, and an invalid one
+ * throws only when Intl is asked to use it — which would be in visitors'
+ * browsers, long after a green build. Checking here moves that failure into
+ * prerender, where CI sees it.
+ */
+for (const [key, entry] of Object.entries(places)) {
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: entry.zone });
+  } catch {
+    throw new Error(
+      `places.${key}: "${entry.zone}" is not a valid IANA time zone identifier.`,
+    );
+  }
+}
 
 export const hero = {
   /**
@@ -49,32 +102,30 @@ export const hero = {
   status: "Open to interesting work",
 } as const;
 
+/** Decides which icon is drawn — see src/components/icons.tsx. */
+export type LinkKind = "github" | "linkedin" | "resume" | "email";
+
+export type SiteLink = {
+  kind: LinkKind;
+  /** Name of the destination. */
+  label: string;
+  href: string;
+  /**
+   * The address itself. The footer prints the email's; the others keep theirs
+   * as a plain record in this file of where the link actually points.
+   */
+  handle: string;
+};
+
 /**
- * Primary links. `kind` decides which icon is drawn (see src/components/icons.tsx).
- * Supported kinds: "github" | "linkedin" | "resume" | "email".
- * Remove an entry to remove it everywhere it appears.
+ * Primary links, rendered once: the named strip under the hero. The site has no
+ * spelled-out contact section — this strip and the footer's email address are
+ * the whole of it.
+ *
+ * Order here is the order of the cells, left to right, and the leftmost is the
+ * one read first. Remove an entry and its cell leaves the strip.
  */
-export const links = [
-  {
-    kind: "github",
-    label: "GitHub",
-    href: "https://github.com/zhoulinhua0-star",
-    handle: "@zhoulinhua0-star",
-  },
-  {
-    // TODO(linhua): replace with your real LinkedIn URL.
-    kind: "linkedin",
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/",
-    handle: "in/your-handle",
-  },
-  {
-    // TODO(linhua): drop a PDF at public/resume.pdf, or point this elsewhere.
-    kind: "resume",
-    label: "Résumé",
-    href: "/resume.pdf",
-    handle: "PDF",
-  },
+export const links: readonly SiteLink[] = [
   {
     kind: "email",
     label: "Email",
@@ -83,7 +134,26 @@ export const links = [
     href: "mailto:zhoulinhua0@gmail.com?subject=Hello%20from%20linhuazhou.com",
     handle: "zhoulinhua0@gmail.com",
   },
-] as const;
+  {
+    kind: "github",
+    label: "GitHub",
+    href: "https://github.com/zhoulinhua0-star",
+    handle: "@zhoulinhua0-star",
+  },
+  {
+    kind: "linkedin",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/linhua-zhou-31948b42b/",
+    handle: "in/linhua-zhou-31948b42b",
+  },
+  {
+    // TODO(linhua): drop a PDF at public/resume.pdf, or point this elsewhere.
+    kind: "resume",
+    label: "Résumé",
+    href: "/resume.pdf",
+    handle: "PDF",
+  },
+];
 
 /**
  * The "About" section. Each string is one paragraph.
@@ -111,5 +181,3 @@ export const about = {
 export const footer = {
   note: "Designed and built from scratch. Next.js, static export, GitHub Pages.",
 } as const;
-
-export type LinkKind = (typeof links)[number]["kind"];

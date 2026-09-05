@@ -147,6 +147,58 @@
     max-width: 100%;
     height: auto;
   }
+
+  /* ==========================================================================
+     CURSOR — the site's own pointer.
+
+     A real CSS cursor, deliberately not a JS element chasing the mouse: this
+     IS the pointer, so it cannot lag behind, desync while scrolling, or vanish
+     if a script fails. Every native behaviour is kept — text still selects,
+     links still click, right-click still works.
+
+     Gated on a real mouse being present, so touch and pen devices are left
+     alone. Each rule is stated three times on purpose: plain url() first as
+     the universal fallback, then the prefixed and unprefixed image-set() for
+     the crisp 2x asset. A browser that cannot parse the later ones simply
+     keeps the earlier one.
+
+     Hotspot 11 11 is the arrow tip in the 32px artwork; the glow occupies
+     the space above and left of it. Artwork: public/cursor*.png, generated —
+     re-run the generator rather than editing the PNGs by hand.
+     ========================================================================== */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: url("/cursor.png") 11 11, auto;
+      cursor: -webkit-image-set(url("/cursor.png") 1x, url("/cursor@2x.png") 2x) 11 11, auto;
+      cursor: image-set(url("/cursor.png") 1x, url("/cursor@2x.png") 2x) 11 11, auto;
+    }
+
+    /* Interactive things get the same arrow with a hotter, wider halo, so the
+       cursor itself signals "this does something" the way the native hand
+       would. `pointer` stays as the fallback keyword. */
+    a[href],
+    button,
+    summary,
+    label[for],
+    [role="button"] {
+      cursor: url("/cursor-hot.png") 11 11, pointer;
+      cursor: -webkit-image-set(url("/cursor-hot.png") 1x, url("/cursor-hot@2x.png") 2x) 11 11, pointer;
+      cursor: image-set(url("/cursor-hot.png") 1x, url("/cursor-hot@2x.png") 2x) 11 11, pointer;
+    }
+
+    /* Form fields keep their native cursors — an I-beam says "type here" in a
+       way no decorative arrow can. */
+    input,
+    textarea,
+    select {
+      cursor: auto;
+    }
+
+    [disabled],
+    [aria-disabled="true"] {
+      cursor: not-allowed;
+    }
+  }
 }
 
 /* Everything below is a reusable component class. Living in the
@@ -608,6 +660,34 @@
 
   .cat-card:hover::after,
   .cat-card:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* — Hero link strip cell ——————————————————————————————————————————
+     The same marker wipe the category cards use, deliberately identical down
+     to the easing: hovering a cell and hovering a card should read as one
+     gesture, not two similar ideas. The bar lands on the strip's own bottom
+     rule, so the hairline appears to thicken and turn yellow rather than a
+     second line appearing beneath it. */
+  .strip-cell {
+    position: relative;
+  }
+
+  .strip-cell::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: var(--color-marker);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.55s var(--ease-out-soft);
+  }
+
+  .strip-cell:hover::after,
+  .strip-cell:focus-visible::after {
     transform: scaleX(1);
   }
 
