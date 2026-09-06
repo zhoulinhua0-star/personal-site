@@ -780,6 +780,55 @@
     }
   }
 
+  /* ==========================================================================
+     CLICK RIPPLE — see src/components/click-ripple.tsx.
+
+     A cool blue ring that expands out of the click point. The cursor's own
+     halo is a static PNG and cannot react, so this supplies the moment of
+     acknowledgement: the same accent blue, held under half a second.
+
+     The layer is inert by construction — fixed, full-viewport, no pointer
+     events — so it sits above the page without ever being in the way of it.
+     ========================================================================== */
+
+  .ripple-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .ripple {
+    position: absolute;
+    /* `left`/`top` are the click point; the translate centres the ring on it. */
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border: 1px solid var(--color-accent);
+    border-radius: 50%;
+    /* A faint wash inside the ring keeps it from reading as a hairline circle
+       drawn on the paper — it should look like light, not like ink. */
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-accent) 16%, transparent) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    animation: ripple 450ms var(--ease-out-soft) forwards;
+  }
+
+  @keyframes ripple {
+    from {
+      opacity: 0.35;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+  }
+
   /* Honour the user's system preference above everything else. */
   @media (prefers-reduced-motion: reduce) {
     html {

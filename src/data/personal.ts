@@ -103,7 +103,7 @@ export const hero = {
 } as const;
 
 /** Decides which icon is drawn — see src/components/icons.tsx. */
-export type LinkKind = "github" | "linkedin" | "resume" | "email";
+export type LinkKind = "github" | "linkedin" | "x" | "resume" | "email";
 
 export type SiteLink = {
   kind: LinkKind;
@@ -129,9 +129,20 @@ export const links: readonly SiteLink[] = [
   {
     kind: "email",
     label: "Email",
-    // Subject is prefilled so replies land pre-labelled. `handle` stays the bare
-    // address for display.
-    href: "mailto:zhoulinhua0@gmail.com?subject=Hello%20from%20linhuazhou.com",
+    // Gmail's compose URL rather than `mailto:` — it opens a New Message window
+    // in the tab, which is a working compose box for anyone already signed into
+    // Google, instead of handing off to whatever desktop client the machine
+    // happens to have registered (often none, in which case mailto: does
+    // nothing visible at all).
+    //
+    //   view=cm  open the composer   fs=1  as its own window
+    //   to/su    prefilled recipient and subject
+    //
+    // `handle` stays the bare address, which is what the footer prints and what
+    // someone copies if they would rather use their own client.
+    href:
+      "https://mail.google.com/mail/?view=cm&fs=1" +
+      "&to=zhoulinhua0@gmail.com&su=Reaching%20out%20%E2%80%94%20%5Bwhat%20this%20is%20about%5D",
     handle: "zhoulinhua0@gmail.com",
   },
   {
@@ -152,6 +163,12 @@ export const links: readonly SiteLink[] = [
     label: "Résumé",
     href: "/resume.pdf",
     handle: "PDF",
+  },
+  {
+    kind: "x",
+    label: "X",
+    href: "https://x.com/LinhuaZhouappx",
+    handle: "@LinhuaZhouappx",
   },
 ];
 

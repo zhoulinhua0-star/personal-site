@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClickRipple } from "@/components/click-ripple";
 import { identity, site } from "@/data/personal";
 import "./globals.css";
 
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         {children}
+        <ClickRipple />
       </body>
     </html>
   );

@@ -45,6 +45,12 @@ export function Hero() {
           {email ? (
             <a
               href={email.href}
+              // The status line points at the same place the Email cell does,
+              // and now that the destination is a web page rather than a
+              // handoff to a mail client, it opens beside the site instead of
+              // navigating away from it.
+              target="_blank"
+              rel="noreferrer noopener"
               className="group mono-xs mt-6 inline-flex items-center gap-2.5 text-ink-3 transition-colors duration-300 hover:text-ink focus-visible:text-ink"
             >
               <span className="pulse inline-block size-1.5 rounded-full bg-accent" />

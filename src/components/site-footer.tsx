@@ -16,6 +16,8 @@ export function SiteFooter() {
           {email ? (
             <a
               href={email.href}
+              target="_blank"
+              rel="noreferrer noopener"
               className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent"
             >
               {email.handle}
