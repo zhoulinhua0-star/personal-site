@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="380" viewBox="0 0 1200 380"
+     role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">linhuazhou.com — source of a hand-built static personal site</title>
+  <desc id="heroDesc">Warm cream board with engineering graph ruling. Left: the site name, a one-line description, and the stack. Right: the site's index hub listing the Work, Lab and About routes with bilingual labels.</desc>
+
+  <defs>
+    <pattern id="graph" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M26 0H0V26" fill="none" stroke="#1a1a17" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <clipPath id="board">
+      <rect width="1200" height="380" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#board)">
+    <rect width="1200" height="380" fill="#fbf8f0"/>
+    <rect width="1200" height="380" fill="url(#graph)"/>
+    <!-- the site's centred column edge, drawn as a real page rule -->
+    <line x1="676" y1="0" x2="676" y2="380" stroke="#e7e2d2" stroke-width="1"/>
+  </g>
+  <rect x="0.5" y="0.5" width="1199" height="379" rx="24" fill="none" stroke="#e7e2d2"/>
+
+  <!-- ── Identity ─────────────────────────────────────────────── -->
+  <g transform="translate(64 0)">
+    <text x="0" y="80" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+          font-size="18" letter-spacing="2.4" fill="#85837a">PERSONAL SITE · 个人网站</text>
+
+    <!-- marker swipe: background only, never on the type -->
+    <rect x="-6" y="118" width="424" height="26" fill="#ffd64a" opacity="0.55"/>
+    <text x="0" y="142" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+          font-size="56" font-weight="700" fill="#1a1a17">linhuazhou.com</text>
+
+    <text x="0" y="196" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+          font-size="22" fill="#4b4a43">A static personal site with no runtime dependencies</text>
+    <text x="0" y="230" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+          font-size="22" fill="#4b4a43">beyond React — every word lives in two TypeScript files.</text>
+
+    <line x1="0" y1="268" x2="540" y2="268" stroke="#e7e2d2" stroke-width="1"/>
+
+    <text x="0" y="302" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+          font-size="18" fill="#85837a">Next.js 16 · TypeScript · Tailwind v4</text>
+    <text x="0" y="330" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+          font-size="18" fill="#85837a">static export → GitHub Pages → Cloudflare DNS</text>
+  </g>
+
+  <!-- ── Real project material: the site's own index hub ──────── -->
+  <g transform="translate(740 0)">
+    <text x="0" y="80" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+          font-size="18" letter-spacing="2.4" fill="#85837a">INDEX · 目录</text>
+
+    <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+      <!-- /work -->
+      <text x="0" y="146" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="34" font-weight="700" fill="#e7e2d2">01</text>
+      <text x="62" y="140" font-size="24" font-weight="600" fill="#1a1a17">/work</text>
+      <text x="176" y="140" font-size="20" fill="#85837a">Selected work · 作品</text>
+      <line x1="0" y1="166" x2="396" y2="166" stroke="#e7e2d2" stroke-width="1"/>
+
+      <!-- /lab -->
+      <text x="0" y="216" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="34" font-weight="700" fill="#e7e2d2">02</text>
+      <text x="62" y="210" font-size="24" font-weight="600" fill="#1a1a17">/lab</text>
+      <text x="176" y="210" font-size="20" fill="#85837a">Experiments · 实验</text>
+      <line x1="0" y1="236" x2="396" y2="236" stroke="#e7e2d2" stroke-width="1"/>
+
+      <!-- /about -->
+      <text x="0" y="286" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="34" font-weight="700" fill="#e7e2d2">03</text>
+      <text x="62" y="280" font-size="24" font-weight="600" fill="#1a1a17">/about</text>
+      <text x="176" y="280" font-size="20" fill="#85837a">About · 关于</text>
+      <line x1="0" y1="306" x2="396" y2="306" stroke="#e7e2d2" stroke-width="1"/>
+    </g>
+
+    <circle cx="6" cy="336" r="4" fill="#1f57d6"/>
+    <text x="22" y="342" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+          font-size="18" fill="#85837a">live · HTTPS enforced</text>
+  </g>
+</svg>
