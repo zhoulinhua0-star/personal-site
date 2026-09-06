@@ -21,7 +21,7 @@ export function SiteHeader({ current }: { current?: string }) {
             keeps the identity a sighted visitor now reads in the hero. */}
         <Link
           href="/"
-          className="group transition-colors duration-300 hover:text-ink"
+          className="group shrink-0 transition-colors duration-300 hover:text-ink"
           aria-label={`${identity.name} — home · local time in ${place.label}`}
         >
           <LocalTime />
@@ -55,7 +55,11 @@ export function SiteHeader({ current }: { current?: string }) {
               target="_blank"
               rel="noreferrer noopener"
               aria-label="GitHub — opens in a new tab"
-              className="group inline-flex items-center gap-1.5 rounded-full border border-line-2 bg-paper-2 py-1.5 pl-3.5 pr-3 text-[13px] font-medium text-ink-2 transition-colors duration-300 hover:border-ink hover:text-ink focus-visible:border-ink"
+              /* Phones have room for the clock and the nav, not for a third
+                 element — measured, the pill is exactly the overflow. It is a
+                 secondary, external link, so it yields to the identity corner
+                 and the primary nav; SiteFooter carries it below `sm` instead. */
+              className="group hidden items-center gap-1.5 rounded-full border border-line-2 bg-paper-2 py-1.5 pl-3.5 pr-3 text-[13px] font-medium text-ink-2 transition-colors duration-300 hover:border-ink hover:text-ink focus-visible:border-ink sm:inline-flex"
             >
               GitHub
               <ArrowUpRight className="size-3.5 text-ink-4 transition-[transform,color] duration-300 group-hover:-translate-y-px group-hover:text-ink" />

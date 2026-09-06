@@ -26,8 +26,13 @@ export const site = {
 
 export const identity = {
   name: "Linhua Zhou",
-  /** Secondary script shown beneath the wordmark. Set to "" to hide it. */
-  nameAlt: "周琳桦",
+  /**
+   * Secondary script shown beneath the wordmark, and the JSON-LD
+   * `alternateName`. Empty means the site is English-only: the hero, the footer
+   * and the structured data each drop it on their own, so this is the single
+   * switch. Set it back to "周琳桦" to restore all three.
+   */
+  nameAlt: "",
   /** Small label above the name in the hero. */
   role: "Developer · Builder",
   /** Right-hand marker in the hero. */

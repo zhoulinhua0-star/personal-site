@@ -397,6 +397,18 @@
     padding-block: 3px;
   }
 
+  /* The visual link is ~27px tall — comfortable to click, too small to tap
+     reliably (44px is the documented finger target on both iOS and Android).
+     A transparent overlay grows the hit area without moving the text or the
+     marker underline, so the design is untouched and only the target grows.
+     Horizontal inset stops at 8px: the nav's own gap is 20px, so the
+     neighbouring targets stay 4px apart and never swallow each other's taps. */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset: -9px -8px;
+  }
+
   .nav-link[aria-current="page"] {
     color: var(--color-ink);
   }

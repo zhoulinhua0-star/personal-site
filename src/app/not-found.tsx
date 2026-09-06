@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="shell flex min-h-screen flex-col justify-center py-24">
+    <main className="shell flex min-h-dvh flex-col justify-center py-24">
       <p className="label label-accent">Error 404</p>
       <h1 className="display mt-6">Not found</h1>
       <p className="lead mt-6 max-w-[42ch]">

@@ -2,6 +2,7 @@ import { footer, identity, links } from "@/data/personal";
 import { ArrowUpRight } from "./icons";
 
 const email = links.find((link) => link.kind === "email");
+const github = links.find((link) => link.kind === "github");
 
 export function SiteFooter() {
   return (
@@ -21,6 +22,21 @@ export function SiteFooter() {
               className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent"
             >
               {email.handle}
+              <ArrowUpRight className="size-3.5 transition-transform duration-500 group-hover:-translate-y-0.5" />
+            </a>
+          ) : null}
+          {/* The exact complement of the header's rule: SiteHeader shows the
+              GitHub pill from `sm` up, so this shows below it. Between them the
+              link is reachable from every page at every width, and neither
+              width ever renders it twice. */}
+          {github ? (
+            <a
+              href={github.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent sm:hidden"
+            >
+              {github.handle}
               <ArrowUpRight className="size-3.5 transition-transform duration-500 group-hover:-translate-y-0.5" />
             </a>
           ) : null}

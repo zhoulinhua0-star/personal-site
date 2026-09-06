@@ -111,10 +111,14 @@ export function LocalTime() {
   return (
     <span className="mono-xs flex items-baseline gap-2 whitespace-nowrap text-ink-2">
       <span>{time}</span>
-      <span className="text-ink-4" aria-hidden="true">
+      {/* Below 380px the corner cannot hold the city and the nav at once, so the
+          city steps aside and the bare time keeps the corner meaningful. The
+          wrapping Link's aria-label names the place at every width regardless,
+          so nothing is lost to a screen reader. */}
+      <span className="hidden text-ink-4 min-[380px]:inline" aria-hidden="true">
         ·
       </span>
-      <span className="text-ink-3">{place.label}</span>
+      <span className="hidden text-ink-3 min-[380px]:inline">{place.label}</span>
       {offset ? (
         <>
           <span className="hidden text-ink-4 sm:inline" aria-hidden="true">
