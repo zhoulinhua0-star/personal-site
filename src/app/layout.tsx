@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CatCompanion } from "@/components/cat-companion";
 import { ClickRipple } from "@/components/click-ripple";
 import { identity, site } from "@/data/personal";
 import "./globals.css";
@@ -46,6 +47,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         {children}
         <ClickRipple />
+        {/* Pinned over every page rather than living inside the hero: it is a
+            companion, and it remembers where you dragged it across routes. */}
+        <CatCompanion />
       </body>
     </html>
   );

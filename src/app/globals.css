@@ -87,9 +87,12 @@
 
   /* Intensity of the futuristic command deck behind the hero. */
   --deck-opacity: 0.34;
-  /* Pointer parallax, written by the hero's pointer hook. */
-  --px: 0;
-  --py: 0;
+  /* Pointer parallax. One smoothed pair per depth layer, written every frame
+     by the hero's pointer hook — see command-deck.tsx. */
+  --px-far: 0;
+  --py-far: 0;
+  --px-near: 0;
+  --py-near: 0;
 }
 
 /* Base element styles live in Tailwind's `base` layer so utility classes
@@ -471,15 +474,16 @@
     mask-composite: intersect;
   }
 
-  /* Depth: layers drift by different amounts with the pointer. */
+  /* Depth: layers drift by different amounts with the pointer, and settle at
+     different rates. The smoothing lives in JS — a critically damped
+     integrator, not a transition — so no `transition` here; one would fight
+     the per-frame writes and re-introduce the lag it used to paper over. */
   .deck-layer-far {
-    transform: translate3d(calc(var(--px) * 8px), calc(var(--py) * 5px), 0);
-    transition: transform 0.9s var(--ease-out-soft);
+    transform: translate3d(calc(var(--px-far) * 8px), calc(var(--py-far) * 5px), 0);
   }
 
   .deck-layer-near {
-    transform: translate3d(calc(var(--px) * -18px), calc(var(--py) * -11px), 0);
-    transition: transform 0.7s var(--ease-out-soft);
+    transform: translate3d(calc(var(--px-near) * -18px), calc(var(--py-near) * -11px), 0);
   }
 
   /* The two artwork layers. Structure sits behind data. */
@@ -497,6 +501,166 @@
 
   .deck-data {
     background-image: url("/backgrounds/deck-data.svg");
+  }
+
+  /* ---------------------------------------------------------------------
+     The cat: a desk companion pinned over the page. Parks itself bottom-right
+     until dragged, after which the component supplies left/top and this falls
+     back to centring on that point. Never shown to coarse pointers — the
+     component does not even mount there.
+     --------------------------------------------------------------------- */
+  .cat {
+    --cat-h: clamp(96px, 9vw, 128px);
+    position: fixed;
+    right: clamp(18px, 2.4vw, 34px);
+    bottom: clamp(18px, 2.4vw, 34px);
+    z-index: 30;
+    height: var(--cat-h);
+    width: calc(var(--cat-h) * var(--cat-aspect));
+    display: grid;
+    grid-template: 100% / 100%;
+    place-items: end center;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Once dragged it is positioned by its centre, which is the only anchor that
+     survives a window resize sensibly. */
+  .cat[data-perched] {
+    transform: translate(-50%, -50%);
+  }
+
+  .cat[data-dragging="true"] {
+    cursor: grabbing;
+  }
+
+  /* Poses stack in one cell, bottom-aligned so every drawing rests on the same
+     ground line. The breathing lives here, not on .cat, so it cannot fight the
+     drag for the transform property. */
+  .cat-stack {
+    grid-area: 1 / 1;
+    display: grid;
+    grid-template: 100% / 100%;
+    place-items: end center;
+    width: 100%;
+    height: 100%;
+    animation: cat-breathe 4.6s ease-in-out infinite;
+  }
+
+  @keyframes cat-breathe {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2.5px);
+    }
+  }
+
+  /* Asleep it breathes slower and deeper; dragged, not at all — a cat being
+     carried holds still. */
+  .cat[data-asleep="true"] .cat-stack {
+    animation-duration: 7s;
+  }
+
+  .cat[data-dragging="true"] .cat-stack {
+    animation-play-state: paused;
+  }
+
+  .cat-pose {
+    grid-area: 1 / 1;
+    width: auto;
+    opacity: 0;
+    /* Hard cut, no transition: cross-fading two poses puts both at partial
+       alpha and the paper shows through the pair, which reads as a flash. */
+  }
+
+  .cat-pose[data-active="true"] {
+    opacity: 1;
+  }
+
+  /* The terminal label the source sheet already draws under every pose. */
+  .cat-tag {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: var(--color-ink-4);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out-soft);
+  }
+
+  .cat:hover .cat-tag,
+  .cat[data-dragging="true"] .cat-tag {
+    opacity: 1;
+  }
+
+  .cat-bubble {
+    position: absolute;
+    bottom: calc(100% - var(--pose-gap, 0%) + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 9px 6px;
+    background: var(--color-paper-2);
+    border: 2px solid var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-ink);
+    animation: cat-pop 0.18s var(--ease-out-soft);
+  }
+
+  /* The tail, built from a rotated square so it keeps the same 2px stroke as
+     the box instead of needing a second, subtly different shape. */
+  .cat-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    margin: -5px 0 0 -4px;
+    background: var(--color-paper-2);
+    border-right: 2px solid var(--color-ink);
+    border-bottom: 2px solid var(--color-ink);
+    transform: rotate(45deg);
+  }
+
+  @keyframes cat-pop {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(3px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  /* The component already declines to mount without a fine pointer, so this is
+     belt-and-braces for anything that reports one on a phone-sized screen —
+     where a floating cat would sit on top of the content. */
+  @media (max-width: 767px) {
+    .cat {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cat-stack {
+      animation: none;
+    }
+
+    .cat-bubble {
+      animation: none;
+    }
   }
 
   /* Placement of the deck inside the hero. Deliberately bleeds off-canvas. */

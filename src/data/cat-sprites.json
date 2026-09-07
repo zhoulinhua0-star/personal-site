@@ -1,0 +1,32 @@
+{
+  "chill": {
+    "height": 238,
+    "src": "/cat/chill.webp",
+    "width": 486
+  },
+  "curious": {
+    "height": 317,
+    "src": "/cat/curious.webp",
+    "width": 262
+  },
+  "hello": {
+    "height": 307,
+    "src": "/cat/hello.webp",
+    "width": 270
+  },
+  "meow": {
+    "height": 281,
+    "src": "/cat/meow.webp",
+    "width": 244
+  },
+  "sleep": {
+    "height": 202,
+    "src": "/cat/sleep.webp",
+    "width": 428
+  },
+  "thinking": {
+    "height": 288,
+    "src": "/cat/thinking.webp",
+    "width": 261
+  }
+}
