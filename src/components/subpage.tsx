@@ -2,14 +2,13 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 /**
- * The shell every interior page uses: a back link to the index, then the same
- * numbered head as the home sections (bilingual index line, display heading,
+ * The shell every interior page uses: a back link home, then the same
+ * numbered head as the home sections (index line, display heading,
  * optional note, one hairline rule) with a ghost watermark numeral behind it.
  */
 export function Subpage({
   number,
   label,
-  labelZh,
   title,
   aside,
   children,
@@ -18,8 +17,6 @@ export function Subpage({
   number: string;
   /** Short uppercase index label. */
   label: string;
-  /** Optional Chinese label, rendered as "中文 / ENGLISH". */
-  labelZh?: string;
   title: ReactNode;
   /** Optional supporting note shown to the right of the heading. */
   aside?: ReactNode;
@@ -44,7 +41,7 @@ export function Subpage({
         >
           &larr;
         </span>
-        <span className="link-underline">Index</span>
+        <span className="link-underline">Home</span>
       </Link>
 
       <div className="section-head reveal relative z-[1] mt-[clamp(26px,4vw,44px)]">
@@ -52,12 +49,6 @@ export function Subpage({
           <p className="label index-label mb-5">
             <span className="label-accent">{number}</span>
             <span className="index-rule" aria-hidden="true" />
-            {labelZh ? (
-              <span>
-                <span lang="zh-Hans">{labelZh}</span>
-                <span className="mx-1.5 text-ink-4">/</span>
-              </span>
-            ) : null}
             <span>{label}</span>
           </p>
           <h1 className="heading max-w-[18ch] text-balance">{title}</h1>

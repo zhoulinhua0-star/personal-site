@@ -19,7 +19,6 @@ export default function WorkPage() {
       <Subpage
         number="01"
         label="Selected work"
-        labelZh="作品"
         title="Projects worth walking you through."
         aside="A short list on purpose. Each one has a problem behind it, a constraint that made it interesting, and a decision I would defend."
       >

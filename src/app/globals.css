@@ -738,23 +738,62 @@
      visible. No JavaScript, no observers.
      ========================================================================== */
 
+  .reveal {
+    /* How far into its own entry range an element waits before it starts.
+       `.stagger` raises it per column so a shared row resolves in sequence
+       instead of in unison; on its own an element uses none. */
+    --reveal-lag: 0%;
+  }
+
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
       .reveal {
-        animation: reveal-in linear both;
-        animation-timeline: view();
-        animation-range: entry 6% entry 50%;
+        /* Two animations on one timeline, not one. The rise runs the whole
+           range; the fade finishes earlier, so the words are readable while
+           the element is still settling into place — the same split as a
+           520ms transform against a 450ms opacity would give in time-based
+           motion, expressed here as scroll distance.
+
+           `--ease-out-soft` rather than `linear`: on a scroll-driven timeline
+           the easing shapes progress against scroll, which is what makes the
+           element look like it decelerates into rest instead of being dragged
+           there by the wheel. */
+        animation:
+          reveal-fade var(--ease-out-soft) both,
+          reveal-rise var(--ease-out-soft) both;
+        animation-timeline: view(), view();
+        animation-range:
+          entry calc(6% + var(--reveal-lag)) entry calc(43% + var(--reveal-lag)),
+          entry calc(6% + var(--reveal-lag)) entry calc(50% + var(--reveal-lag));
       }
     }
   }
 
-  @keyframes reveal-in {
+  /* Cards that share a grid row cross the fold at the same instant, so a plain
+     view() timeline reveals them in unison. Offsetting the second column's
+     entry range by a few percent of the range reads as a ~100ms stagger at an
+     ordinary scroll speed. Only from `sm` up: below it the grid is one column
+     and the cards already arrive one at a time. */
+  @media (min-width: 40rem) {
+    .stagger > :nth-child(2n) {
+      --reveal-lag: 5%;
+    }
+  }
+
+  @keyframes reveal-fade {
     from {
       opacity: 0;
-      transform: translateY(15px);
     }
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes reveal-rise {
+    from {
+      transform: translateY(20px);
+    }
+    to {
       transform: none;
     }
   }

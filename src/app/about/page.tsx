@@ -18,7 +18,6 @@ export default function AboutPage() {
       <Subpage
         number="03"
         label="About"
-        labelZh="关于"
         title="Engineering with a bias toward things people can actually use."
       >
         <div className="grid gap-[clamp(36px,5vw,80px)] lg:grid-cols-12">

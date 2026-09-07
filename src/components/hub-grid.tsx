@@ -112,7 +112,7 @@ export function HubGrid() {
   const lastFillsRow = entries.length % 2 === 1;
 
   return (
-    <ul className="grid gap-3 sm:grid-cols-2">
+    <ul className="stagger grid gap-3 sm:grid-cols-2">
       {entries.map((entry, index) => (
         <li
           key={entry.href}

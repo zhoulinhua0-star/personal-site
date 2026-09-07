@@ -25,8 +25,7 @@ export default function HomePage() {
 
         <Section
           id="index"
-          label="Index"
-          labelZh="目录"
+          label="Start Here"
           title="Where to go from here."
           aside="Three parts to this site. Everything is one click away — nothing needs scrolling for."
           className="pt-[clamp(52px,8vw,92px)] pb-[clamp(72px,10vw,132px)]"

@@ -18,7 +18,6 @@ export default function LabPage() {
       <Subpage
         number="02"
         label="Lab"
-        labelZh="实验"
         title="Open source and experiments."
         aside="Smaller things: libraries, prototypes, and studies that answered a question I had."
       >
