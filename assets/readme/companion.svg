@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="560" viewBox="0 0 1200 560"
+     role="img" aria-labelledby="catTitle catDesc">
+  <title id="catTitle">How the cat decides which drawing to show</title>
+  <desc id="catDesc">Warm cream board. Left column, in precedence order: while you drag it the cat shows look-back; when you poke it, play; left alone it steps through tired at 40 seconds, sleep at 90 and belly at 150; otherwise the pose is a readout of the ground under its paws. Right panel lists that ground table, first match wins: a window corner gives in-box, the bottom edge peek, the top edge look-up, a project card or a /work link coding, a lab row or a /lab link hunt, the name in the hero hello, prose thinking, a link or button curious, and anything else chill.</desc>
+
+  <defs>
+    <pattern id="graph3" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M26 0H0V26" fill="none" stroke="#1a1a17" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <clipPath id="board3">
+      <rect width="1200" height="560" rx="24"/>
+    </clipPath>
+    <marker id="arw3" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#b4b1a5"/>
+    </marker>
+  </defs>
+
+  <g clip-path="url(#board3)">
+    <rect width="1200" height="560" fill="#fbf8f0"/>
+    <rect width="1200" height="560" fill="url(#graph3)"/>
+  </g>
+  <rect x="0.5" y="0.5" width="1199" height="559" rx="24" fill="none" stroke="#e7e2d2"/>
+
+  <text x="64" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+        font-size="18" letter-spacing="2.4" fill="#85837a">DESK COMPANION · 猫</text>
+  <text x="1136" y="62" text-anchor="end"
+        font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+        font-size="18" fill="#85837a">first match wins, top to bottom</text>
+
+  <!-- connector: the last rule hands off to the ground table -->
+  <line x1="560" y1="484" x2="612" y2="484"
+        stroke="#b4b1a5" stroke-width="1.5" marker-end="url(#arw3)"/>
+
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+
+    <!-- 01 · drag -->
+    <g transform="translate(64 92)">
+      <rect width="492" height="100" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <text x="24" y="34" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="17" fill="#b4b1a5">01</text>
+      <text x="24" y="66" font-size="24" font-weight="600" fill="#1a1a17">While you drag it</text>
+      <text x="24" y="90" font-size="18" fill="#85837a">a press that travels more than 4px</text>
+      <text x="468" y="66" text-anchor="end"
+            font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="20" fill="#1f57d6">look-back</text>
+    </g>
+
+    <!-- 02 · poke -->
+    <g transform="translate(64 206)">
+      <rect width="492" height="100" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <text x="24" y="34" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="17" fill="#b4b1a5">02</text>
+      <text x="24" y="66" font-size="24" font-weight="600" fill="#1a1a17">While you poke it</text>
+      <text x="24" y="90" font-size="18" fill="#85837a">a line from catLines, 2.8s in a bubble</text>
+      <text x="468" y="66" text-anchor="end"
+            font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="20" fill="#1f57d6">play</text>
+    </g>
+
+    <!-- 03 · idle -->
+    <g transform="translate(64 320)">
+      <rect width="492" height="100" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <text x="24" y="34" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="17" fill="#b4b1a5">03</text>
+      <text x="24" y="66" font-size="24" font-weight="600" fill="#1a1a17">Left alone</text>
+      <text x="24" y="90" font-size="18" fill="#85837a">40s · 90s · 150s — a scroll rearms it</text>
+      <text x="468" y="66" text-anchor="end"
+            font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="20" fill="#1f57d6">tired → sleep → belly</text>
+    </g>
+
+    <!-- 04 · ground (the resting state) -->
+    <g transform="translate(64 434)">
+      <rect width="492" height="100" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <rect x="0" y="0" width="492" height="4" rx="2" fill="#ffd64a"/>
+      <text x="24" y="34" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="17" fill="#b4b1a5">04</text>
+      <text x="24" y="66" font-size="24" font-weight="600" fill="#1a1a17">Otherwise</text>
+      <text x="24" y="90" font-size="18" fill="#85837a">re-read 260ms after the page stops moving</text>
+      <text x="468" y="66" text-anchor="end"
+            font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="20" fill="#1f57d6">the ground</text>
+    </g>
+
+    <!-- the ground table -->
+    <g transform="translate(620 92)">
+      <rect width="516" height="442" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <text x="24" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="18" letter-spacing="2.4" fill="#85837a">UNDER THE PAWS</text>
+      <line x1="0" y1="52" x2="516" y2="52" stroke="#e7e2d2"/>
+
+      <g font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" fill="#4b4a43">
+        <text x="24" y="88">a corner of the window</text>
+        <text x="24" y="126">the bottom edge</text>
+        <text x="24" y="164">the top edge</text>
+        <text x="24" y="202">.project · a[href^="/work"]</text>
+        <text x="24" y="240">.lab-row · a[href^="/lab"]</text>
+        <text x="24" y="278">.display — the name</text>
+        <text x="24" y="316">p, li, h1–h4, blockquote</text>
+        <text x="24" y="354">a[href], button</text>
+        <text x="24" y="392">anything else</text>
+      </g>
+
+      <g text-anchor="end" font-size="20" font-weight="600" fill="#1a1a17">
+        <text x="492" y="88">in-box</text>
+        <text x="492" y="126">peek</text>
+        <text x="492" y="164">look-up</text>
+        <text x="492" y="202">coding</text>
+        <text x="492" y="240">hunt</text>
+        <text x="492" y="278">hello</text>
+        <text x="492" y="316">thinking</text>
+        <text x="492" y="354">curious</text>
+        <text x="492" y="392">chill</text>
+      </g>
+
+      <g stroke="#e7e2d2">
+        <line x1="24" y1="104" x2="492" y2="104"/>
+        <line x1="24" y1="142" x2="492" y2="142"/>
+        <line x1="24" y1="180" x2="492" y2="180"/>
+        <line x1="24" y1="218" x2="492" y2="218"/>
+        <line x1="24" y1="256" x2="492" y2="256"/>
+        <line x1="24" y1="294" x2="492" y2="294"/>
+        <line x1="24" y1="332" x2="492" y2="332"/>
+        <line x1="24" y1="370" x2="492" y2="370"/>
+      </g>
+      <line x1="0" y1="408" x2="516" y2="408" stroke="#e7e2d2"/>
+
+      <text x="24" y="432" font-size="18" fill="#85837a">Places are checked before things; unrecognised ground is floor.</text>
+    </g>
+  </g>
+</svg>

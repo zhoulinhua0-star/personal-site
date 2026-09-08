@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg"
-     width="1200" height="320" viewBox="0 0 1200 320"
+     width="1200" height="348" viewBox="0 0 1200 348"
      role="img" aria-labelledby="pipeTitle pipeDesc">
   <title id="pipeTitle">How a change reaches linhuazhou.com</title>
-  <desc id="pipeDesc">Four stages left to right: edit the two data files; push to main; GitHub Actions runs lint, typecheck and next build and fails closed on any error; the static export is published to GitHub Pages and served over Cloudflare DNS at linhuazhou.com.</desc>
+  <desc id="pipeDesc">Four stages left to right: edit the three data files — personal.ts, projects.ts and cat.ts; push to main; GitHub Actions runs lint, typecheck and next build and fails closed on any error; the static export is published to GitHub Pages and served over Cloudflare DNS at linhuazhou.com.</desc>
 
   <defs>
     <pattern id="graph2" width="26" height="26" patternUnits="userSpaceOnUse">
       <path d="M26 0H0V26" fill="none" stroke="#1a1a17" stroke-opacity="0.045" stroke-width="1"/>
     </pattern>
     <clipPath id="board2">
-      <rect width="1200" height="320" rx="24"/>
+      <rect width="1200" height="348" rx="24"/>
     </clipPath>
     <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5"
             markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -18,26 +18,26 @@
   </defs>
 
   <g clip-path="url(#board2)">
-    <rect width="1200" height="320" fill="#fbf8f0"/>
-    <rect width="1200" height="320" fill="url(#graph2)"/>
+    <rect width="1200" height="348" fill="#fbf8f0"/>
+    <rect width="1200" height="348" fill="url(#graph2)"/>
   </g>
-  <rect x="0.5" y="0.5" width="1199" height="319" rx="24" fill="none" stroke="#e7e2d2"/>
+  <rect x="0.5" y="0.5" width="1199" height="347" rx="24" fill="none" stroke="#e7e2d2"/>
 
   <text x="64" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
         font-size="18" letter-spacing="2.4" fill="#85837a">DEPLOY · 部署</text>
 
   <!-- connectors sit behind the cards -->
   <g stroke="#b4b1a5" stroke-width="1.5" marker-end="url(#arw)">
-    <line x1="312" y1="184" x2="340" y2="184"/>
-    <line x1="588" y1="184" x2="616" y2="184"/>
-    <line x1="864" y1="184" x2="892" y2="184"/>
+    <line x1="312" y1="196" x2="340" y2="196"/>
+    <line x1="588" y1="196" x2="616" y2="196"/>
+    <line x1="864" y1="196" x2="892" y2="196"/>
   </g>
 
   <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
 
     <!-- 1 · Edit -->
     <g transform="translate(64 96)">
-      <rect width="244" height="176" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <rect width="244" height="200" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
       <text x="20" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="17" fill="#b4b1a5">01</text>
       <text x="20" y="70" font-size="23" font-weight="600" fill="#1a1a17">Edit</text>
@@ -45,24 +45,26 @@
             font-size="18" fill="#4b4a43">personal.ts</text>
       <text x="20" y="132" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="18" fill="#4b4a43">projects.ts</text>
-      <text x="20" y="158" font-size="18" fill="#85837a">plain text, no JSX</text>
+      <text x="20" y="158" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+            font-size="18" fill="#4b4a43">cat.ts</text>
+      <text x="20" y="186" font-size="18" fill="#85837a">plain text, no JSX</text>
     </g>
 
     <!-- 2 · Push -->
     <g transform="translate(340 96)">
-      <rect width="244" height="176" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <rect width="244" height="200" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
       <text x="20" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="17" fill="#b4b1a5">02</text>
       <text x="20" y="70" font-size="23" font-weight="600" fill="#1a1a17">Push to main</text>
       <text x="20" y="106" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="18" fill="#4b4a43">git push</text>
-      <text x="20" y="140" font-size="18" fill="#85837a">the push is the</text>
-      <text x="20" y="162" font-size="18" fill="#85837a">whole deploy</text>
+      <text x="20" y="152" font-size="18" fill="#85837a">the push is the</text>
+      <text x="20" y="174" font-size="18" fill="#85837a">whole deploy</text>
     </g>
 
     <!-- 3 · Gate -->
     <g transform="translate(616 96)">
-      <rect width="244" height="176" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <rect width="244" height="200" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
       <text x="20" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="17" fill="#b4b1a5">03</text>
       <text x="20" y="70" font-size="23" font-weight="600" fill="#1a1a17">Actions gate</text>
@@ -70,20 +72,20 @@
             font-size="18" fill="#4b4a43">lint → typecheck</text>
       <text x="20" y="132" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="18" fill="#4b4a43">→ next build</text>
-      <text x="20" y="158" font-size="18" fill="#1f57d6">fails closed</text>
+      <text x="20" y="174" font-size="18" fill="#1f57d6">fails closed</text>
     </g>
 
     <!-- 4 · Live -->
     <g transform="translate(892 96)">
-      <rect width="244" height="176" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
+      <rect width="244" height="200" rx="14" fill="#ffffff" stroke="#e7e2d2"/>
       <rect x="0" y="0" width="244" height="4" rx="2" fill="#ffd64a"/>
       <text x="20" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="17" fill="#b4b1a5">04</text>
       <text x="20" y="70" font-size="23" font-weight="600" fill="#1a1a17">Live</text>
       <text x="20" y="106" font-size="18" fill="#85837a">Pages · Cloudflare DNS</text>
-      <text x="20" y="140" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
+      <text x="20" y="152" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="18" fill="#1f57d6">linhuazhou.com</text>
-      <text x="20" y="164" font-size="17" fill="#85837a">HTTPS enforced</text>
+      <text x="20" y="176" font-size="17" fill="#85837a">HTTPS enforced</text>
     </g>
   </g>
 </svg>
