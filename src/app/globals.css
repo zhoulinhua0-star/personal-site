@@ -503,6 +503,35 @@
     background-image: url("/backgrounds/deck-data.svg");
   }
 
+  /* What stands in for the cat once it has been sent away: the same corner,
+     the same mono voice as the label under its feet. Quiet, but readable at a
+     glance: it is a way back, not a second companion, and a way back nobody
+     can see is the thing it exists to fix. One step darker than the label
+     under the cat's feet, which only ever has to be found by someone already
+     looking at the cat. The padding gives it a target a few times its own size and
+     the matching negative margin keeps the type itself on the corner offsets
+     the cat parks on, so the two occupy exactly the same spot. */
+  .cat-stub {
+    position: fixed;
+    right: clamp(18px, 2.4vw, 34px);
+    bottom: clamp(18px, 2.4vw, 34px);
+    z-index: 30;
+    margin: -7px -9px;
+    padding: 7px 9px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    color: var(--color-ink-3);
+    cursor: inherit;
+    transition: color 0.3s var(--ease-out-soft);
+  }
+
+  .cat-stub:hover {
+    color: var(--color-ink);
+  }
+
   /* ---------------------------------------------------------------------
      The cat: a desk companion pinned over the page. Parks itself bottom-right
      until dragged, after which the component supplies left/top and this falls
@@ -511,6 +540,14 @@
      --------------------------------------------------------------------- */
   .cat {
     --cat-h: clamp(96px, 9vw, 128px);
+    /* How far the drawing drops below its own box for the one pose that is
+       supposed to be cut off by the window edge. In px off --cat-h, not a
+       percentage: a percentage on `translate` resolves against each element's
+       own height, and the tag would sink by a fraction of a line of type.
+       0.2 of the box hides just under a third of the `peek` drawing at the
+       deepest drop, which is the most that can go under before the edge starts
+       cutting the eyes — and the eyes over the edge are the whole pose. */
+    --cat-sink: calc(var(--cat-h) * 0.2);
     position: fixed;
     right: clamp(18px, 2.4vw, 34px);
     bottom: clamp(18px, 2.4vw, 34px);
@@ -520,10 +557,35 @@
     display: grid;
     grid-template: 100% / 100%;
     place-items: end center;
-    cursor: grab;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  /* The site's pointer is a real PNG cursor set on <body>, so any keyword
+     cursor here — `grab` on the cat, `pointer` on its button, and the hot PNG
+     the `button` rule would otherwise hand that button — swaps the artwork out
+     for a native one, and moving across the cat flickers between them. The cat
+     is decoration pinned over the page: the pointer should not react to it at
+     all, so everything inside it inherits whatever the page is already using.
+     The descendant selector is what outranks the `button` rule. */
+  .cat,
+  .cat * {
+    cursor: inherit;
+  }
+
+  /* Everything the breathing moves is taken out of hit testing, leaving the
+     cat's own box — which never moves — as the only target inside it.
+     `opacity: 0` does not make an element unhittable, so without this the
+     pointer sits on a stack of fifteen drawings of different heights whose top
+     edges sweep past it twice per breath. Every crossing is a new hover target
+     and a fresh cursor application, and a custom image cursor blinks each time
+     it is reapplied. Nothing is lost: the press, the drag and the poke are all
+     handled on .cat itself, which is hittable across its whole box. */
+  .cat-stack,
+  .cat-tag,
+  .cat-bubble {
+    pointer-events: none;
   }
 
   /* Once dragged it is positioned by its centre, which is the only anchor that
@@ -532,8 +594,29 @@
     transform: translate(-50%, -50%);
   }
 
-  .cat[data-dragging="true"] {
-    cursor: grabbing;
+  /* `peek` is drawn as a cat looking over a ledge, so it only reads if the
+     window's bottom edge IS the ledge. The drawing is pushed down out of its
+     box with `translate`, which is its own property: the box itself does not
+     move, so the hit test that chose this pose still sees the same paws in the
+     same place and cannot oscillate, and the breathing animation keeps sole
+     ownership of `transform`. */
+  .cat[data-pose="peek"] .cat-stack,
+  .cat[data-pose="peek"] .cat-tag {
+    translate: 0 var(--cat-sink);
+  }
+
+  .cat-stack,
+  .cat-tag {
+    transition: translate 0.32s var(--ease-out-soft);
+  }
+
+  /* The box stays put, so without this the lower half of a peeking cat would
+     not be grabbable. A pseudo-element extends the press target down over the
+     drawing's new position without touching the element's own box. */
+  .cat[data-pose="peek"]::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 calc(var(--cat-sink) * -1) 0;
   }
 
   /* Poses stack in one cell, bottom-aligned so every drawing rests on the same
@@ -565,6 +648,14 @@
     animation-duration: 7s;
   }
 
+  /* Held still while you have the pointer on it, and while you are carrying
+     it. The drag case is obvious; the hover case is about the cursor. The site
+     draws its own pointer as an image, and Chrome recomputes the hover state —
+     and reapplies the cursor — on every frame in which the content under the
+     pointer changes. Reapplying an image cursor rebuilds it, sixty times a
+     second, which reads as a flickering pointer. Nothing under the pointer
+     moves while this is paused, so there is nothing to reapply. */
+  .cat:hover .cat-stack,
   .cat[data-dragging="true"] .cat-stack {
     animation-play-state: paused;
   }
@@ -599,6 +690,52 @@
   .cat:hover .cat-tag,
   .cat[data-dragging="true"] .cat-tag {
     opacity: 1;
+  }
+
+  /* Sits on the cat's top-right shoulder — the drawing's corner, not the
+     box's, which on a narrow pose is empty paper several tens of pixels away.
+     Hidden until hover for the same reason as the tag: at rest the cat should
+     read as a drawing, not as a widget with chrome. */
+  .cat-dismiss {
+    position: absolute;
+    /* Tucked a couple of pixels INSIDE that corner rather than hung off it:
+       the drawings are round, so their bounding-box corner is transparent and
+       a button parked exactly on it reads as a stray dot in the paper. */
+    top: calc(var(--pose-gap, 0%) + 2px);
+    right: calc(var(--pose-inset, 0%) + 2px);
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    background: var(--color-paper-2);
+    border: 1.5px solid var(--color-ink);
+    border-radius: 50%;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    color: var(--color-ink);
+    opacity: 0;
+    /* Not just invisible but untouchable while hidden, so it cannot swallow
+       the press that starts a drag near the cat's shoulder. */
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease-out-soft);
+  }
+
+  .cat:hover .cat-dismiss {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .cat-dismiss:hover {
+    background: var(--color-ink);
+    color: var(--color-paper-2);
+  }
+
+  /* Nothing to dismiss mid-drag, and the button would be under the pointer. */
+  .cat[data-dragging="true"] .cat-dismiss {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .cat-bubble {
@@ -656,6 +793,11 @@
   @media (prefers-reduced-motion: reduce) {
     .cat-stack {
       animation: none;
+    }
+
+    .cat-stack,
+    .cat-tag {
+      transition: none;
     }
 
     .cat-bubble {

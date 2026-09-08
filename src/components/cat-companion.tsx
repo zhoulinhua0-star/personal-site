@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
-import { catBubbleMs, catIdle, catLines, type CatPose } from "@/data/cat";
+import { catBubbleMs, catDwellMs, catIdle, catLines, type CatPose } from "@/data/cat";
 import sprites from "@/data/cat-sprites.json";
+import { setCatVisible, useCatVisible, useFinePointer } from "@/lib/cat-presence";
+import { groundPose } from "@/lib/cat-ground";
 
 /**
  * A desk companion, in the spirit of the pet that floats over Codex: a small
@@ -60,17 +62,6 @@ function clampPerch(perch: Perch, box?: { width: number; height: number }): Perc
   };
 }
 
-/** A companion you cannot hover or drag is just a picture in the way, so on
- *  touch and coarse pointers it never mounts at all. Subscribed rather than
- *  read once, so plugging in a mouse brings the cat with it. */
-let query: MediaQueryList | null = null;
-const desktop = () => {
-  if (!query && typeof window !== "undefined") {
-    query = window.matchMedia("(hover: hover) and (pointer: fine)");
-  }
-  return query;
-};
-
 function readPerch(): Perch | null {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -87,25 +78,54 @@ function readPerch(): Perch | null {
 }
 
 export function CatCompanion() {
-  const enabled = useSyncExternalStore(
-    (onChange) => {
-      const mq = desktop();
-      mq?.addEventListener("change", onChange);
-      return () => mq?.removeEventListener("change", onChange);
-    },
-    () => desktop()?.matches ?? false,
-    () => false,
-  );
-  // Split in two on purpose: the inner widget only ever mounts on the client
-  // and only when it is wanted, which is what lets it read localStorage in a
-  // lazy initialiser instead of in an effect — no cascading render, and no
+  const finePointer = useFinePointer();
+  const visible = useCatVisible();
+  // Nothing at all without a mouse: a companion you cannot hover or drag is
+  // just a picture in the way, and a way to summon one is worse.
+  if (!finePointer) return null;
+  // Split in three on purpose: the widget only ever mounts on the client and
+  // only when it is wanted, which is what lets it read localStorage in a lazy
+  // initialiser instead of in an effect — no cascading render, and no
   // hydration mismatch from a perch the server could not know about.
-  return enabled ? <CatWidget /> : null;
+  return visible ? <CatWidget /> : <CatStub />;
+}
+
+/**
+ * What is left when you send the cat away: one faint line of type in the
+ * corner the cat parks itself in before it has ever been dragged.
+ *
+ * It exists because dismissing something with no visible way back is a trap.
+ * It is pinned to the viewport rather than dropped at the end of the document
+ * for the same reason the cat is — a way back that scrolls off the screen is
+ * the problem, not the fix. Clicking it returns the cat to the spot you last
+ * chose for it, which the perch has been holding the whole time.
+ *
+ * Out of the tab order and out of the accessibility tree, like the cat's own
+ * dismiss button: the thing it summons is decoration that never mounts without
+ * a mouse in the first place.
+ */
+function CatStub() {
+  return (
+    <button
+      type="button"
+      className="cat-stub"
+      aria-hidden="true"
+      tabIndex={-1}
+      title="Bring the cat back"
+      onClick={() => setCatVisible(true)}
+    >
+      {">_ cat"}
+    </button>
+  );
 }
 
 function CatWidget() {
   const ref = useRef<HTMLDivElement>(null);
-  const [pose, setPose] = useState<CatPose>("hello");
+  // Nothing sets the pose. Four independent facts are tracked instead and the
+  // drawing is derived from them, so there is exactly one place that decides
+  // what the cat looks like and no pair of events can race to set it.
+  const [ground, setGround] = useState<CatPose>("chill");
+  const [idle, setIdle] = useState<CatPose | null>(null);
   const [line, setLine] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   // null means "wherever CSS parks it" — the default corner. Only a drag
@@ -113,6 +133,7 @@ function CatWidget() {
   const [perch, setPerch] = useState<Perch | null>(readPerch);
 
   const idleTimers = useRef<number[]>([]);
+  const dwellTimer = useRef(0);
   const bubbleTimer = useRef(0);
   const lastLine = useRef(-1);
   const drag = useRef<{
@@ -124,14 +145,39 @@ function CatWidget() {
     moved: boolean;
   } | null>(null);
 
-  /** Restart the settle/sleep countdown. Any interaction counts as attention. */
-  const rouse = useCallback((next: CatPose) => {
+  /** Wake it and arm the whole idle ladder from now. Every step is its own
+   *  timer measured from this moment, so the list stays declarative — no chain
+   *  of timeouts each arming the next, which would drift and be far harder to
+   *  cancel. Scrolling counts as attention as much as touching it does: the
+   *  ladder means "nothing is happening here", and someone reading the page is
+   *  something happening. It only gets to sleep once you have actually left. */
+  const armIdle = useCallback(() => {
     idleTimers.current.forEach(window.clearTimeout);
-    setPose(next);
-    idleTimers.current = [
-      window.setTimeout(() => setPose("chill"), catIdle.settle),
-      window.setTimeout(() => setPose("sleep"), catIdle.sleep),
-    ];
+    idleTimers.current = catIdle.map(({ after, pose: next }) =>
+      window.setTimeout(() => setIdle(next), after),
+    );
+  }, []);
+
+  /** The same, for anything that also has to interrupt a nap in progress. */
+  const rouse = useCallback(() => {
+    setIdle(null);
+    armIdle();
+  }, [armIdle]);
+
+  /** Re-read the ground. Immediately after a deliberate act — the drop, the
+   *  first paint — and on a dwell after a scroll, which is the hysteresis that
+   *  keeps a page sliding underneath from strobing the poses. */
+  const readGround = useCallback((immediate: boolean) => {
+    const host = ref.current;
+    if (!host) return;
+    window.clearTimeout(dwellTimer.current);
+    if (immediate) {
+      setGround(groundPose(host.getBoundingClientRect()));
+      return;
+    }
+    dwellTimer.current = window.setTimeout(() => {
+      setGround(groundPose(host.getBoundingClientRect()));
+    }, catDwellMs);
   }, []);
 
   // A saved spot, and every later resize, is re-clamped against the cat's real
@@ -142,27 +188,52 @@ function CatWidget() {
       if (!host) return;
       const box = host.getBoundingClientRect();
       setPerch((current) => (current ? clampPerch(current, box) : current));
+      readGround(true);
     };
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
-  }, []);
+  }, [readGround]);
 
-  // `pose` already starts at "hello"; this only arms the countdown, so nothing
-  // is set synchronously during the effect.
+  // Before the first paint, not after: `ground` starts at a placeholder, and
+  // reading it in a passive effect would show that placeholder for a frame.
+  // Re-runs whenever the cat lands somewhere new — but not mid-drag, where the
+  // pose is the carried one anyway and a hit test per pointer move is waste.
+  useLayoutEffect(() => {
+    if (dragging) return;
+    readGround(true);
+  }, [perch, dragging, readGround]);
+
+  // The other way the ground changes: the page slides under a pinned cat.
   useEffect(() => {
-    const timers = [
-      window.setTimeout(() => setPose("chill"), catIdle.settle),
-      window.setTimeout(() => setPose("sleep"), catIdle.sleep),
-    ];
-    idleTimers.current = timers;
+    let woke = 0;
+    const onScroll = () => {
+      // Someone reading the page is attention, so this keeps the cat awake —
+      // throttled, because a scroll fires dozens of events a second and each
+      // rouse rebuilds the whole ladder.
+      const now = Date.now();
+      if (now - woke > 1000) {
+        woke = now;
+        rouse();
+      }
+      readGround(false);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [readGround, rouse]);
+
+  // Arms the countdown; it starts awake, so nothing is set here synchronously.
+  useEffect(() => {
+    armIdle();
+    const timers = idleTimers;
+    const dwell = dwellTimer;
     const bubble = bubbleTimer;
     return () => {
-      timers.forEach(window.clearTimeout);
-      idleTimers.current.forEach(window.clearTimeout);
+      timers.current.forEach(window.clearTimeout);
+      window.clearTimeout(dwell.current);
       window.clearTimeout(bubble.current);
     };
-  }, []);
+  }, [armIdle]);
 
   const speak = useCallback(() => {
     let index = Math.floor(Math.random() * catLines.length);
@@ -173,13 +244,34 @@ function CatWidget() {
     setLine(catLines[index]);
     window.clearTimeout(bubbleTimer.current);
     bubbleTimer.current = window.setTimeout(() => setLine(null), catBubbleMs);
-    rouse("meow");
+    rouse();
   }, [rouse]);
+
+  /**
+   * The one place the drawing is decided. Read top to bottom it is the whole
+   * behaviour of the cat: what your hand is doing to it, then how long it has
+   * been left alone, then — the resting state, and the only one most visitors
+   * ever see change — what it is standing on.
+   *
+   * Merely pointing at the cat is deliberately not on this list. It used to
+   * be, and it cost the drop its whole point: with the pointer still on the
+   * cat where the drag left it, a hover pose outranked the ground, so the
+   * answer to "what did I just put it on" only appeared later, when the
+   * pointer wandered off. Two poses change now, both of them things you did on
+   * purpose — picking it up, and putting it down.
+   */
+  const pose: CatPose = dragging ? "look-back" : line ? "play" : (idle ?? ground);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.button !== 0) return;
     const host = ref.current;
     if (!host) return;
+    // The cat itself is unselectable, but once the pointer leaves it mid-press
+    // the browser starts sweeping a text selection across whatever it passes
+    // over — and now that dragging is how the poses are found, it passes over
+    // a lot. Nothing here needs the default: it is not focusable and carries
+    // no text of its own.
+    event.preventDefault();
     const box = host.getBoundingClientRect();
     // Record the gesture BEFORE trying to capture. Capture only keeps move
     // events coming once the pointer leaves the cat — useful, but optional —
@@ -212,7 +304,7 @@ function CatWidget() {
       if (Math.hypot(dx, dy) < DRAG_SLOP) return;
       state.moved = true;
       setDragging(true);
-      rouse("hello");
+      rouse();
     }
     setPerch(clampPerch(
       {
@@ -248,7 +340,9 @@ function CatWidget() {
       }
       return current;
     });
-    rouse("chill");
+    // The ground under the new spot is read by the layout effect that watches
+    // `dragging`, so the landing and the pose it lands in paint together.
+    rouse();
   };
 
   return (
@@ -260,13 +354,20 @@ function CatWidget() {
       // the tab order rather than announcing itself as a control.
       aria-hidden="true"
       data-dragging={dragging}
+      data-pose={pose}
       data-perched={perch ? true : undefined}
-      data-asleep={pose === "sleep"}
+      data-asleep={pose === "sleep" || pose === "belly"}
       style={{
         "--cat-aspect": WIDEST / TALLEST,
         // Poses are bottom-aligned and differ in height, so the top of the box
         // is not the top of the cat. The bubble hangs off this instead.
         "--pose-gap": `${(1 - sprites[pose].height / TALLEST) * 100}%`,
+        // The same problem sideways. The box is as wide as the widest drawing,
+        // and the poses are centred in it, so on a narrow pose the corners of
+        // the box are empty paper — anything pinned there floats off on its
+        // own. Each pose renders at `sprites[pose].width / WIDEST` of the box
+        // width, which makes this the gap down either side.
+        "--pose-inset": `${((1 - sprites[pose].width / WIDEST) / 2) * 100}%`,
         ...(perch
           ? {
               left: `${perch.fx * 100}%`,
@@ -280,12 +381,6 @@ function CatWidget() {
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
-      onPointerEnter={() => {
-        if (!drag.current) rouse("meow");
-      }}
-      onPointerLeave={() => {
-        if (!drag.current) rouse("curious");
-      }}
     >
       {line ? <span className="cat-bubble">{line}</span> : null}
 
@@ -312,7 +407,28 @@ function CatWidget() {
         })}
       </span>
 
-      <span className="cat-tag">{`>_ ${pose}`}</span>
+      {/* The sheet captions every drawing this way, so the widget does too.
+          The hyphen is only there because a pose name is also a file name. */}
+      <span className="cat-tag">{`>_ ${pose.replace("-", " ")}`}</span>
+
+      {/* The way out. A pinned widget that cannot be got rid of is the one
+          thing a companion must never be — drag only ever moves the problem
+          to another corner. Kept out of the tab order because its container is
+          aria-hidden, and a focusable control inside hidden content is a trap:
+          the footer link is the route for anyone not using a mouse, and it is
+          also where this sends you to undo it. stopPropagation because the
+          press would otherwise be read as the start of a drag. */}
+      <button
+        type="button"
+        className="cat-dismiss"
+        aria-hidden="true"
+        tabIndex={-1}
+        title="Send the cat away — bring it back from the footer"
+        onPointerDown={(event) => event.stopPropagation()}
+        onClick={() => setCatVisible(false)}
+      >
+        ×
+      </button>
     </div>
   );
 }

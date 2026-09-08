@@ -1,5 +1,5 @@
 """
-Cuts the six cat poses out of assets/cat-source.jpg into transparent sprites.
+Cuts the fifteen cat poses out of assets/cat-source.png into transparent sprites.
 
     python3 scripts/make-cat-sprites.py
 
@@ -15,8 +15,12 @@ so the fill eats them. That is what we want: a shadow baked at one angle would
 fight the page's own light.
 
 Each pose is then reduced to its single largest connected component before it
-is cropped, which drops the loose decorations (the heart, the speech bubble,
-the little motion ticks) that share a bounding box with a cat but not a body.
+is cropped, which drops the loose decorations (the heart, the zzz, the
+butterfly, the speech bubble, the little motion ticks) that share a bounding
+box with a cat but not a body. The props that are *held* survive the same rule
+without being special-cased, because the drawing has them touching the cat and
+they come out as one blob with it: the cardboard box, the laptop and its mug,
+the fish in the paws.
 
 Nothing here needs an API or a network. Pillow only.
 """
@@ -27,7 +31,7 @@ from collections import deque
 
 from PIL import Image
 
-SRC = "assets/cat-source.jpg"
+SRC = "assets/cat-source.png"
 
 # Background cream, sampled from the sheet's corners, and how far a pixel may
 # stray from it and still count as background. 14 is wide enough to swallow the
@@ -36,15 +40,27 @@ SRC = "assets/cat-source.jpg"
 BG = (250, 247, 238)
 TOL = 14
 
-# Bounding boxes of the six poses on the sheet, in source pixels. Generous on
-# purpose: the exact crop comes from the connected component inside each one.
+# Bounding boxes of the fifteen poses on the sheet, in source pixels — three
+# rows of five, read left to right. Measured off the keyed sheet rather than
+# guessed, then padded: the exact crop comes from the connected component
+# inside each one, so the only job these have is to contain one cat and no
+# part of its neighbour.
 POSES = {
-    "hello":    (127, 153, 397, 460),
-    "chill":    (519, 232, 1005, 470),
-    "curious":  (1130, 148, 1392, 465),
-    "sleep":    (86, 626, 514, 828),
-    "meow":     (635, 558, 879, 839),
-    "thinking": (1115, 558, 1376, 846),
+    "hello":     (69, 106, 263, 319),
+    "chill":     (303, 159, 631, 331),
+    "peek":      (669, 186, 904, 314),
+    "curious":   (961, 94, 1145, 320),
+    "look-up":   (1220, 111, 1470, 327),
+    "sleep":     (43, 429, 332, 597),
+    "belly":     (344, 406, 662, 588),
+    "look-back": (702, 372, 894, 604),
+    "hunt":      (927, 404, 1169, 597),
+    "play":      (1210, 384, 1479, 619),
+    "in-box":    (36, 670, 326, 889),
+    "happy":     (363, 646, 581, 887),
+    "thinking":  (629, 656, 832, 884),
+    "tired":     (856, 750, 1189, 888),
+    "coding":    (1203, 669, 1497, 889),
 }
 
 QUALITY = 88

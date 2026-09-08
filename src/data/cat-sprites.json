@@ -1,32 +1,77 @@
 {
+  "belly": {
+    "height": 158,
+    "src": "/cat/belly.webp",
+    "width": 294
+  },
   "chill": {
-    "height": 238,
+    "height": 148,
     "src": "/cat/chill.webp",
-    "width": 486
+    "width": 304
   },
-  "curious": {
-    "height": 317,
-    "src": "/cat/curious.webp",
-    "width": 262
-  },
-  "hello": {
-    "height": 307,
-    "src": "/cat/hello.webp",
+  "coding": {
+    "height": 196,
+    "src": "/cat/coding.webp",
     "width": 270
   },
-  "meow": {
-    "height": 281,
-    "src": "/cat/meow.webp",
-    "width": 244
+  "curious": {
+    "height": 202,
+    "src": "/cat/curious.webp",
+    "width": 160
+  },
+  "happy": {
+    "height": 217,
+    "src": "/cat/happy.webp",
+    "width": 194
+  },
+  "hello": {
+    "height": 189,
+    "src": "/cat/hello.webp",
+    "width": 170
+  },
+  "hunt": {
+    "height": 169,
+    "src": "/cat/hunt.webp",
+    "width": 218
+  },
+  "in-box": {
+    "height": 195,
+    "src": "/cat/in-box.webp",
+    "width": 266
+  },
+  "look-back": {
+    "height": 208,
+    "src": "/cat/look-back.webp",
+    "width": 168
+  },
+  "look-up": {
+    "height": 192,
+    "src": "/cat/look-up.webp",
+    "width": 226
+  },
+  "peek": {
+    "height": 104,
+    "src": "/cat/peek.webp",
+    "width": 211
+  },
+  "play": {
+    "height": 211,
+    "src": "/cat/play.webp",
+    "width": 245
   },
   "sleep": {
-    "height": 202,
+    "height": 144,
     "src": "/cat/sleep.webp",
-    "width": 428
+    "width": 265
   },
   "thinking": {
-    "height": 288,
+    "height": 204,
     "src": "/cat/thinking.webp",
-    "width": 261
+    "width": 179
+  },
+  "tired": {
+    "height": 114,
+    "src": "/cat/tired.webp",
+    "width": 309
   }
 }
