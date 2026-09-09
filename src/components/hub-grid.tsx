@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { lab, projects } from "@/data/projects";
+import { resume } from "@/data/personal";
 
 /**
- * The home page hub. Three restrained destination cards, so the landing screen
+ * The home page hub. Four restrained destination cards, so the landing screen
  * stays short and everything is one click away. Deliberately editorial: mono
  * index, hand-drawn glyph, one hairline accent on hover. No screenshot stacks,
  * no dashboard grid. (A way to reach me sits in the quiet row below the grid.)
@@ -37,6 +38,13 @@ const glyphs = {
       <path d="M24 13v25" />
     </>
   ),
+  resume: (
+    <>
+      <path d="M12 5h16l8 8v30H12V5Z" strokeLinejoin="round" />
+      <path d="M28 5.3V13h7.7" strokeLinejoin="round" />
+      <path d="M18.5 22h11M18.5 28h11M18.5 34h7" strokeLinecap="round" />
+    </>
+  ),
 };
 
 const entries: Entry[] = [
@@ -66,6 +74,15 @@ const entries: Entry[] = [
       "How I work, what I focus on, and the stack I reach for when an idea needs to become something you can open.",
     meta: "Bio · facts",
     glyph: glyphs.about,
+  },
+  {
+    href: "/resume",
+    index: "04",
+    title: "Résumé",
+    blurb:
+      "The short version: one page, current, readable in the browser and downloadable as a PDF.",
+    meta: `PDF · ${resume.updated}`,
+    glyph: glyphs.resume,
   },
 ];
 

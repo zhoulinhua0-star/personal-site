@@ -121,11 +121,16 @@ export function LocalTime() {
       <span className="hidden text-ink-3 min-[380px]:inline">{place.label}</span>
       {offset ? (
         <>
-          <span className="hidden text-ink-4 sm:inline" aria-hidden="true">
+          <span className="hidden text-ink-4 md:inline" aria-hidden="true">
             ·
           </span>
-          {/* Dropped on narrow screens, where the header has no room to spare. */}
-          <span className="hidden text-ink-4 sm:inline">{offset}</span>
+          {/* Dropped on narrow screens, where the header has no room to spare.
+              It waits for `md` rather than `sm` because `sm` is exactly where
+              the header gains two elements at once — the Résumé link and the
+              GitHub pill — and the offset is the least load-bearing thing in
+              the corner: the city says where, the clock says when, and the
+              offset only saves the reader an arithmetic step. */}
+          <span className="hidden text-ink-4 md:inline">{offset}</span>
         </>
       ) : null}
     </span>

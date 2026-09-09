@@ -163,10 +163,12 @@ export const links: readonly SiteLink[] = [
     handle: "in/linhua-zhou-31948b42b",
   },
   {
-    // TODO(linhua): drop a PDF at public/resume.pdf, or point this elsewhere.
     kind: "resume",
     label: "Résumé",
-    href: "/resume.pdf",
+    // The page, not the file. /resume/ hands over the PDF either way — inline
+    // on a laptop, straight to the system viewer on a phone, where an embedded
+    // PDF renders as a dead first-page thumbnail and nothing scrolls.
+    href: "/resume/",
     handle: "PDF",
   },
   {
@@ -178,25 +180,49 @@ export const links: readonly SiteLink[] = [
 ];
 
 /**
+ * ============================================================================
+ *  RÉSUMÉ — the one-page PDF and the page that frames it.
+ * ============================================================================
+ *
+ *  To publish a new version: overwrite `public/resume.pdf` and bump `updated`.
+ *  The filename never changes, so every link already handed out — the strip,
+ *  the nav, a recruiter's bookmark, a line in an email — keeps resolving.
+ *
+ *  `downloadAs` is the name the file lands under on someone else's machine.
+ *  "resume.pdf" in a downloads folder full of other people's résumés is a file
+ *  nobody can find again; this one carries its own identity.
+ * ----------------------------------------------------------------------------
+ */
+export const resume = {
+  file: "/resume.pdf",
+  downloadAs: "Linhua-Zhou-Resume.pdf",
+  /** Printed under the heading. Update it when you replace the file. */
+  updated: "September 2026",
+  pages: "1 page",
+  note:
+    "One page, kept current. The long version lives in Work and Lab — this is the part that fits on a desk.",
+} as const;
+
+/**
  * The "About" section. Each string is one paragraph.
  * Write like a person, not like a résumé.
  */
 export const about = {
   paragraphs: [
-    "I'm a developer who likes building the tools other developers end up using. Most of my time goes to software engineering, AI and agent systems, and the interface layer where those two meet.",
-    "I care about the unglamorous parts: clear data models, fast feedback loops, interfaces that explain themselves. A project feels finished to me when the seams are gone.",
-    "Outside of shipping, I read source code for fun, take apart products I admire, and keep a long list of ideas I have not built yet.",
+    "I build things end to end and ship them. Right now that means Asterlo, an AI outreach platform running in production; before it, a native iOS workout planner on the App Store and an AI coach for international students I built solo for a hackathon. I start at NYU in autumn 2026, reading toward Computer Science and Mathematics.",
+    "What interests me is the boring half of a product: the approval gate that stops a bad email from sending, the idempotent job that will not double-charge, the migration that runs the same way twice. Anyone can make a demo work once. I like the part where it keeps working when nobody is watching it.",
+    "So I care about clear data models, fast feedback loops, and interfaces that explain themselves. A project feels finished to me when the seams are gone — and when I can hand it to someone who has never seen it and not have to stand behind them explaining.",
   ],
   /**
    * The technical spec sheet beside the prose. Add, remove or reorder freely.
    */
   facts: [
-    { label: "Focus", value: "AI agents · developer tools · product engineering" },
-    { label: "Writes", value: "TypeScript · Python · SQL" },
-    { label: "Builds with", value: "React · Next.js · Node · Postgres" },
-    // TODO(linhua): replace the two placeholders below with real details.
-    { label: "Based in", value: "Add your city" },
-    { label: "Currently", value: "Add what you are working on" },
+    { label: "Focus", value: "AI products · full-stack · iOS" },
+    { label: "Writes", value: "TypeScript · Swift · Python · Java" },
+    { label: "Builds with", value: "Next.js · React · Postgres · SwiftUI" },
+    { label: "Based in", value: "Washington, D.C." },
+    { label: "Studying", value: "NYU — CS & Mathematics, from 2026" },
+    { label: "Currently", value: "Building Asterlo toward a pilot release" },
   ],
 } as const;
 

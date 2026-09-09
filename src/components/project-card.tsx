@@ -22,17 +22,23 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
       className={`project reveal ${index > 0 ? "border-t border-line pt-[clamp(28px,4vw,48px)]" : ""}`}
     >
       {/* Explicit fractions rather than a 12-column grid: at this column width a
-          12-track grid is mostly gutter, and the screenshot needs the room. */}
+          12-track grid is mostly gutter, and the screenshot needs the room.
+          A project with no screenshots takes a single column instead: splitting
+          the row would squeeze the prose into 0.8fr and leave the other 1.2fr
+          visibly empty, which reads as a failed image rather than a deliberate
+          text entry. */}
       <div
         className={`grid items-start gap-[clamp(28px,3.5vw,56px)] lg:items-center ${
-          flipped
-            ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
-            : "lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]"
+          !shots.length
+            ? ""
+            : flipped
+              ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
+              : "lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]"
         }`}
       >
         {/* — Text — */}
         <div
-          className={flipped ? "lg:col-start-2 lg:row-start-1" : ""}
+          className={flipped && shots.length ? "lg:col-start-2 lg:row-start-1" : ""}
         >
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="label label-accent">{number}</span>
@@ -44,7 +50,9 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
             {project.title}
           </h3>
 
-          <p className="lead mt-4 max-w-[46ch]">{project.description}</p>
+          <p className={`lead mt-4 ${shots.length ? "max-w-[46ch]" : "max-w-[68ch]"}`}>
+            {project.description}
+          </p>
 
           {project.metrics?.length ? (
             <dl className="mt-7 flex flex-wrap gap-x-10 gap-y-4">

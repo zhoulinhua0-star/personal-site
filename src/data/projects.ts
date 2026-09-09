@@ -21,6 +21,7 @@
 export type CategorySlug =
   | "ai-products"
   | "web"
+  | "mobile"
   | "developer-tools"
   | "experiments"
   | "open-source";
@@ -80,6 +81,11 @@ export const categories: {
     blurb: "Interfaces built to be fast, legible and durable.",
   },
   {
+    slug: "mobile",
+    name: "Mobile Apps",
+    blurb: "Native apps, shipped to a store and lived with afterwards.",
+  },
+  {
     slug: "developer-tools",
     name: "Developer Tools",
     blurb: "Things that shorten the loop between idea and running code.",
@@ -99,89 +105,116 @@ export const categories: {
 /** Section 03 — flagship work. Three to five entries is the sweet spot. */
 export const projects: Project[] = [
   {
-    slug: "flagship",
-    title: "Your flagship project",
+    slug: "asterlo",
+    title: "Asterlo",
     description:
-      "Replace this with the problem you solved, the constraint that made it hard, and the decision you are most proud of. Two sentences beat two paragraphs.",
+      "An AI-assisted outreach platform that runs the whole email workflow — researching a contact from official sources, drafting a personalized message, then holding it at a human approval gate before anything sends. The hard part was building automation that can be stopped: approval gates, campaign holds and idempotent controls so a sequence never double-sends, and never keeps going after someone has replied.",
     category: "ai-products",
     year: "2026",
-    status: "In progress",
-    tech: ["TypeScript", "Next.js", "Python", "LLM APIs"],
-    // Add real, verifiable numbers here — they render as a small stat row:
-    // metrics: [{ label: "Users", value: "1.2k" }, { label: "Stars", value: "340" }],
+    status: "In production",
+    tech: ["TypeScript", "Next.js", "React", "PostgreSQL", "Gmail API"],
     images: [
-      { src: "/projects/flagship/main.png", alt: "Placeholder screenshot of the flagship project" },
-      { src: "/projects/flagship/secondary.png", alt: "Placeholder secondary view of the flagship project" },
-      { src: "/projects/flagship/tertiary.png", alt: "Placeholder detail view of the flagship project" },
+      {
+        src: "/projects/asterlo/main.png",
+        alt: "Asterlo's landing page: 'Personalized outreach, with the receipts.', above buttons to open the workspace",
+      },
+      {
+        src: "/projects/asterlo/secondary.png",
+        alt: "Asterlo's three-step product section: official research, guarded drafting, and human review before a draft is approved",
+      },
     ],
-    githubUrl: "https://github.com/zhoulinhua0-star",
-    placeholder: true,
+    liveUrl: "https://asterlo.io",
+    // No `githubUrl`: the repository is private, so the live product is the
+    // only honest link. The card drops the Source line on its own.
   },
   {
-    slug: "developer-tool",
-    title: "Your developer tool",
+    slug: "repday",
+    title: "RepDay — Gym Workout Planner",
     description:
-      "A tool you built because the existing workflow annoyed you. Say what it removes from someone's day, not which framework it uses.",
-    category: "developer-tools",
-    year: "2025",
+      "A native iOS workout planner, written in Swift and shipped to the U.S. App Store. Planned and improvised sessions share one model, so strength sets and duration-based cardio live in the same workout with independent concurrent rest timers, mid-session editing and undo. Everything stays on the device — no account, no analytics, no third-party SDKs.",
+    category: "mobile",
+    year: "2026",
+    status: "On the App Store",
+    tech: ["Swift", "SwiftUI", "SwiftData", "WidgetKit", "EventKit"],
+    metrics: [
+      { label: "Code", value: "~15,000 lines" },
+      { label: "Source files", value: "59" },
+      { label: "Localized", value: "English · Chinese" },
+    ],
+    images: [
+      {
+        src: "/projects/repday/main.png",
+        alt: "Three RepDay screens: the day's workout with set progress, the analytics view, and the weekly workout plan",
+      },
+      {
+        src: "/projects/repday/secondary.png",
+        alt: "Two more RepDay screens: freestyle training by muscle group, and the personal stats and level view",
+      },
+    ],
+    liveUrl: "https://apps.apple.com/us/app/repday-gym-workout-planner/id6791500746",
+    githubUrl: "https://github.com/zhoulinhua0-star/fitness-app",
+  },
+  {
+    slug: "campus-decoder",
+    title: "Campus Decoder",
+    description:
+      "An AI coach that helps international students read the unwritten rules of a U.S. university — office hours, emailing a professor, a group project going sideways. You describe the situation in your own words and get back the norm you were missing plus a next step you can actually send. Built solo from concept to deployment for GatewayHacks 2026.",
+    category: "ai-products",
+    year: "2026",
     status: "Live",
-    tech: ["TypeScript", "Node", "CLI"],
+    tech: ["TypeScript", "Next.js", "LLM API", "REST APIs"],
     images: [
-      { src: "/projects/developer-tool/main.png", alt: "Placeholder screenshot of the developer tool" },
-      { src: "/projects/developer-tool/secondary.png", alt: "Placeholder secondary view of the developer tool" },
+      {
+        src: "/projects/campus-decoder/main.png",
+        alt: "Campus Decoder's landing page: 'Decode the rules no one teaches', beside the four-step understand, practice, feedback, act path",
+      },
+      {
+        src: "/projects/campus-decoder/secondary.png",
+        alt: "Campus Decoder's scenario picker: office hours, emailing a professor, and group project conflict",
+      },
     ],
-    githubUrl: "https://github.com/zhoulinhua0-star",
-    placeholder: true,
-  },
-  {
-    slug: "web-app",
-    title: "Your web project",
-    description:
-      "Something you designed as well as built. Describe the interface decision that made it work, and what you would change now.",
-    category: "web",
-    year: "2025",
-    tech: ["React", "Next.js", "Postgres"],
-    images: [
-      { src: "/projects/web-app/main.png", alt: "Placeholder screenshot of the web project" },
-      { src: "/projects/web-app/secondary.png", alt: "Placeholder secondary view of the web project" },
-    ],
-    githubUrl: "https://github.com/zhoulinhua0-star",
-    placeholder: true,
+    liveUrl: "https://campusdecoder.com",
+    githubUrl: "https://github.com/zhoulinhua0-star/campus-decoder",
   },
 ];
 
 /** Section 04 — smaller work. Deliberately lighter weight than `projects`. */
 export const lab: LabEntry[] = [
   {
-    title: "A small open-source library",
-    description: "One line about what it does and who it is for.",
+    title: "scroll-reveal-motion",
+    description:
+      "An Agent Skill for reveal-on-scroll motion that stays restrained and accessible — it honours prefers-reduced-motion instead of treating it as an afterthought. The reveals on this site are the same approach.",
+    year: "2026",
+    category: "developer-tools",
+    tech: ["JavaScript", "CSS"],
+    githubUrl: "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
+  },
+  {
+    title: "git-you-need-to-know",
+    description:
+      "A short, practical Git handbook, written in Chinese for readers who find the English docs heavy going. It explains what actually moves when you run a command before it explains the commands — the model is the part that makes Git stop being frightening.",
     year: "2026",
     category: "open-source",
-    tech: ["TypeScript"],
-    githubUrl: "https://github.com/zhoulinhua0-star",
-    placeholder: true,
+    tech: ["Markdown"],
+    githubUrl: "https://github.com/zhoulinhua0-star/git-you-need-to-know",
   },
   {
-    title: "An agent experiment",
-    description: "A prototype that answered a question you had about tool use.",
-    year: "2025",
-    category: "experiments",
+    title: "weather-cli",
+    description:
+      "A terminal weather dashboard on the OpenWeatherMap API, rendered with rich. Small enough to finish, which made it a good place to work out what a CLI should feel like to use.",
+    year: "2026",
+    category: "developer-tools",
     tech: ["Python"],
-    placeholder: true,
+    githubUrl: "https://github.com/zhoulinhua0-star/weather-cli",
   },
   {
-    title: "A weekend build",
-    description: "Built in two days, still running, still useful.",
-    year: "2025",
+    title: "TypeRacerGame",
+    description:
+      "A browser typing game with several difficulty levels, real-time feedback as you type, and interface preferences that survive a reload.",
+    year: "2026",
     category: "web",
-    tech: ["React"],
-    placeholder: true,
-  },
-  {
-    title: "A contribution you are proud of",
-    description: "A patch, an issue triaged, a doc rewritten so nobody else got stuck.",
-    year: "2024",
-    category: "open-source",
-    placeholder: true,
+    tech: ["JavaScript", "HTML/CSS"],
+    liveUrl: "http://precisiontyper.com",
+    githubUrl: "https://github.com/zhoulinhua0-star/TypeRacerGame",
   },
 ];

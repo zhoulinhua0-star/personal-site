@@ -3,10 +3,22 @@ import { identity, links, place } from "@/data/personal";
 import { LocalTime } from "./local-time";
 import { ArrowUpRight } from "./icons";
 
+/**
+ * `wide` marks a link the corner cannot afford on a phone.
+ *
+ * Measured at 390px, the narrowest width this header still shows the city at:
+ * the clock is 173px and three nav labels with their gaps are 146px, which with
+ * the 24px between them comes to 343px against 343px of usable width. There is
+ * no room for a fourth label — something has to go, and dropping the city would
+ * cost every page its sense of place to serve one link. So Résumé steps out of
+ * the header below `sm` and SiteFooter carries it there instead, the same trade
+ * the GitHub pill already makes in the opposite direction.
+ */
 const nav = [
   { label: "Work", href: "/work" },
   { label: "Lab", href: "/lab" },
   { label: "About", href: "/about" },
+  { label: "Résumé", href: "/resume", wide: true },
 ];
 
 const github = links.find((link) => link.kind === "github");
@@ -33,7 +45,7 @@ export function SiteHeader({ current }: { current?: string }) {
               {nav.map((item) => {
                 const active = current === item.href;
                 return (
-                  <li key={item.href}>
+                  <li key={item.href} className={item.wide ? "hidden sm:block" : undefined}>
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}

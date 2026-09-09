@@ -3,6 +3,7 @@ import { ArrowUpRight } from "./icons";
 
 const email = links.find((link) => link.kind === "email");
 const github = links.find((link) => link.kind === "github");
+const resume = links.find((link) => link.kind === "resume");
 
 export function SiteFooter() {
   return (
@@ -38,6 +39,17 @@ export function SiteFooter() {
             >
               {github.handle}
               <ArrowUpRight className="size-3.5 transition-transform duration-500 group-hover:-translate-y-0.5" />
+            </a>
+          ) : null}
+          {/* The other half of SiteHeader's width budget: the nav shows Résumé
+              from `sm` up, so the footer shows it below. Internal, so no new
+              tab and no external arrow — it is a page on this site. */}
+          {resume ? (
+            <a
+              href={resume.href}
+              className="mono-xs inline-flex items-center gap-1.5 text-ink-3 hover:text-accent sm:hidden"
+            >
+              Résumé
             </a>
           ) : null}
           <a href="#main" className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent">

@@ -27,7 +27,7 @@ export default function HomePage() {
           id="index"
           label="Start Here"
           title="Where to go from here."
-          aside="Three parts to this site. Everything is one click away — nothing needs scrolling for."
+          aside="Four parts to this site. Everything is one click away — nothing needs scrolling for."
           className="pt-[clamp(52px,8vw,92px)] pb-[clamp(72px,10vw,132px)]"
         >
           <HubGrid />
