@@ -241,7 +241,7 @@ src/
     work/ lab/ about/ the three content pages
     globals.css       design tokens + every component style
     not-found.tsx     404
-    robots.ts  sitemap.ts  icon.svg
+    robots.ts  sitemap.ts  icon.png
   components/         small, single-purpose pieces
     cat-companion.tsx the desk companion — drag, poke, doze
     command-deck.tsx  the background artwork and its pointer parallax

@@ -111,26 +111,32 @@ export function LocalTime() {
   return (
     <span className="mono-xs flex items-baseline gap-2 whitespace-nowrap text-ink-2">
       <span>{time}</span>
-      {/* Below 380px the corner cannot hold the city and the nav at once, so the
-          city steps aside and the bare time keeps the corner meaningful. The
-          wrapping Link's aria-label names the place at every width regardless,
-          so nothing is lost to a screen reader. */}
-      <span className="hidden text-ink-4 min-[380px]:inline" aria-hidden="true">
+      {/* The corner and the nav share one row, and the nav's labels are words
+          now ("Projects", "Experiments", "Approach"), not the three short ones
+          this used to budget for. Measured at 13px: the nav is 224px below `sm`
+          and 317px from `sm` up, the GitHub pill 90px, the two outer gaps 48px,
+          and the city with its separator 129px. Against a usable width of
+          `100vw - 2 × clamp(22px, 6vw, 72px)` the city does not fit until 768px
+          — 628px of content against 676px — so it waits for `md`. Below that
+          the bare time keeps the corner meaningful; the wrapping Link's
+          aria-label names the place at every width, so a screen reader loses
+          nothing. */}
+      <span className="hidden text-ink-4 md:inline" aria-hidden="true">
         ·
       </span>
-      <span className="hidden text-ink-3 min-[380px]:inline">{place.label}</span>
+      <span className="hidden text-ink-3 md:inline">{place.label}</span>
       {offset ? (
         <>
-          <span className="hidden text-ink-4 md:inline" aria-hidden="true">
+          <span className="hidden text-ink-4 lg:inline" aria-hidden="true">
             ·
           </span>
-          {/* Dropped on narrow screens, where the header has no room to spare.
-              It waits for `md` rather than `sm` because `sm` is exactly where
-              the header gains two elements at once — the Résumé link and the
-              GitHub pill — and the offset is the least load-bearing thing in
-              the corner: the city says where, the clock says when, and the
-              offset only saves the reader an arithmetic step. */}
-          <span className="hidden text-ink-4 md:inline">{offset}</span>
+          {/* The offset is the least load-bearing thing in the corner — the
+              city says where, the clock says when, and this only saves the
+              reader an arithmetic step — so it is the piece that yields when
+              the row is tight. It now waits a breakpoint longer than the city:
+              at `md` the two together come to 679px against 676px of usable
+              width, which is over by three. `lg` clears it with room. */}
+          <span className="hidden text-ink-4 lg:inline">{offset}</span>
         </>
       ) : null}
     </span>

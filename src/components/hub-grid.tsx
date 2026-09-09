@@ -1,13 +1,35 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { lab, projects } from "@/data/projects";
-import { resume } from "@/data/personal";
 
 /**
- * The home page hub. Four restrained destination cards, so the landing screen
+ * The years the listed work spans, collapsed to a single year while every entry
+ * shares one. Derived rather than written down so it cannot drift from the
+ * projects it describes.
+ */
+const years = projects.map((project) => project.year).sort();
+const span =
+  years[0] === years[years.length - 1]
+    ? years[0]
+    : `${years[0]}–${years[years.length - 1]}`;
+
+/**
+ * The home page hub. Three restrained destination cards, so the landing screen
  * stays short and everything is one click away. Deliberately editorial: mono
  * index, hand-drawn glyph, one hairline accent on hover. No screenshot stacks,
  * no dashboard grid. (A way to reach me sits in the quiet row below the grid.)
+ *
+ * Titles are single nouns because the blurb under each one already explains;
+ * a title that explains too is a sentence where a name belongs. What separates
+ * 01 from 02 is scale and intent — substantial work versus small things built
+ * to answer a question — not whether either is finished, since the lab entries
+ * are shipped too. So the meta lines carry no noun that repeats the title: 01
+ * counts and dates, 02 counts and sizes. The résumé is deliberately not a
+ * fourth card. These three are things to read here; it is a file to take away, and
+ * sitting it in the same grid claimed a parity it never had. It keeps the two
+ * surfaces that suit an errand instead — the hero's link strip and the header
+ * nav, which is on every page — so someone who came only for it still lands on
+ * it in one click, without it outranking the work three times over.
  */
 
 type Entry = {
@@ -38,51 +60,35 @@ const glyphs = {
       <path d="M24 13v25" />
     </>
   ),
-  resume: (
-    <>
-      <path d="M12 5h16l8 8v30H12V5Z" strokeLinejoin="round" />
-      <path d="M28 5.3V13h7.7" strokeLinejoin="round" />
-      <path d="M18.5 22h11M18.5 28h11M18.5 34h7" strokeLinecap="round" />
-    </>
-  ),
 };
 
 const entries: Entry[] = [
   {
     href: "/work",
     index: "01",
-    title: "Selected work",
+    title: "Projects",
     blurb:
-      "Projects worth walking through: a problem behind each one, a constraint that made it interesting, and a decision I would defend.",
-    meta: `${projects.length} ${projects.length === 1 ? "project" : "projects"}`,
+      "The ones worth walking through: a problem behind each, a constraint that made it interesting, and a decision I would defend.",
+    meta: `${projects.length} · ${span}`,
     glyph: glyphs.work,
   },
   {
     href: "/lab",
     index: "02",
-    title: "Lab",
+    title: "Experiments",
     blurb:
       "Smaller things — libraries, prototypes, and studies that each answered a question I had.",
-    meta: `${lab.length} ${lab.length === 1 ? "experiment" : "experiments"}`,
+    meta: `${lab.length} ${lab.length === 1 ? "small thing" : "small things"}`,
     glyph: glyphs.lab,
   },
   {
     href: "/about",
     index: "03",
-    title: "About",
+    title: "Approach",
     blurb:
       "How I work, what I focus on, and the stack I reach for when an idea needs to become something you can open.",
     meta: "Bio · facts",
     glyph: glyphs.about,
-  },
-  {
-    href: "/resume",
-    index: "04",
-    title: "Résumé",
-    blurb:
-      "The short version: one page, current, readable in the browser and downloadable as a PDF.",
-    meta: `PDF · ${resume.updated}`,
-    glyph: glyphs.resume,
   },
 ];
 

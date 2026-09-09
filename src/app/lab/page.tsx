@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { Subpage } from "@/components/subpage";
 
 export const metadata: Metadata = {
-  title: "Lab",
+  title: "Experiments",
   description:
     "Smaller things — open-source libraries, prototypes, and studies that each answered a question I had.",
   alternates: { canonical: "/lab" },
@@ -17,8 +17,8 @@ export default function LabPage() {
       <SiteHeader current="/lab" />
       <Subpage
         number="02"
-        label="Lab"
-        title="Open source and experiments."
+        label="Experiments"
+        title="Open source and small studies."
         aside="Smaller things: libraries, prototypes, and studies that answered a question I had."
       >
         <LabList />

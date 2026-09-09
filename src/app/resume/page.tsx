@@ -31,7 +31,6 @@ export default function ResumePage() {
     <>
       <SiteHeader current="/resume" />
       <Subpage
-        number="04"
         label="Résumé"
         title="The short version, on one page."
         aside={resume.note}

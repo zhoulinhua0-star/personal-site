@@ -5,7 +5,7 @@ import { Subpage } from "@/components/subpage";
 import { about } from "@/data/personal";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "Approach",
   description:
     "A developer who likes building the tools other developers end up using — software engineering, AI and agent systems, and the interface layer where they meet.",
   alternates: { canonical: "/about" },
@@ -17,7 +17,7 @@ export default function AboutPage() {
       <SiteHeader current="/about" />
       <Subpage
         number="03"
-        label="About"
+        label="Approach"
         title="Engineering with a bias toward things people can actually use."
       >
         <div className="grid gap-[clamp(36px,5vw,80px)] lg:grid-cols-12">

@@ -6,18 +6,20 @@ import { ArrowUpRight } from "./icons";
 /**
  * `wide` marks a link the corner cannot afford on a phone.
  *
- * Measured at 390px, the narrowest width this header still shows the city at:
- * the clock is 173px and three nav labels with their gaps are 146px, which with
- * the 24px between them comes to 343px against 343px of usable width. There is
- * no room for a fourth label — something has to go, and dropping the city would
- * cost every page its sense of place to serve one link. So Résumé steps out of
- * the header below `sm` and SiteFooter carries it there instead, the same trade
- * the GitHub pill already makes in the opposite direction.
+ * The labels here are the names the pages use, so that a visitor never meets a
+ * section under two different words. That costs width: "Projects Experiments
+ * Approach" measures 224px at 13px against the 146px the old three-word set
+ * took. At 390px the usable row is 343px, and the clock's full readout is 173px
+ * — 421px of content for 343px of space, so something had to yield. Résumé
+ * still steps out below `sm` (SiteFooter carries it there), and the city now
+ * waits for `md` as well; see LocalTime, which does that arithmetic. What is
+ * left below `sm` is the bare time and the three section names, 284px, which
+ * fits with room to spare.
  */
 const nav = [
-  { label: "Work", href: "/work" },
-  { label: "Lab", href: "/lab" },
-  { label: "About", href: "/about" },
+  { label: "Projects", href: "/work" },
+  { label: "Experiments", href: "/lab" },
+  { label: "Approach", href: "/about" },
   { label: "Résumé", href: "/resume", wide: true },
 ];
 
