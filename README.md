@@ -1,6 +1,6 @@
 <p align="center">
   <img src="./assets/readme/hero.svg" width="100%"
-       alt="linhuazhou.com — a static personal site with no runtime dependencies beyond React, where everything you edit is three data files. Routes: /projects, /experiments, /approach.">
+       alt="linhuazhou.com — a static personal site with no runtime dependencies beyond React, where everything you edit is three data files. Index: /projects, /experiments, /approach, plus /resume.">
 </p>
 
 <p align="center">
@@ -16,10 +16,10 @@
 The personal site of **Linhua Zhou** — software engineering, AI and agent systems,
 developer tools, and product work.
 
-It is a **compact landing hub** with three pages behind it, not one long scroll.
-The point of the build is maintenance: the content you actually change lives in
-plain data files, so adding a project — or teaching the cat a new pose — never
-means opening a component.
+It is a **compact landing hub** with three destination pages behind it and a résumé
+beside them, not one long scroll. The point of the build is maintenance: the content you
+actually change lives in plain data files, so adding a project — or teaching the cat a new
+pose — never means opening a component.
 
 - **Live** — [linhuazhou.com](https://linhuazhou.com)
 - **Pages** — `/` hub · `/projects` · `/experiments` · `/approach` · `/resume`
@@ -60,10 +60,11 @@ Three files hold everything. None of them contains JSX.
 | Export | Controls |
 | --- | --- |
 | `site` | Canonical URL, page title, meta description, share image, locale |
-| `identity` | Name, `nameAlt` (secondary script), the `Developer · Builder` line, year |
+| `identity` | Name, `nameAlt` (secondary script), the `Developer · Builder` line, the footer's copyright year |
 | `places` + `currentPlace` | The live clock in the header — see below |
 | `hero` | The Now block (two status rows), intro paragraph, status chip |
 | `links` | Email · GitHub · LinkedIn · Résumé · X — label, URL, and handle |
+| `resume` | The PDF's path, its download name, and the date printed on `/resume` |
 | `about` | About paragraphs and the spec-sheet facts beside them |
 | `footer` | The one-line footer note |
 
@@ -82,7 +83,13 @@ now: [
 Delete an entry and its cell leaves the strip. To add a new kind, add an icon to
 `src/components/icons.tsx` and register it there. The email entry deliberately points at
 Gmail's compose URL rather than `mailto:`, so it opens a working compose window instead of
-handing off to a desktop client that may not exist; `handle` keeps the bare address.
+handing off to a desktop client that may not exist; `handle` keeps the bare address. The
+Résumé entry points at `/resume/`, the page, not at the file.
+
+**The résumé.** `/resume` embeds the PDF on a laptop and hands it to the system viewer
+below `md`, where an embedded PDF renders as a dead first-page thumbnail. To publish a new
+version, overwrite `public/resume.pdf` and bump `resume.updated` — the filename never
+changes, so every link already handed out keeps resolving.
 
 **The clock.** The header shows the real local time wherever you are. Nothing detects
 anything — you change one line when you move:
@@ -106,8 +113,9 @@ Three exports: `categories` (the six kinds of work), `projects` (`/projects`), a
   slug: "my-app",
   title: "My App",
   description: "One or two sentences. The problem, and why it was worth solving.",
-  category: "ai-products",          // ai-products | web | developer-tools
-  year: "2026",                     // experiments | open-source
+  // ai-products | web | mobile | developer-tools | experiments | open-source
+  category: "ai-products",
+  year: "2026",
   status: "Live",                                // optional chip
   tech: ["TypeScript", "Next.js"],               // optional
   metrics: [{ label: "Users", value: "1.2k" }],  // optional stat row
@@ -230,6 +238,11 @@ Repository setup, already in place:
 `public/CNAME` keeps the custom domain attached on every deploy — do not delete it.
 `public/.nojekyll` stops Pages from filtering `_next/`.
 
+**The old URLs still resolve.** `/work`, `/lab` and `/about` were the addresses for the
+site's first months, so they stay as `noindex` stubs that canonicalise to the new page and
+redirect with a meta refresh — the one redirect a flat file can carry, since a static export
+has no server to honour a Next.js `redirects()` rule and GitHub Pages has no rewrite layer.
+
 Because the site is served from the domain root, there is **no `basePath`**. Moving it to
 `https://<user>.github.io/<repo>/` would require adding `basePath` and `assetPrefix` to
 `next.config.ts`.
@@ -244,11 +257,15 @@ src/
     layout.tsx        metadata, font preload, click ripple, the cat
     page.tsx          the landing hub
     projects/ experiments/ approach/   the three content pages
+    resume/           the PDF, embedded on a laptop and handed over on a phone
     work/ lab/ about/                   redirect stubs for the old URLs
     globals.css       design tokens + every component style
     not-found.tsx     404
     robots.ts  sitemap.ts  icon.png
   components/         small, single-purpose pieces
+    hub-grid.tsx      the landing page's three destination cards
+    project-card.tsx  one project and its screenshot stack
+    moved.tsx         the meta-refresh stub behind /work, /lab and /about
     cat-companion.tsx the desk companion — drag, poke, doze
     command-deck.tsx  the background artwork and its pointer parallax
   data/
@@ -261,9 +278,11 @@ src/
     cat-ground.ts     what the paws have landed on
     cat-presence.ts   who gets a cat, and whether it is currently around
 public/               static assets, copied verbatim into out/
+  projects/<slug>/    project screenshots
   cat/                the fifteen sprites (generated)
   backgrounds/        the two command-deck layers
   fonts/              Geist + Geist Mono, self-hosted
+  resume.pdf          overwrite in place; the filename is a permanent address
 scripts/              sprite and cursor generators — build-time only, never shipped
 assets/               cat-source.png, plus readme/ artwork (not part of the site build)
 ```
