@@ -2,7 +2,7 @@
      width="1200" height="560" viewBox="0 0 1200 560"
      role="img" aria-labelledby="catTitle catDesc">
   <title id="catTitle">How the cat decides which drawing to show</title>
-  <desc id="catDesc">Warm cream board. Left column, in precedence order: while you drag it the cat shows look-back; when you poke it, play; left alone it steps through tired at 40 seconds, sleep at 90 and belly at 150; otherwise the pose is a readout of the ground under its paws. Right panel lists that ground table, first match wins: a window corner gives in-box, the bottom edge peek, the top edge look-up, a project card or a /work link coding, a lab row or a /lab link hunt, the name in the hero hello, prose thinking, a link or button curious, and anything else chill.</desc>
+  <desc id="catDesc">Warm cream board. Left column, in precedence order: while you drag it the cat shows look-back; when you poke it, play; left alone it steps through tired at 40 seconds, sleep at 90 and belly at 150; otherwise the pose is a readout of the ground under its paws. Right panel lists that ground table, first match wins: a window corner gives in-box, the bottom edge peek, the top edge look-up, a project card or a /projects link coding, an experiment row or an /experiments link hunt, the name in the hero hello, prose thinking, a link or button curious, and anything else chill.</desc>
 
   <defs>
     <pattern id="graph3" width="26" height="26" patternUnits="userSpaceOnUse">
@@ -95,8 +95,8 @@
         <text x="24" y="88">a corner of the window</text>
         <text x="24" y="126">the bottom edge</text>
         <text x="24" y="164">the top edge</text>
-        <text x="24" y="202">.project · a[href^="/work"]</text>
-        <text x="24" y="240">.lab-row · a[href^="/lab"]</text>
+        <text x="24" y="202">.project · /projects links</text>
+        <text x="24" y="240">.experiment-row · /experiments links</text>
         <text x="24" y="278">.display — the name</text>
         <text x="24" y="316">p, li, h1–h4, blockquote</text>
         <text x="24" y="354">a[href], button</text>
@@ -127,7 +127,7 @@
       </g>
       <line x1="0" y1="408" x2="516" y2="408" stroke="#e7e2d2"/>
 
-      <text x="24" y="432" font-size="18" fill="#85837a">Places are checked before things; unrecognised ground is floor.</text>
+      <text x="24" y="432" font-size="18" fill="#85837a">Places before things. Link rows match on href prefix.</text>
     </g>
   </g>
 </svg>

@@ -2,7 +2,7 @@
      width="1200" height="380" viewBox="0 0 1200 380"
      role="img" aria-labelledby="heroTitle heroDesc">
   <title id="heroTitle">linhuazhou.com — source of a hand-built static personal site</title>
-  <desc id="heroDesc">Warm cream board with engineering graph ruling. Left: the site name, a one-line description saying everything you edit is three data files, and the stack. Right: the site's index hub listing the Work, Lab and About routes with bilingual labels.</desc>
+  <desc id="heroDesc">Warm cream board with engineering graph ruling. Left: the site name, a one-line description saying everything you edit is three data files, and the stack. Right: the site's index hub listing the Projects, Experiments and Approach routes with bilingual labels, and the resume route below them.</desc>
 
   <defs>
     <pattern id="graph" width="26" height="26" patternUnits="userSpaceOnUse">
@@ -50,30 +50,30 @@
           font-size="18" letter-spacing="2.4" fill="#85837a">INDEX · 目录</text>
 
     <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
-      <!-- /work -->
+      <!-- /projects -->
       <text x="0" y="146" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="34" font-weight="700" fill="#e7e2d2">01</text>
-      <text x="62" y="140" font-size="24" font-weight="600" fill="#1a1a17">/work</text>
-      <text x="176" y="140" font-size="20" fill="#85837a">Selected work · 作品</text>
-      <line x1="0" y1="166" x2="396" y2="166" stroke="#e7e2d2" stroke-width="1"/>
+      <text x="62" y="140" font-size="24" font-weight="600" fill="#1a1a17">/projects</text>
+      <text x="410" y="140" text-anchor="end" font-size="19" fill="#85837a">Projects · 项目</text>
+      <line x1="0" y1="166" x2="410" y2="166" stroke="#e7e2d2" stroke-width="1"/>
 
-      <!-- /lab -->
+      <!-- /experiments -->
       <text x="0" y="216" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="34" font-weight="700" fill="#e7e2d2">02</text>
-      <text x="62" y="210" font-size="24" font-weight="600" fill="#1a1a17">/lab</text>
-      <text x="176" y="210" font-size="20" fill="#85837a">Experiments · 实验</text>
-      <line x1="0" y1="236" x2="396" y2="236" stroke="#e7e2d2" stroke-width="1"/>
+      <text x="62" y="210" font-size="24" font-weight="600" fill="#1a1a17">/experiments</text>
+      <text x="410" y="210" text-anchor="end" font-size="19" fill="#85837a">Experiments · 实验</text>
+      <line x1="0" y1="236" x2="410" y2="236" stroke="#e7e2d2" stroke-width="1"/>
 
-      <!-- /about -->
+      <!-- /approach -->
       <text x="0" y="286" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
             font-size="34" font-weight="700" fill="#e7e2d2">03</text>
-      <text x="62" y="280" font-size="24" font-weight="600" fill="#1a1a17">/about</text>
-      <text x="176" y="280" font-size="20" fill="#85837a">About · 关于</text>
-      <line x1="0" y1="306" x2="396" y2="306" stroke="#e7e2d2" stroke-width="1"/>
+      <text x="62" y="280" font-size="24" font-weight="600" fill="#1a1a17">/approach</text>
+      <text x="410" y="280" text-anchor="end" font-size="19" fill="#85837a">Approach · 方法</text>
+      <line x1="0" y1="306" x2="410" y2="306" stroke="#e7e2d2" stroke-width="1"/>
     </g>
 
     <circle cx="6" cy="336" r="4" fill="#1f57d6"/>
     <text x="22" y="342" font-family="ui-monospace,SFMono-Regular,Menlo,monospace"
-          font-size="18" fill="#85837a">live · HTTPS enforced</text>
+          font-size="18" fill="#85837a">plus /resume · live, HTTPS enforced</text>
   </g>
 </svg>
