@@ -17,9 +17,9 @@ import { ArrowUpRight } from "./icons";
  * fits with room to spare.
  */
 const nav = [
-  { label: "Projects", href: "/work" },
-  { label: "Experiments", href: "/lab" },
-  { label: "Approach", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Experiments", href: "/experiments" },
+  { label: "Approach", href: "/approach" },
   { label: "Résumé", href: "/resume", wide: true },
 ];
 

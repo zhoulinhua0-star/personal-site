@@ -32,13 +32,41 @@ export function Hero() {
           ) : null}
         </h1>
 
-        <p className="statement mt-[clamp(20px,3vw,36px)] max-w-[19ch] text-ink-2">
-          {hero.statement.map((line, index) => (
-            <span key={line} className="block">
-              {index === 0 ? <span className="text-ink">{line}</span> : line}
-            </span>
+        {/* The Now block. Same rules as the spec sheet beside the About prose,
+            one column narrower: label left, value right, a hairline between
+            rows. Reusing that table rather than inventing a second one is the
+            point — the two pages then read as one document.
+
+            `max-w-[52ch]` is the paragraph's own measure, so this block and
+            the prose under it share a right edge. */}
+        <dl className="mt-[clamp(20px,3vw,36px)] max-w-[52ch]">
+          {hero.now.map((row) => (
+            <div
+              key={row.label}
+              className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-4 border-t border-line py-4 last:border-b"
+            >
+              <dt className="label pt-1">{row.label}</dt>
+              <dd className="text-[15px] leading-[1.5] text-ink-2">
+                {row.href ? (
+                  <a
+                    href={row.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    /* Inline rather than a flex row: when the value wraps on a
+                       phone, the arrow has to follow the last word instead of
+                       parking itself at the top right of the cell. */
+                    className="group text-ink transition-colors duration-300 hover:text-accent focus-visible:text-accent"
+                  >
+                    <span className="link-underline">{row.value}</span>
+                    <ArrowUpRight className="ml-1.5 inline-block size-3.5 align-[-2px] text-ink-4 transition-[transform,color] duration-300 group-hover:-translate-y-px group-hover:text-accent" />
+                  </a>
+                ) : (
+                  row.value
+                )}
+              </dd>
+            </div>
           ))}
-        </p>
+        </dl>
 
         <div className="mt-[clamp(30px,4vw,52px)] max-w-[52ch]">
           <p className="lead">{hero.intro}</p>

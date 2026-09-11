@@ -53,7 +53,7 @@ export type Project = {
   placeholder?: true;
 };
 
-export type LabEntry = {
+export type ExperimentEntry = {
   title: string;
   description: string;
   year: string;
@@ -179,7 +179,7 @@ export const projects: Project[] = [
 ];
 
 /** Section 04 — smaller work. Deliberately lighter weight than `projects`. */
-export const lab: LabEntry[] = [
+export const experiments: ExperimentEntry[] = [
   {
     title: "scroll-reveal-motion",
     description:

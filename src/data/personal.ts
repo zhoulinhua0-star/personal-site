@@ -94,13 +94,50 @@ for (const [key, entry] of Object.entries(places)) {
   }
 }
 
+/** One row of the hero's Now block. */
+export type NowRow = {
+  /** Printed uppercase in the left column. Keep it to ten characters — the
+   *  column is 5.5rem, which is about twelve mono characters at this size. */
+  label: string;
+  /** Keep it under ~60 characters; past that it wraps to a second line. */
+  value: string;
+  /** Optional. A row with one becomes a link, arrow and all. */
+  href?: string;
+};
+
 export const hero = {
   /**
-   * The headline. Each array entry is rendered as its own line, so you control
-   * exactly where the statement breaks on large screens.
+   * ------------------------------------------------------------------------
+   *  THE NOW BLOCK — the one thing on this site that goes stale.
+   * ------------------------------------------------------------------------
+   *
+   *  Two rows between the name and the paragraph. There used to be a lowercase
+   *  headline here — "I build software, AI tools, and things I find
+   *  interesting." — which said what the paragraph below already says, one
+   *  size larger. What replaced it says something the paragraph cannot: what I
+   *  am actually doing, right now, with a date on it.
+   *
+   *  That is the trade. A slogan is true forever and tells a reader nothing; a
+   *  status is worth reading precisely because it could be out of date, which
+   *  means it is on you to keep it from being. Re-read these two lines
+   *  whenever you push, and when `Next` becomes the present, move it up.
    */
-  statement: ["I build software,", "AI tools, and things", "I find interesting."],
-  /** One or two short paragraphs under the headline. Keep the hero uncrowded. */
+  now: [
+    {
+      label: "Now",
+      value: "Asterlo — approval-gated outreach. Look forward to distributing the product",
+      // The live product, not /projects — a reader who follows this wants the
+      // thing itself, and the case study is one click from the hub below.
+      href: "https://asterlo.io",
+    },
+    {
+      label: "Next",
+      // Becomes the present in autumn 2026: change the label to "At", drop the
+      // year, and give `Now` whatever you are building by then.
+      value: "NYU — CS & Mathematics, autumn 2026",
+    },
+  ] as readonly NowRow[],
+  /** One or two short paragraphs under the Now block. Keep the hero uncrowded. */
   intro:
     "Software engineering, AI and agent systems, developer tools, and product engineering. I like the part where an idea becomes something you can actually open and use.",
   /** Small technical marker rendered next to the hero's system readout. */

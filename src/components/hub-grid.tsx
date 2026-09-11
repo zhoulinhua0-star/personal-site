@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { lab, projects } from "@/data/projects";
+import { experiments, projects } from "@/data/projects";
 
 /**
  * The years the listed work spans, collapsed to a single year while every entry
@@ -22,7 +22,7 @@ const span =
  * Titles are single nouns because the blurb under each one already explains;
  * a title that explains too is a sentence where a name belongs. What separates
  * 01 from 02 is scale and intent — substantial work versus small things built
- * to answer a question — not whether either is finished, since the lab entries
+ * to answer a question — not whether either is finished, since the experiment entries
  * are shipped too. So the meta lines carry no noun that repeats the title: 01
  * counts and dates, 02 counts and sizes. The résumé is deliberately not a
  * fourth card. These three are things to read here; it is a file to take away, and
@@ -42,19 +42,19 @@ type Entry = {
 };
 
 const glyphs = {
-  work: (
+  projects: (
     <>
       <rect x="5" y="9" width="27" height="19" rx="2" />
       <rect x="16" y="20" width="27" height="19" rx="2" />
     </>
   ),
-  lab: (
+  experiments: (
     <>
       <path d="M19 6h10M21 6v13L10 37a3 3 0 0 0 2.7 4.6h22.6A3 3 0 0 0 38 37L27 19V6" strokeLinejoin="round" />
       <path d="M15.5 31h17" />
     </>
   ),
-  about: (
+  approach: (
     <>
       <path d="M24 13c-4-3-10-3-15-2v25c5-1 11-1 15 2 4-3 10-3 15-2V11c-5-1-11-1-15 2Z" strokeLinejoin="round" />
       <path d="M24 13v25" />
@@ -64,31 +64,31 @@ const glyphs = {
 
 const entries: Entry[] = [
   {
-    href: "/work",
+    href: "/projects",
     index: "01",
     title: "Projects",
     blurb:
       "The ones worth walking through: a problem behind each, a constraint that made it interesting, and a decision I would defend.",
     meta: `${projects.length} · ${span}`,
-    glyph: glyphs.work,
+    glyph: glyphs.projects,
   },
   {
-    href: "/lab",
+    href: "/experiments",
     index: "02",
     title: "Experiments",
     blurb:
       "Smaller things — libraries, prototypes, and studies that each answered a question I had.",
-    meta: `${lab.length} ${lab.length === 1 ? "small thing" : "small things"}`,
-    glyph: glyphs.lab,
+    meta: `${experiments.length} ${experiments.length === 1 ? "small thing" : "small things"}`,
+    glyph: glyphs.experiments,
   },
   {
-    href: "/about",
+    href: "/approach",
     index: "03",
     title: "Approach",
     blurb:
       "How I work, what I focus on, and the stack I reach for when an idea needs to become something you can open.",
     meta: "Bio · facts",
-    glyph: glyphs.about,
+    glyph: glyphs.approach,
   },
 ];
 

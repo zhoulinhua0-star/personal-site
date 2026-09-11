@@ -88,9 +88,9 @@ export const catEdges = {
  */
 export const catGround: { selector: string; pose: CatPose }[] = [
   // Prefix matches, not exact: the site is a static export, so its own links
-  // carry a trailing slash — `/work/`, not `/work`.
-  { selector: '.project, a[href^="/work"]', pose: "coding" },
-  { selector: '.lab-row, a[href^="/lab"]', pose: "hunt" },
+  // carry a trailing slash — `/projects/`, not `/projects`.
+  { selector: '.project, a[href^="/projects"]', pose: "coding" },
+  { selector: '.experiment-row, a[href^="/experiments"]', pose: "hunt" },
   { selector: ".display", pose: "hello" },
   { selector: "p, li, h1, h2, h3, h4, blockquote", pose: "thinking" },
   { selector: "a[href], button", pose: "curious" },

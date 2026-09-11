@@ -1,29 +1,12 @@
 import type { Metadata } from "next";
-import { LabList } from "@/components/lab-list";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { Subpage } from "@/components/subpage";
+import { Moved } from "@/components/moved";
 
 export const metadata: Metadata = {
-  title: "Experiments",
-  description:
-    "Smaller things — open-source libraries, prototypes, and studies that each answered a question I had.",
-  alternates: { canonical: "/lab" },
+  title: "Moved",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/experiments" },
 };
 
-export default function LabPage() {
-  return (
-    <>
-      <SiteHeader current="/lab" />
-      <Subpage
-        number="02"
-        label="Experiments"
-        title="Open source and small studies."
-        aside="Smaller things: libraries, prototypes, and studies that answered a question I had."
-      >
-        <LabList />
-      </Subpage>
-      <SiteFooter />
-    </>
-  );
+export default function ExperimentsRedirect() {
+  return <Moved to="/experiments/" name="Experiments" />;
 }

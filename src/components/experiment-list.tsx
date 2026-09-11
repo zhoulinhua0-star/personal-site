@@ -1,18 +1,18 @@
-import { categories, lab } from "@/data/projects";
+import { categories, experiments } from "@/data/projects";
 import { ArrowUpRight } from "./icons";
 
 /**
  * Smaller work. Deliberately a list, not cards — it must never compete with
  * the flagship projects above it.
  */
-export function LabList() {
+export function ExperimentList() {
   return (
     <ul className="reveal">
-      {lab.map((entry, index) => {
+      {experiments.map((entry, index) => {
         const category = categories.find((item) => item.slug === entry.category);
         const href = entry.liveUrl ?? entry.githubUrl;
         return (
-          <li key={entry.title} className="lab-row">
+          <li key={entry.title} className="experiment-row">
             <span className="label pt-1">{String(index + 1).padStart(2, "0")}</span>
 
             <div className="flex flex-wrap items-baseline gap-x-3">

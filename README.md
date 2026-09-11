@@ -1,6 +1,6 @@
 <p align="center">
   <img src="./assets/readme/hero.svg" width="100%"
-       alt="linhuazhou.com — a static personal site with no runtime dependencies beyond React, where everything you edit is three data files. Routes: /work, /lab, /about.">
+       alt="linhuazhou.com — a static personal site with no runtime dependencies beyond React, where everything you edit is three data files. Routes: /projects, /experiments, /approach.">
 </p>
 
 <p align="center">
@@ -22,7 +22,7 @@ plain data files, so adding a project — or teaching the cat a new pose — nev
 means opening a component.
 
 - **Live** — [linhuazhou.com](https://linhuazhou.com)
-- **Pages** — `/` hub · `/work` · `/lab` · `/about`
+- **Pages** — `/` hub · `/projects` · `/experiments` · `/approach` · `/resume`
 - **Build** — Next.js 16 App Router, `output: "export"` — fully static
 - **Runtime dependencies** — React and React DOM. Nothing else.
 
@@ -62,15 +62,20 @@ Three files hold everything. None of them contains JSX.
 | `site` | Canonical URL, page title, meta description, share image, locale |
 | `identity` | Name, `nameAlt` (secondary script), the `Developer · Builder` line, year |
 | `places` + `currentPlace` | The live clock in the header — see below |
-| `hero` | The headline (one array entry per line), intro paragraph, status chip |
+| `hero` | The Now block (two status rows), intro paragraph, status chip |
 | `links` | Email · GitHub · LinkedIn · Résumé · X — label, URL, and handle |
 | `about` | About paragraphs and the spec-sheet facts beside them |
 | `footer` | The one-line footer note |
 
-**The headline** is an array, so you control exactly where it breaks:
+**The Now block** sits between the name and the paragraph, and it is the one thing on the
+site that goes stale — keep it current. Two rows read best; a `href` turns a row into a
+link. Labels want ten characters or fewer, values sixty or fewer.
 
 ```ts
-statement: ["I build software,", "AI tools, and things", "I find interesting."],
+now: [
+  { label: "Now", value: "…", href: "https://asterlo.io" },
+  { label: "Next", value: "…" },
+],
 ```
 
 **Links.** `kind` selects the icon — `"github" | "linkedin" | "x" | "resume" | "email"`.
@@ -93,8 +98,8 @@ zone identifier throws during prerender — so neither reaches the site.
 
 ### `src/data/projects.ts` — the work
 
-Three exports: `categories` (the five kinds of work), `projects` (`/work`), and `lab`
-(`/lab`). Add a project by copying an object:
+Three exports: `categories` (the six kinds of work), `projects` (`/projects`), and
+`experiments` (`/experiments`). Add a project by copying an object:
 
 ```ts
 {
@@ -134,7 +139,7 @@ Everything the cat says and does, in one table. It has its own section below.
 
 <p align="center">
   <img src="./assets/readme/companion.svg" width="100%"
-       alt="How the cat picks a drawing, in precedence order: while you drag it, look-back; while you poke it, play; left alone, tired at 40s then sleep at 90s then belly at 150s; otherwise the pose is a readout of the ground under its paws — a window corner gives in-box, the bottom edge peek, the top edge look-up, a project card or /work link coding, a lab row or /lab link hunt, the name in the hero hello, prose thinking, a link or button curious, and anything else chill.">
+       alt="How the cat picks a drawing, in precedence order: while you drag it, look-back; while you poke it, play; left alone, tired at 40s then sleep at 90s then belly at 150s; otherwise the pose is a readout of the ground under its paws — a window corner gives in-box, the bottom edge peek, the top edge look-up, a project card or /projects link coding, an experiment row or /experiments link hunt, the name in the hero hello, prose thinking, a link or button curious, and anything else chill.">
 </p>
 
 A small companion pinned over every page: drag it anywhere, poke it for a line, and
@@ -157,8 +162,8 @@ before things, so a cat in a corner is in its box whatever the page has drawn th
 | a corner of the window (within `catEdges.corner`) | `in-box` |
 | the bottom edge | `peek` |
 | the top edge | `look-up` |
-| `.project`, `a[href^="/work"]` | `coding` |
-| `.lab-row`, `a[href^="/lab"]` | `hunt` |
+| `.project`, `a[href^="/projects"]` | `coding` |
+| `.experiment-row`, `a[href^="/experiments"]` | `hunt` |
 | `.display` — the name in the hero | `hello` |
 | `p`, `li`, `h1`–`h4`, `blockquote` | `thinking` |
 | `a[href]`, `button` | `curious` |
@@ -238,7 +243,8 @@ src/
   app/
     layout.tsx        metadata, font preload, click ripple, the cat
     page.tsx          the landing hub
-    work/ lab/ about/ the three content pages
+    projects/ experiments/ approach/   the three content pages
+    work/ lab/ about/                   redirect stubs for the old URLs
     globals.css       design tokens + every component style
     not-found.tsx     404
     robots.ts  sitemap.ts  icon.png
@@ -330,17 +336,11 @@ enabled the site is static and complete.
 
 ---
 
-## Still to fill in
+## Switches left open
 
-- [ ] **`public/resume.pdf`** — not in the repo yet, so the Résumé link 404s.
-- [ ] **`about.facts`** in `personal.ts` — the `Based in` and `Currently` rows still read
-      "Add your city" / "Add what you are working on".
-- [ ] **Everything in `src/data/projects.ts`** — all three `projects` and all four `lab`
-      entries are still marked `placeholder: true`, and the screenshots under
-      `public/projects/` are generated placeholders.
-- [ ] Optional: `identity.nameAlt` is `""`. Set it back to `"周琳桦"` to restore the
-      secondary script in the hero, the footer, and the JSON-LD `alternateName` — one switch
-      drives all three.
+- `identity.nameAlt` is `""`. Set it back to `"周琳桦"` to restore the secondary script in
+  the hero, the footer, and the JSON-LD `alternateName` — one switch drives all three.
+- `hero.now` is the one field that goes stale by design. Re-read it when you push.
 
 ---
 

@@ -270,15 +270,6 @@
     font-weight: 600;
   }
 
-  /* The hero line — set big, tight and lowercase, oil-style. */
-  .statement {
-    font-size: clamp(1.7rem, 3.9vw, 3rem);
-    line-height: 1.06;
-    letter-spacing: -0.038em;
-    font-weight: 480;
-    text-transform: lowercase;
-  }
-
   .heading {
     font-size: clamp(1.8rem, 3.3vw, 2.6rem);
     line-height: 1.06;
@@ -1036,7 +1027,7 @@
   }
 
   /* Lab rows */
-  .lab-row {
+  .experiment-row {
     position: relative;
     display: grid;
     gap: 6px 24px;
@@ -1045,18 +1036,18 @@
     transition: background-color 0.35s var(--ease-out-soft);
   }
 
-  .lab-row:last-child {
+  .experiment-row:last-child {
     border-bottom: 1px solid var(--color-line);
   }
 
   @media (min-width: 760px) {
-    .lab-row {
+    .experiment-row {
       grid-template-columns: 3.5rem minmax(0, 15rem) minmax(0, 1fr) auto;
       align-items: baseline;
     }
   }
 
-  .lab-row:hover {
+  .experiment-row:hover {
     background: linear-gradient(
       to right,
       var(--color-paper-3),
