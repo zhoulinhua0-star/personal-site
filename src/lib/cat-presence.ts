@@ -16,27 +16,43 @@ import { useSyncExternalStore } from "react";
 const DISMISS_KEY = "cat-dismissed";
 
 /* ---------------------------------------------------------------------------
-   Pointer: a companion you cannot hover or drag is just a picture in the way,
-   so on touch and coarse pointers there is no cat and no footer link either.
-   Subscribed rather than read once, so plugging in a mouse brings both with it.
+   Room for a cat. A mouse is the obvious case — hover and drag are what the
+   companion is made of — but it is not the only one: a tap is a poke and a
+   finger drags as well as a cursor, so on a touch screen the question is not
+   the pointer but the screen. A tablet has a spare corner to park a cat in; a
+   phone does not, and a phone turned sideways is still a phone, which is why
+   the second clause asks for height as well as width rather than trusting a
+   landscape width on its own.
+
+   Written as a comma list rather than `or`, which is Media Queries 4 and would
+   take the whole query down with it on a browser that cannot parse it. The
+   width floor is shared with the `.cat` rule in globals.css — the two have to
+   move together, or a screen between them mounts an invisible cat that is
+   still there to be pressed.
+
+   Subscribed rather than read once, so plugging in a mouse brings the cat and
+   the footer link with it, and so does turning a small tablet on its side.
    --------------------------------------------------------------------------- */
 
-let pointerQuery: MediaQueryList | null = null;
-function finePointerQuery() {
-  if (!pointerQuery && typeof window !== "undefined") {
-    pointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+const ROOM_QUERY =
+  "(hover: hover) and (pointer: fine), (min-width: 740px) and (min-height: 600px)";
+
+let roomQuery: MediaQueryList | null = null;
+function catRoomQuery() {
+  if (!roomQuery && typeof window !== "undefined") {
+    roomQuery = window.matchMedia(ROOM_QUERY);
   }
-  return pointerQuery;
+  return roomQuery;
 }
 
-export function useFinePointer(): boolean {
+export function useCatRoom(): boolean {
   return useSyncExternalStore(
     (onChange) => {
-      const mq = finePointerQuery();
+      const mq = catRoomQuery();
       mq?.addEventListener("change", onChange);
       return () => mq?.removeEventListener("change", onChange);
     },
-    () => finePointerQuery()?.matches ?? false,
+    () => catRoomQuery()?.matches ?? false,
     () => false,
   );
 }

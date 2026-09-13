@@ -5,13 +5,20 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 
 import { catBubbleMs, catDwellMs, catIdle, catLines, type CatPose } from "@/data/cat";
 import sprites from "@/data/cat-sprites.json";
-import { setCatVisible, useCatVisible, useFinePointer } from "@/lib/cat-presence";
+import { setCatVisible, useCatRoom, useCatVisible } from "@/lib/cat-presence";
 import { groundPose } from "@/lib/cat-ground";
 
 /**
  * A desk companion, in the spirit of the pet that floats over Codex: a small
  * pinned widget you can drag anywhere, poke for a line, and otherwise ignore
  * while it dozes off.
+ *
+ * Everything below is written in pointer events, not mouse events, and that is
+ * what lets the same code serve a trackpad and a tablet: a tap arrives as a
+ * press that never passed DRAG_SLOP, and a finger dragged across the glass is
+ * the same stream of moves a cursor makes. The one thing touch cannot do is
+ * hover, and the tag and the dismiss button are revealed by hover — so the
+ * stylesheet hands both to `(hover: none)` outright instead.
  *
  * Two things this deliberately does NOT do, both learned the hard way:
  *
@@ -78,11 +85,14 @@ function readPerch(): Perch | null {
 }
 
 export function CatCompanion() {
-  const finePointer = useFinePointer();
+  const room = useCatRoom();
   const visible = useCatVisible();
-  // Nothing at all without a mouse: a companion you cannot hover or drag is
-  // just a picture in the way, and a way to summon one is worse.
-  if (!finePointer) return null;
+  // Nothing at all on a screen with no corner to spare: a companion sitting on
+  // top of the text is just a picture in the way, and a way to summon one is
+  // worse. Everything the cat is made of — the poke, the drag, the drop — is a
+  // pointer gesture a finger makes as well as a cursor, so a tablet gets one
+  // and a phone does not.
+  if (!room) return null;
   // Split in three on purpose: the widget only ever mounts on the client and
   // only when it is wanted, which is what lets it read localStorage in a lazy
   // initialiser instead of in an effect — no cascading render, and no
@@ -101,8 +111,9 @@ export function CatCompanion() {
  * chose for it, which the perch has been holding the whole time.
  *
  * Out of the tab order and out of the accessibility tree, like the cat's own
- * dismiss button: the thing it summons is decoration that never mounts without
- * a mouse in the first place.
+ * dismiss button: the thing it summons is decoration that carries nothing, and
+ * never mounts at all on the narrow screens where a stray control would matter
+ * most.
  */
 function CatStub() {
   return (

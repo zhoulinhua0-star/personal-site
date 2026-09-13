@@ -552,8 +552,9 @@
   /* ---------------------------------------------------------------------
      The cat: a desk companion pinned over the page. Parks itself bottom-right
      until dragged, after which the component supplies left/top and this falls
-     back to centring on that point. Never shown to coarse pointers — the
-     component does not even mount there.
+     back to centring on that point. Mounted for a mouse, and for a touch screen
+     with a corner to spare — see useCatRoom, which owns that decision. Whatever
+     hover reveals here has to be handed to touch outright further down.
      --------------------------------------------------------------------- */
   .cat {
     --cat-h: clamp(96px, 9vw, 128px);
@@ -755,6 +756,42 @@
     pointer-events: none;
   }
 
+  /* Touch: no hover, so everything hover reveals would never appear at all —
+     and one of those things is the only way to send the cat away, which is the
+     one control a pinned widget cannot be allowed to lose. Both are simply on
+     from the start here. The cat reads a little more like a widget and a little
+     less like a drawing on a tablet; a companion you cannot get rid of is the
+     worse trade. The drag rule above still wins over this one on specificity,
+     so the button stays out of the way while the cat is being carried.
+
+     The button is drawn at 16px because that is the size that sits on the
+     shoulder without looking like a sticker. A finger needs more than that, so
+     it gets an invisible collar instead of a bigger circle — pressing near the
+     shoulder now dismisses rather than drags, which is the right way round for
+     a corner that small. */
+  @media (hover: none) {
+    .cat-tag {
+      opacity: 1;
+    }
+
+    .cat-dismiss {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .cat-dismiss::before {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border-radius: 50%;
+    }
+
+    .cat-stub {
+      margin: -12px -14px;
+      padding: 12px 14px;
+    }
+  }
+
   .cat-bubble {
     position: absolute;
     bottom: calc(100% - var(--pose-gap, 0%) + 9px);
@@ -798,10 +835,12 @@
     }
   }
 
-  /* The component already declines to mount without a fine pointer, so this is
-     belt-and-braces for anything that reports one on a phone-sized screen —
-     where a floating cat would sit on top of the content. */
-  @media (max-width: 767px) {
+  /* Belt-and-braces for a phone-sized screen, where a floating cat would sit on
+     top of the content. The component already declines to mount there, and this
+     floor has to stay the complement of the one in ROOM_QUERY: a screen the
+     query lets through and this rule hides is worse than either, an invisible
+     cat still sitting in the corner catching presses. */
+  @media (max-width: 739px) {
     .cat {
       display: none;
     }
