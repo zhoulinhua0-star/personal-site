@@ -14,17 +14,22 @@ export function Hero() {
         <p className="label">{identity.role}</p>
         <div className="intro-grid">
           <div>
+            {/* The name is one unsplit text node: the entrance is a marker swipe
+                that runs across the whole headline, so nothing here needs to be
+                cut into per-word spans. The screen-reader copy carries the real
+                name; the visual copy is the one the marker paints. */}
             <h1 data-hero-reveal className="display flex flex-wrap items-baseline gap-x-[0.28em] gap-y-2">
               <span className="sr-only">{identity.name}{identity.nameAlt ? ` ${identity.nameAlt}` : ""}</span>
-              <span aria-hidden="true">
-                {identity.name.split(/(\s+)/).map((word, index) =>
-                  /\s+/.test(word) ? word : (
-                    <span key={index} data-hero-unit style={{ "--hero-index": Math.floor(index / 2) } as CSSProperties}>{word}</span>
-                  ),
-                )}
-              </span>
+              <span aria-hidden="true" data-hero-sweep>{identity.name}</span>
               {identity.nameAlt ? (
-                <span aria-hidden="true" data-hero-unit style={{ "--hero-index": identity.name.trim().split(/\s+/).length } as CSSProperties} className="text-[0.3em] font-normal tracking-normal text-ink-3" lang="zh-Hans">
+                <span
+                  aria-hidden="true"
+                  data-hero-sweep
+                  /* The marker reaches the second name after it has left the first. */
+                  style={{ "--hero-sweep-delay": "620ms" } as CSSProperties}
+                  className="text-[0.3em] font-normal tracking-normal text-ink-3"
+                  lang="zh-Hans"
+                >
                   {identity.nameAlt}
                 </span>
               ) : null}

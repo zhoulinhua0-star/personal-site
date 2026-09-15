@@ -41,7 +41,7 @@ export function SiteHeader({ current }: { current?: string }) {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className={`nav-link link-underline text-[13px] hover:text-ink ${
+                      className={`nav-link text-[13px] hover:text-ink ${
                         active ? "text-ink" : "text-ink-2"
                       }`}
                     >

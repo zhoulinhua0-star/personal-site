@@ -134,7 +134,7 @@ export const hero = {
       label: "Next",
       // Becomes the present in autumn 2026: change the label to "At", drop the
       // year, and give `Now` whatever you are building by then.
-      value: "NYU — CS & Mathematics, autumn 2026",
+      value: "NYU — CS & Mathematics",
     },
   ] as readonly NowRow[],
   /** One or two short paragraphs under the Now block. Keep the hero uncrowded. */

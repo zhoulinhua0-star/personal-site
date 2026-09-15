@@ -86,8 +86,11 @@
   --section-space: clamp(48px, 6vw, 80px);
   --measure: 62ch;
 
-  /* Intensity of the futuristic command deck behind the hero. */
-  --deck-opacity: 0.16;
+  /* Intensity of the futuristic command deck behind the hero. Dark paper needs
+     roughly twice the figure: the artwork is one blue (#0b5cff), which sits far
+     closer to a near-black ground than it does to cream, so an equal opacity
+     reads as half the presence. The dark value lives with the dark palette. */
+  --deck-opacity: 0.32;
   /* Pointer parallax. One smoothed pair per depth layer, written every frame
      by the hero's pointer hook — see command-deck.tsx. */
   --px-far: 0;
@@ -434,7 +437,11 @@
     color: var(--color-ink);
   }
 
-  .nav-link[aria-current="page"]::before {
+  /* One swipe, two states: the page you are on and the one under the cursor
+     get identical marker geometry, so hovering reads as a preview of landing
+     there rather than a second, unrelated underline. The wipe is a clip-path
+     so the hand-drawn rotation stays put while the ink runs left to right. */
+  .nav-link::before {
     content: "";
     position: absolute;
     left: -4px;
@@ -446,6 +453,18 @@
     border-radius: 3px 8px 4px 7px;
     transform: rotate(-1.5deg);
     mix-blend-mode: multiply;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 0.45s var(--ease-out-soft);
+  }
+
+  .nav-link:hover::before,
+  .nav-link:focus-visible::before,
+  .nav-link[aria-current="page"]::before {
+    clip-path: inset(0 0 0 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link::before { transition: none; }
   }
 
   /* ==========================================================================
@@ -1349,6 +1368,8 @@
 :root[data-theme="dark"] .home-index .cat-card { background: var(--color-paper-3); }
 :root[data-theme="dark"] .skip-link { color: var(--color-paper); }
 :root[data-theme="dark"] a.bg-ink:hover { background: var(--color-accent); }
+:root[data-theme="dark"] .nav-link::before { mix-blend-mode: normal; }
+:root[data-theme="dark"] { --deck-opacity: 0.6; }
 .theme-toggle {
   display: none;
   align-items: center;
@@ -1409,20 +1430,25 @@ html[data-theme-transition]::view-transition { pointer-events: none; }
     --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* The hidden state carries no transition. Hydration paints the server's
+     visible markup first, so a transition here would fade the element *out*
+     over 440ms the moment the observer attaches — invisible below the fold,
+     but plainly visible to anyone who starts scrolling during hydration.
+     A transition belongs to the state being entered, so it lives on the
+     revealed rule: hiding is instantaneous, arriving is animated. */
   [data-scroll-reveal="single"][data-reveal-ready="true"] {
     opacity: 0;
     transform: translate3d(0, var(--reveal-distance), 0);
-    transition:
-      opacity var(--reveal-fade-duration) var(--reveal-ease),
-      transform var(--reveal-duration) var(--reveal-ease);
-    transition-delay: var(--reveal-delay);
     will-change: opacity, transform;
   }
 
   [data-scroll-reveal="single"][data-reveal-visible="true"] {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    will-change: auto;
+    transition:
+      opacity var(--reveal-fade-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    transition-delay: var(--reveal-delay);
   }
 
   [data-scroll-reveal="stagger"][data-reveal-ready="true"] > * {
@@ -1432,52 +1458,111 @@ html[data-theme-transition]::view-transition { pointer-events: none; }
 
     opacity: 0;
     transform: translate3d(0, var(--reveal-distance), 0);
-    transition:
-      opacity var(--reveal-fade-duration) var(--reveal-ease),
-      transform var(--reveal-duration) var(--reveal-ease);
     will-change: opacity, transform;
   }
 
-  [data-scroll-reveal="stagger"][data-reveal-ready="true"] > :nth-child(1) {
+  /* Cards travel a shorter distance than a whole section and read fastest in
+     sequence; past the fourth the eye stops counting, so the delay stops too. */
+  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      opacity var(--reveal-fade-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+  }
+
+  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > :nth-child(1) {
     transition-delay: var(--reveal-delay);
   }
 
-  [data-scroll-reveal="stagger"][data-reveal-ready="true"] > :nth-child(2) {
+  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > :nth-child(2) {
     transition-delay: calc(var(--reveal-delay) + var(--reveal-stagger));
   }
 
-  [data-scroll-reveal="stagger"][data-reveal-ready="true"] > :nth-child(3) {
+  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > :nth-child(3) {
     transition-delay: calc(var(--reveal-delay) + var(--reveal-stagger) + var(--reveal-stagger));
   }
 
-  [data-scroll-reveal="stagger"][data-reveal-ready="true"] > :nth-child(n + 4) {
+  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > :nth-child(n + 4) {
     transition-delay: calc(
       var(--reveal-delay) + var(--reveal-stagger) + var(--reveal-stagger) + var(--reveal-stagger)
     );
   }
-
-  [data-scroll-reveal="stagger"][data-reveal-visible="true"] > * {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    will-change: auto;
-  }
 }
 
-/* Word-level entrance retains Geist's kerning and the heading's normal wrap. */
-[data-hero-reveal] { --hero-duration: 950ms; --hero-stagger: 65ms; }
-@media (prefers-reduced-motion: no-preference) {
-  [data-hero-unit] {
-    /* A composited word preserves intra-word kerning and normal spaces while
-       keeping opacity updates independent of the page's first paint work. */
+/* — The hero name: a marker swipe ————————————————————————————————————
+   The name arrives as a hollow outline, a band of highlighter yellow runs
+   across it, and solid ink is left behind — the same marker that underlines
+   the nav and wipes under the cards, doing the one job big enough to justify
+   it. One text node, one animated custom property: the fill is a gradient
+   clipped to the glyphs, so nothing is split into per-letter spans and the
+   headline keeps Geist's kerning and its normal wrap.
+
+   The resting declaration below is already the finished frame (solid ink, no
+   outline), so static HTML, a failed animation, and reduced motion all land on
+   the same readable headline — the animation only ever reaches backwards from
+   it. */
+@property --sweep {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 200%;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  [data-hero-sweep] {
+    --sweep: 200%;
     display: inline-block;
-    will-change: opacity;
-    animation: hero-word-in var(--hero-duration) cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
-    animation-delay: calc(var(--hero-index, 0) * var(--hero-stagger));
+    color: transparent;
+    /* Ink behind the band, marker inside it, bare outline ahead of it. The
+       trailing edge blends ink into yellow over 4% so the marker looks like it
+       is drying into the paper; the leading edge is a hard stop, the way a
+       chisel tip actually leaves it. */
+    background-image: linear-gradient(
+      94deg,
+      var(--color-ink) 0 calc(var(--sweep) - 9%),
+      var(--color-marker) calc(var(--sweep) - 5%) calc(var(--sweep) - 1.5%),
+      transparent calc(var(--sweep) - 1.5%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-stroke: 0.9px transparent;
+  }
+
+  /* Armed, but not yet running: the opening frame, held until the head script
+     says a visitor is there to see it. The worst case if that script never
+     gets to start it is a legible hollow headline, not an invisible one. */
+  html[data-hero-arm]:not([data-hero-play]) [data-hero-sweep] {
+    --sweep: -6%;
+    -webkit-text-stroke-color: var(--color-ink-4);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-hero-play] [data-hero-sweep] {
+      animation: hero-sweep 1150ms cubic-bezier(0.32, 0.12, 0.2, 1)
+        var(--hero-sweep-delay, 0ms) backwards;
+    }
   }
 }
-@keyframes hero-word-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes hero-sweep {
+  from {
+    --sweep: -6%;
+    -webkit-text-stroke-color: var(--color-ink-4);
+  }
+  /* The outline is centred on the glyph edge, so on a letter the marker has
+     already filled its outer half reads as a grey halo. It thins out across the
+     second half of the swipe: by then the letters still waiting only need
+     enough of an edge to hold their shape until the ink arrives. */
+  55% {
+    -webkit-text-stroke-color: var(--color-ink-4);
+  }
+  to {
+    --sweep: 114%;
+    -webkit-text-stroke-color: transparent;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  [data-hero-unit], [data-scroll-reveal="single"],
+  [data-hero-sweep], [data-scroll-reveal="single"],
   [data-scroll-reveal="stagger"] > *, .reveal {
     animation: none !important;
     transition: none !important;
