@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { categories } from "@/data/projects";
 import { ArrowUpRight } from "./icons";
@@ -11,15 +12,17 @@ function categoryName(slug: Project["category"]) {
  * A flagship project. Text and screenshot stack swap sides on alternating rows
  * so the section reads as a composition rather than a list of cards.
  */
-export function ProjectCard({ project, index }: { project: Project; index: number }) {
+export function ProjectCard({ project, index, preview = false }: { project: Project; index: number; preview?: boolean }) {
   const flipped = index % 2 === 1;
   const number = String(index + 1).padStart(2, "0");
   const shots = project.images?.slice(0, 3) ?? [];
+  const Heading = preview ? "h3" : "h2";
 
   return (
     <article
+      id={project.slug}
       /* The first row sits directly under the section rule, so it needs no rule of its own. */
-      className={`project reveal ${index > 0 ? "border-t border-line pt-[clamp(28px,4vw,48px)]" : ""}`}
+      className={`project ${preview ? "" : "reveal"} ${index > 0 ? "border-t border-line pt-[clamp(28px,4vw,48px)]" : ""}`}
     >
       {/* Explicit fractions rather than a 12-column grid: at this column width a
           12-track grid is mostly gutter, and the screenshot needs the room.
@@ -46,15 +49,15 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
             <span className="label ml-auto">{project.year}</span>
           </div>
 
-          <h3 className="mt-5 text-[clamp(1.55rem,2.5vw,2.1rem)] leading-[1.08] font-medium tracking-[-0.032em]">
+          <Heading className="mt-5 text-[clamp(1.55rem,2.5vw,2.1rem)] leading-[1.08] font-medium tracking-[-0.032em]">
             {project.title}
-          </h3>
+          </Heading>
 
           <p className={`lead mt-4 ${shots.length ? "max-w-[46ch]" : "max-w-[68ch]"}`}>
-            {project.description}
+            {preview ? (project.summary ?? project.description) : project.description}
           </p>
 
-          {project.metrics?.length ? (
+          {!preview && project.metrics?.length ? (
             <dl className="mt-7 flex flex-wrap gap-x-10 gap-y-4">
               {project.metrics.map((metric) => (
                 <div key={metric.label}>
@@ -67,7 +70,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
             </dl>
           ) : null}
 
-          {project.tech?.length ? (
+          {!preview && project.tech?.length ? (
             <ul className="mt-7 flex flex-wrap gap-1.5">
               {project.tech.map((tech) => (
                 <li key={tech} className="chip">
@@ -78,6 +81,7 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
           ) : null}
 
           <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+            {preview ? <Link href={`/projects/#${project.slug}`} className="editorial-link">Inside the project <span aria-hidden="true">→</span></Link> : null}
             {project.liveUrl ? (
               <a
                 className="group inline-flex items-center gap-2 text-[14px] font-medium text-accent"
@@ -129,6 +133,21 @@ export function ProjectCard({ project, index }: { project: Project; index: numbe
                   </div>
                 ))}
             </div>
+            {!preview ? (
+              <details className="project-gallery">
+                <summary>View all screenshots <span className="mono-xs">({project.images?.length})</span></summary>
+                <div className="space-y-6 pt-5">
+                  {project.images?.map((shot) => (
+                    <figure key={shot.src}>
+                      <a href={shot.src} target="_blank" rel="noreferrer noopener" aria-label={`Open full image: ${shot.alt}`}>
+                        <Image src={shot.src} alt={shot.alt} width={1600} height={1000} sizes="(min-width: 1024px) 520px, 90vw" className="h-auto w-full rounded-sm border border-line" />
+                      </a>
+                      <figcaption className="mt-2 text-sm leading-relaxed text-ink-3">{shot.alt}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </details>
+            ) : null}
           </div>
         ) : null}
       </div>

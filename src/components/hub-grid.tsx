@@ -1,3 +1,4 @@
+import { ScrollReveal } from "./scroll-reveal";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { experiments, projects } from "@/data/projects";
@@ -125,7 +126,7 @@ function CardBody({ entry }: { entry: Entry }) {
   );
 }
 
-export function HubGrid() {
+export function HubGrid({ compact = false }: { compact?: boolean }) {
   /**
    * Two columns divided into an odd number of cards leaves a hole in the last
    * row, which in a grid this strict reads as missing content rather than as
@@ -135,12 +136,12 @@ export function HubGrid() {
   const lastFillsRow = entries.length % 2 === 1;
 
   return (
-    <ul className="stagger grid gap-3 sm:grid-cols-2">
+    <ScrollReveal as="ul" stagger className={`grid gap-3 sm:grid-cols-2${compact ? " md:grid-cols-3" : ""}`}>
       {entries.map((entry, index) => (
         <li
           key={entry.href}
-          className={`reveal${
-            lastFillsRow && index === entries.length - 1 ? " sm:col-span-2" : ""
+          className={`${
+              lastFillsRow && index === entries.length - 1 ? ` sm:col-span-2${compact ? " md:col-span-1" : ""}` : ""
           }`}
         >
           <Link href={entry.href} className="cat-card group h-full">
@@ -148,6 +149,6 @@ export function HubGrid() {
           </Link>
         </li>
       ))}
-    </ul>
+    </ScrollReveal>
   );
 }

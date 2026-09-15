@@ -27,7 +27,7 @@ export function SiteFooter() {
             </a>
           ) : null}
           {/* The exact complement of the header's rule: SiteHeader shows the
-              GitHub pill from `sm` up, so this shows below it. Between them the
+              GitHub pill from `lg` up, so this shows below it. Between them the
               link is reachable from every page at every width, and neither
               width ever renders it twice. */}
           {github ? (
@@ -35,7 +35,7 @@ export function SiteFooter() {
               href={github.href}
               target="_blank"
               rel="noreferrer noopener"
-              className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent sm:hidden"
+              className="mono-xs group inline-flex items-center gap-1.5 text-ink-3 hover:text-accent lg:hidden"
             >
               {github.handle}
               <ArrowUpRight className="size-3.5 transition-transform duration-500 group-hover:-translate-y-0.5" />

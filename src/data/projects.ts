@@ -36,6 +36,8 @@ export type ProjectImage = {
 export type Project = {
   slug: string;
   title: string;
+  /** Short editorial introduction; the full description remains on Projects. */
+  summary?: string;
   /** One or two sentences. What it is, and why it was worth building. */
   description: string;
   category: CategorySlug;
@@ -107,6 +109,7 @@ export const projects: Project[] = [
   {
     slug: "asterlo",
     title: "Asterlo",
+    summary: "AI-assisted outreach, with a human in control. Research, drafting, and approval in one workflow.",
     description:
       "An AI-assisted outreach platform that runs the whole email workflow — researching a contact from official sources, drafting a personalized message, then holding it at a human approval gate before anything sends. The hard part was building automation that can be stopped: approval gates, campaign holds and idempotent controls so a sequence never double-sends, and never keeps going after someone has replied.",
     category: "ai-products",
@@ -130,6 +133,7 @@ export const projects: Project[] = [
   {
     slug: "repday",
     title: "RepDay — Gym Workout Planner",
+    summary: "A native workout planner for the sessions you planned — and the ones you improvise. Built with SwiftUI, stored on your device.",
     description:
       "A native iOS workout planner, written in Swift and shipped to the U.S. App Store. Planned and improvised sessions share one model, so strength sets and duration-based cardio live in the same workout with independent concurrent rest timers, mid-session editing and undo. Everything stays on the device — no account, no analytics, no third-party SDKs.",
     category: "mobile",
@@ -157,6 +161,7 @@ export const projects: Project[] = [
   {
     slug: "campus-decoder",
     title: "Campus Decoder",
+    summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step.",
     description:
       "An AI coach that helps international students read the unwritten rules of a U.S. university — office hours, emailing a professor, a group project going sideways. You describe the situation in your own words and get back the norm you were missing plus a next step you can actually send. Built solo from concept to deployment for GatewayHacks 2026.",
     category: "ai-products",

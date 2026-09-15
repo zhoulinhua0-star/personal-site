@@ -31,8 +31,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={site.locale}>
+    <html lang={site.locale} suppressHydrationWarning>
       <head>
+        {/* Apply the saved palette before paint; no server or theme dependency. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{document.documentElement.dataset.theme=localStorage.getItem("site-theme")==="dark"?"dark":"light"}catch{document.documentElement.dataset.theme="light"}document.documentElement.dataset.themeReady="true";` }} />
         <link
           rel="preload"
           href="/fonts/Geist-Variable.woff2"

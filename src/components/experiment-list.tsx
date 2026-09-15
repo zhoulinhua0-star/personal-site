@@ -5,10 +5,11 @@ import { ArrowUpRight } from "./icons";
  * Smaller work. Deliberately a list, not cards — it must never compete with
  * the flagship projects above it.
  */
-export function ExperimentList() {
+export function ExperimentList({ limit }: { limit?: number } = {}) {
+  const Heading = limit === undefined ? "h2" : "h3";
   return (
     <ul className="reveal">
-      {experiments.map((entry, index) => {
+      {experiments.slice(0, limit).map((entry, index) => {
         const category = categories.find((item) => item.slug === entry.category);
         const href = entry.liveUrl ?? entry.githubUrl;
         return (
@@ -16,7 +17,7 @@ export function ExperimentList() {
             <span className="label pt-1">{String(index + 1).padStart(2, "0")}</span>
 
             <div className="flex flex-wrap items-baseline gap-x-3">
-              <h3 className="text-[1.0625rem] font-medium tracking-[-0.02em]">
+              <Heading className="text-[1.0625rem] font-medium tracking-[-0.02em]">
                 {href ? (
                   <a href={href} target="_blank" rel="noreferrer noopener" className="group inline-flex items-center gap-1.5">
                     <span className="link-underline">{entry.title}</span>
@@ -25,7 +26,7 @@ export function ExperimentList() {
                 ) : (
                   entry.title
                 )}
-              </h3>
+              </Heading>
               {entry.placeholder ? <span className="chip chip-ghost">Placeholder</span> : null}
             </div>
 

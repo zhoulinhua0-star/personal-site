@@ -5,11 +5,12 @@ import { ArrowUpRight } from "@/components/icons";
 export const metadata: Metadata = {
   title: "Page not found",
   description: "That page does not exist.",
+  robots: { index: false, follow: true },
 };
 
 export default function NotFound() {
   return (
-    <main className="shell flex min-h-dvh flex-col justify-center py-24">
+    <main id="main" className="shell flex min-h-dvh flex-col justify-center py-24">
       <p className="label label-accent">Error 404</p>
       <h1 className="display mt-6">Not found</h1>
       <p className="lead mt-6 max-w-[42ch]">
