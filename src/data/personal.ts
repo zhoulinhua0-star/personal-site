@@ -131,7 +131,7 @@ export const hero = {
       href: "https://asterlo.io",
     },
     {
-      label: "Next",
+      label: "Education",
       // Becomes the present in autumn 2026: change the label to "At", drop the
       // year, and give `Now` whatever you are building by then.
       value: "NYU — CS & Mathematics",
