@@ -181,6 +181,29 @@ export const projects: Project[] = [
     liveUrl: "https://campusdecoder.com",
     githubUrl: "https://github.com/zhoulinhua0-star/campus-decoder",
   },
+  {
+    slug: "precisiontyper",
+    title: "PrecisionTyper",
+    summary: "Typing practice built around getting every character right. Follow live feedback or settle into a quieter Zen session.",
+    description:
+      "A browser typing app with General, Calm, Quotes, and Code collections, each with three difficulty levels. Every character must match before a passage is complete. Practice mode keeps speed, mistakes, and elapsed time visible; Zen mode softens the feedback and advances automatically. Built with vanilla JavaScript, with preferences and passage progress stored in the browser.",
+    category: "web",
+    year: "2026",
+    status: "Live",
+    tech: ["JavaScript", "HTML/CSS"],
+    images: [
+      {
+        src: "/projects/precisiontyper/main.png",
+        alt: "PrecisionTyper's dark landing page with the heading 'Master typing speed & accuracy', a Play now button, and keyboard sound options",
+      },
+      {
+        src: "/projects/precisiontyper/secondary.png",
+        alt: "PrecisionTyper's typing canvas with a target passage, strict character matching, session settings, and a home-row starting guide",
+      },
+    ],
+    liveUrl: "https://precisiontyper.com",
+    githubUrl: "https://github.com/zhoulinhua0-star/TypeRacerGame",
+  },
 ];
 
 /** Section 04 — smaller work. Deliberately lighter weight than `projects`. */
@@ -195,13 +218,13 @@ export const experiments: ExperimentEntry[] = [
     githubUrl: "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
   },
   {
-    title: "git-you-need-to-know",
+    title: "smooth-option-switcher",
     description:
-      "A short, practical Git handbook, written in Chinese for readers who find the English docs heavy going. It explains what actually moves when you run a command before it explains the commands — the model is the part that makes Git stop being frightening.",
+      "An Agent Skill for smooth option selectors — billing switches, pricing plans, and view modes with moving active indicators. It adapts the interaction to an existing design system, with references for keyboard access and reduced motion.",
     year: "2026",
-    category: "open-source",
-    tech: ["Markdown"],
-    githubUrl: "https://github.com/zhoulinhua0-star/git-you-need-to-know",
+    category: "developer-tools",
+    tech: ["HTML", "CSS"],
+    githubUrl: "https://github.com/zhoulinhua0-star/smooth-option-switcher",
   },
   {
     title: "weather-cli",
@@ -211,15 +234,5 @@ export const experiments: ExperimentEntry[] = [
     category: "developer-tools",
     tech: ["Python"],
     githubUrl: "https://github.com/zhoulinhua0-star/weather-cli",
-  },
-  {
-    title: "TypeRacerGame",
-    description:
-      "A browser typing game with several difficulty levels, real-time feedback as you type, and interface preferences that survive a reload.",
-    year: "2026",
-    category: "web",
-    tech: ["JavaScript", "HTML/CSS"],
-    liveUrl: "http://precisiontyper.com",
-    githubUrl: "https://github.com/zhoulinhua0-star/TypeRacerGame",
   },
 ];

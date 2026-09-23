@@ -6,7 +6,7 @@ import { ProjectCard } from "./project-card";
 import { ArrowUpRight } from "./icons";
 
 export function HomeWork() {
-  const [featured, ...more] = projects;
+  const [featured, ...more] = projects.slice(0, 3);
   return (
     <>
       {featured ? <ScrollReveal><ProjectCard project={featured} index={0} preview /></ScrollReveal> : null}
