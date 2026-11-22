@@ -51,6 +51,9 @@ export type Project = {
   metrics?: { label: string; value: string }[];
   /** Small chip: "Live", "In progress", "Archived", … */
   status?: string;
+  /** The hackathon or event it was built for, e.g. "HackNC 2026". Shown in
+   *  place of the year in the card's label row, so include the year. */
+  event?: string;
   /** A prize or recognition, shown as a highlighted line above the title. */
   award?: string;
   /** A demo video or recording, linked as "Demo video". */
@@ -170,7 +173,8 @@ export const projects: Project[] = [
     slug: "syllabus-crew",
     home: true,
     title: "Syllabus Crew",
-    award: "Winner · Photon 2.0 Sponsor Track · HackPrinceton 2026",
+    event: "HackPrinceton 2026",
+    award: "Winner · Photon 2.0 Sponsor Track",
     summary: "A personal study agent that lives in iMessage. Text Syl your syllabus once; it quizzes your weakest topics, plans review time, and calls you for voice drills.",
     description:
       "A personal agent for college students that lives in iMessage, built solo at HackPrinceton Fall 2026. Study apps wait for you to open them; Syl texts you. Send your syllabus once and it works out what each exam is worth, quizzes you on your weakest topics by text, and offers review time on your calendar — nothing reaches the calendar until you reply YES. Reply CALL and your phone rings for a three-minute voice drill. Underneath: a router and four specialist agents in plain TypeScript on Claude via Amazon Bedrock, with grading, mastery and every timing rule kept in deterministic code.",
@@ -200,9 +204,10 @@ export const projects: Project[] = [
     slug: "prospecto",
     home: true,
     title: "Prospecto",
-    summary: "Evidence-backed listings for companies too early to list: sourced claims, a deterministic valuation, and a simulated market built on top. A HackNC 2026 project.",
+    event: "HackNC 2026",
+    summary: "Evidence-backed listings for companies too early to list: sourced claims, a deterministic valuation, and a simulated market built on top.",
     description:
-      "Turns an early-stage company into an evidence-backed listing. Founders submit a pitch, website, GitHub repo and traction data; Gemini extracts claims with quotes and sources, and Prospecto fetches each source independently and rejects anything unsupported. Deterministic code then scores execution, market, product, traction and economics with weights that change by stage, and that price anchors a simulated market with tickers, live quotes and play credits. It also models primary issuance on Solana, recording each allocation as a non-transferable Token-2022 participation receipt. A HackNC 2026 project.",
+      "Turns an early-stage company into an evidence-backed listing. Founders submit a pitch, website, GitHub repo and traction data; Gemini extracts claims with quotes and sources, and Prospecto fetches each source independently and rejects anything unsupported. Deterministic code then scores execution, market, product, traction and economics with weights that change by stage, and that price anchors a simulated market with tickers, live quotes and play credits. It also models primary issuance on Solana, recording each allocation as a non-transferable Token-2022 participation receipt.",
     category: "ai-products",
     year: "2026",
     status: "Live",
@@ -223,7 +228,8 @@ export const projects: Project[] = [
     slug: "campus-decoder",
     home: true,
     title: "Campus Decoder",
-    summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step. Built for GatewayHacks 2026.",
+    event: "GatewayHacks 2026",
+    summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step.",
     description:
       "An AI coach that helps international students read the unwritten rules of a U.S. university — office hours, emailing a professor, a group project going sideways. You describe the situation in your own words and get back the norm you were missing plus a next step you can actually send. Built solo from concept to deployment for GatewayHacks 2026.",
     category: "ai-products",

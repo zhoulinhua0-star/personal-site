@@ -46,7 +46,7 @@ export function ProjectCard({ project, index, preview = false }: { project: Proj
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="label label-accent">{number}</span>
             <span className="label">{categoryName(project.category)}</span>
-            <span className="label ml-auto">{project.year}</span>
+            <span className="label ml-auto">{project.event ?? project.year}</span>
           </div>
 
           {project.award ? (

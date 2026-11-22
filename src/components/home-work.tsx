@@ -38,7 +38,7 @@ export function HomeWork() {
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                   <span className="label label-accent">{String(index + 1).padStart(2, "0")}</span>
                   {category ? <span className="label">{category}</span> : null}
-                  <span className="label ml-auto">{project.year}</span>
+                  <span className="label ml-auto">{project.event ?? project.year}</span>
                 </div>
 
                 {project.award ? (
