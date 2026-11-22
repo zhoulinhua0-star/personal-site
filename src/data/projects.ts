@@ -118,12 +118,12 @@ export const projects: Project[] = [
     tech: ["TypeScript", "Next.js", "React", "PostgreSQL", "Gmail API"],
     images: [
       {
-        src: "/projects/asterlo/main.png",
-        alt: "Asterlo's landing page: 'Personalized outreach, with the receipts.', above buttons to open the workspace",
+        src: "/projects/asterlo/main.webp",
+        alt: "Asterlo's landing page: 'Personalized outreach, never a spam blast.', above a website field and a toggle between selling to businesses and consumers",
       },
       {
-        src: "/projects/asterlo/secondary.png",
-        alt: "Asterlo's three-step product section: official research, guarded drafting, and human review before a draft is approved",
+        src: "/projects/asterlo/secondary.webp",
+        alt: "Asterlo's workflow panel: a grid mapping each step from reading your website to sending from your Gmail, with the sources Asterlo read",
       },
     ],
     liveUrl: "https://asterlo.io",
@@ -161,7 +161,7 @@ export const projects: Project[] = [
   {
     slug: "campus-decoder",
     title: "Campus Decoder",
-    summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step.",
+    summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step. Built for GatewayHacks 2026.",
     description:
       "An AI coach that helps international students read the unwritten rules of a U.S. university — office hours, emailing a professor, a group project going sideways. You describe the situation in your own words and get back the norm you were missing plus a next step you can actually send. Built solo from concept to deployment for GatewayHacks 2026.",
     category: "ai-products",
@@ -209,15 +209,6 @@ export const projects: Project[] = [
 /** Section 04 — smaller work. Deliberately lighter weight than `projects`. */
 export const experiments: ExperimentEntry[] = [
   {
-    title: "scroll-reveal-motion",
-    description:
-      "An Agent Skill for reveal-on-scroll motion that stays restrained and accessible — it honours prefers-reduced-motion instead of treating it as an afterthought. The reveals on this site are the same approach.",
-    year: "2026",
-    category: "developer-tools",
-    tech: ["JavaScript", "CSS"],
-    githubUrl: "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
-  },
-  {
     title: "smooth-option-switcher",
     description:
       "An Agent Skill for smooth option selectors — billing switches, pricing plans, and view modes with moving active indicators. It adapts the interaction to an existing design system, with references for keyboard access and reduced motion.",
@@ -225,6 +216,15 @@ export const experiments: ExperimentEntry[] = [
     category: "developer-tools",
     tech: ["HTML", "CSS"],
     githubUrl: "https://github.com/zhoulinhua0-star/smooth-option-switcher",
+  },
+  {
+    title: "scroll-reveal-motion",
+    description:
+      "An Agent Skill for reveal-on-scroll motion that stays restrained and accessible — it honours prefers-reduced-motion instead of treating it as an afterthought. The reveals on this site are the same approach.",
+    year: "2026",
+    category: "developer-tools",
+    tech: ["JavaScript", "CSS"],
+    githubUrl: "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
   },
   {
     title: "weather-cli",
