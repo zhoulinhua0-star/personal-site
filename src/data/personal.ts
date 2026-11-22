@@ -234,7 +234,7 @@ export const resume = {
   file: "/resume.pdf",
   downloadAs: "Linhua-Zhou-Resume.pdf",
   /** Printed under the heading. Update it when you replace the file. */
-  updated: "September 2026",
+  updated: "November 2026",
   pages: "1 page",
   note:
     "One page, kept current. The long version lives in Work and Lab — this is the part that fits on a desk.",
