@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { categories } from "@/data/projects";
-import { ArrowUpRight } from "./icons";
+import { ArrowUpRight, AwardIcon } from "./icons";
 
 function categoryName(slug: Project["category"]) {
   return categories.find((category) => category.slug === slug)?.name ?? slug;
@@ -49,6 +49,13 @@ export function ProjectCard({ project, index, preview = false }: { project: Proj
             <span className="label ml-auto">{project.year}</span>
           </div>
 
+          {project.award ? (
+            <p className="award-badge">
+              <AwardIcon className="size-3.5 shrink-0" />
+              {project.award}
+            </p>
+          ) : null}
+
           <Heading className="mt-5 text-[clamp(1.55rem,2.5vw,2.1rem)] leading-[1.08] font-medium tracking-[-0.032em]">
             {project.title}
           </Heading>
@@ -90,6 +97,18 @@ export function ProjectCard({ project, index, preview = false }: { project: Proj
                 rel="noreferrer noopener"
               >
                 <span className="link-underline">Visit site</span>
+                <ArrowUpRight className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <span className="sr-only">— {project.title}</span>
+              </a>
+            ) : null}
+            {project.demoUrl ? (
+              <a
+                className="group inline-flex items-center gap-2 text-[14px] text-ink-2 hover:text-ink"
+                href={project.demoUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <span className="link-underline">Demo video</span>
                 <ArrowUpRight className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 <span className="sr-only">— {project.title}</span>
               </a>

@@ -51,6 +51,12 @@ export type Project = {
   metrics?: { label: string; value: string }[];
   /** Small chip: "Live", "In progress", "Archived", … */
   status?: string;
+  /** A prize or recognition, shown as a highlighted line above the title. */
+  award?: string;
+  /** A demo video or recording, linked as "Demo video". */
+  demoUrl?: string;
+  /** Listed in the home page's Selected work, in the order of this array. */
+  home?: true;
   /** Shows a PLACEHOLDER chip. Delete this line once the entry is real. */
   placeholder?: true;
 };
@@ -108,6 +114,7 @@ export const categories: {
 export const projects: Project[] = [
   {
     slug: "asterlo",
+    home: true,
     title: "Asterlo",
     summary: "AI-assisted outreach, with a human in control. Research, drafting, and approval in one workflow.",
     description:
@@ -132,6 +139,7 @@ export const projects: Project[] = [
   },
   {
     slug: "repday",
+    home: true,
     title: "RepDay — Gym Workout Planner",
     summary: "A native workout planner for the sessions you planned — and the ones you improvise. Built with SwiftUI, stored on your device.",
     description:
@@ -159,7 +167,61 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/zhoulinhua0-star/fitness-app",
   },
   {
+    slug: "syllabus-crew",
+    home: true,
+    title: "Syllabus Crew",
+    award: "Winner · Photon 2.0 Sponsor Track · HackPrinceton 2026",
+    summary: "A personal study agent that lives in iMessage. Text Syl your syllabus once; it quizzes your weakest topics, plans review time, and calls you for voice drills.",
+    description:
+      "A personal agent for college students that lives in iMessage, built solo at HackPrinceton Fall 2026. Study apps wait for you to open them; Syl texts you. Send your syllabus once and it works out what each exam is worth, quizzes you on your weakest topics by text, and offers review time on your calendar — nothing reaches the calendar until you reply YES. Reply CALL and your phone rings for a three-minute voice drill. Underneath: a router and four specialist agents in plain TypeScript on Claude via Amazon Bedrock, with grading, mastery and every timing rule kept in deterministic code.",
+    category: "ai-products",
+    year: "2026",
+    tech: ["TypeScript", "Claude", "Amazon Bedrock", "ElevenLabs", "Photon iMessage", "Google Calendar API", "Vercel"],
+    metrics: [
+      { label: "Specialist agents", value: "4" },
+      { label: "Automated tests", value: "246" },
+      { label: "Built", value: "Solo" },
+    ],
+    images: [
+      {
+        src: "/projects/syllabus-crew/main.webp",
+        alt: "Syllabus Crew's landing page: 'A campus that texts you first.', over an illustrated campus with numbered stops and an iMessage thread with Syl",
+      },
+      {
+        src: "/projects/syllabus-crew/secondary.webp",
+        alt: "Syllabus Crew's voice drill section: 'Reply CALL. Your phone rings.', beside an iMessage thread offering a three-minute drill",
+      },
+    ],
+    liveUrl: "https://syllabus-crew.vercel.app",
+    demoUrl: "https://youtu.be/frTz_ULVTXY",
+    githubUrl: "https://github.com/zhoulinhua0-star/hackprinceton-2026",
+  },
+  {
+    slug: "prospecto",
+    home: true,
+    title: "Prospecto",
+    summary: "Evidence-backed listings for companies too early to list: sourced claims, a deterministic valuation, and a simulated market built on top. A HackNC 2026 project.",
+    description:
+      "Turns an early-stage company into an evidence-backed listing. Founders submit a pitch, website, GitHub repo and traction data; Gemini extracts claims with quotes and sources, and Prospecto fetches each source independently and rejects anything unsupported. Deterministic code then scores execution, market, product, traction and economics with weights that change by stage, and that price anchors a simulated market with tickers, live quotes and play credits. It also models primary issuance on Solana, recording each allocation as a non-transferable Token-2022 participation receipt. A HackNC 2026 project.",
+    category: "ai-products",
+    year: "2026",
+    status: "Live",
+    tech: ["Next.js", "v0", "Gemini API", "Solana", "Token-2022"],
+    images: [
+      {
+        src: "/projects/prospecto/main.webp",
+        alt: "Prospecto's halftone landing page: the blackletter 'Prospecto' wordmark, 'All the companies too early to list.', and a live ticker of subscribed rounds",
+      },
+      {
+        src: "/projects/prospecto/secondary.webp",
+        alt: "Prospecto's front page: 'Your half-built idea now has backers.' above an opening-prices board of tickers, stages, fixed prices and subscription bars",
+      },
+    ],
+    liveUrl: "https://prospectofunds.tech",
+  },
+  {
     slug: "campus-decoder",
+    home: true,
     title: "Campus Decoder",
     summary: "An AI coach for the unwritten rules of university life. Turn an unfamiliar situation into a practical next step. Built for GatewayHacks 2026.",
     description:

@@ -30,6 +30,21 @@ export function ArrowUpRight(props: IconProps) {
   );
 }
 
+/** A ribbon medal, for the award line on a winning project. */
+export function AwardIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="8" cy="6" r="4" stroke="currentColor" strokeWidth="1.4" />
+      <path
+        d="M5.6 9.2 4.6 14.6 8 12.8l3.4 1.8-1-5.4"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function GitHubIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
